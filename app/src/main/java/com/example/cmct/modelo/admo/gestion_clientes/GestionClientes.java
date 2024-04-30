@@ -14,7 +14,6 @@ public class GestionClientes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admo_gestor_clientes);
-
     }
 
     // CLICK DEL BOTON "Alta Cliente"
