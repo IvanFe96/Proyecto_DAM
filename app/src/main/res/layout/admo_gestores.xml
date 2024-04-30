@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".modelo.admo.EleccionGestion">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="100dp"
+        android:paddingBottom="20dp"
+        app:srcCompat="@drawable/logotipo_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnTrabajadores"
+            android:layout_width="347dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#781E4B"
+            android:onClick="clickBotonTrabajadores"
+            android:text="Gestión Trabajadores"
+            android:textSize="24sp"
+            app:cornerRadius="5dp"/>
+
+        <Button
+            android:id="@+id/btnClientes"
+            android:layout_width="347dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#781E4B"
+            android:onClick="clickBotonClientes"
+            android:text="Gestión Clientes"
+            android:textSize="24sp"
+            app:cornerRadius="5dp"/>
+    </LinearLayout>
+
+</LinearLayout>

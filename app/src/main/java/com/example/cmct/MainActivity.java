@@ -1,28 +1,29 @@
 package com.example.cmct;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.example.cmct.modelo.admo.EleccionGestion;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnEntrar;
+    Button btnIniciarSesion;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login);
 
-        btnEntrar = findViewById(R.id.btnEntrar);
+        btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
     }
 
     // CLICK DEL BOTON ENTRAR
-    private void clickBotonEntrar(View view) {
-
+    public void clickBotonIniciarSesion(View view) {
+        //Iniciar la nueva pantalla para elegir entre gestionar trabajadores o clientes
+        Intent intent = new Intent(this, EleccionGestion.class);
+        startActivity(intent);
     }
 }

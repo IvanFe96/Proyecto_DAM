@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.CMCT" parent="Base.Theme.CMCT" />
+    <style name="Theme.CMCT.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.CMCT.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.CMCT.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
