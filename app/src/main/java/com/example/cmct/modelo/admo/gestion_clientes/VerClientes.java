@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmct.R;
-import com.example.cmct.modelo.Adaptador;
+import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
 
 public class VerClientes extends AppCompatActivity {
-    Adaptador adaptador;
+    AdaptadorVerTrabajadores adaptadorVerTrabajadores;
     RecyclerView recyclerClientes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,9 @@ public class VerClientes extends AppCompatActivity {
         }
 
         recyclerClientes = findViewById(R.id.recyclerClientes);
-        adaptador = new Adaptador(lista);
+        adaptadorVerTrabajadores = new AdaptadorVerTrabajadores(lista);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerClientes.setLayoutManager(linearLayoutManager);
-        recyclerClientes.setAdapter(adaptador);
+        recyclerClientes.setAdapter(adaptadorVerTrabajadores);
     }
 }

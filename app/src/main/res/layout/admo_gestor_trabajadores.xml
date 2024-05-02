@@ -6,66 +6,120 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modelo.admo.gestion_clientes.GestionTrabajadores">
+    tools:context=".modelo.admo.gestion_trabajadores.GestionTrabajadores">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="100dp"
+        android:paddingTop="50dp"
         android:paddingBottom="20dp"
         app:srcCompat="@drawable/logotipo_horizontal" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginBottom="5dp">
 
-        <Button
-            android:id="@+id/btnVerTrabajadores"
-            android:layout_width="347dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_gravity="center"
-            android:paddingStart="80dp"
-            android:paddingEnd="80dp"
-            android:backgroundTint="#781E4B"
-            android:onClick="clickBotonVerTrabajadores"
-            android:text="Ver Trabajadores"
-            android:textSize="24sp"
-            app:cornerRadius="5dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnAsignarTrabajo"
-            android:layout_width="347dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_gravity="center"
-            android:paddingStart="80dp"
-            android:paddingEnd="80dp"
-            android:backgroundTint="#781E4B"
-            android:onClick="clickBotonVerClientes"
-            android:text="Ver Clientes"
-            android:textSize="24sp"
-            app:cornerRadius="5dp"/>
+            <Button
+                android:id="@+id/btnVerTrabajadores"
+                android:layout_width="347dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center"
+                android:paddingStart="80dp"
+                android:paddingEnd="80dp"
+                android:backgroundTint="#781E4B"
+                android:onClick="clickBotonVerTrabajadores"
+                android:text="Ver Trabajadores"
+                android:textSize="24sp"
+                app:cornerRadius="5dp"/>
 
-        <Button
-            android:id="@+id/btnModificarCliente"
-            android:layout_width="347dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_gravity="center"
-            android:paddingStart="80dp"
-            android:paddingEnd="80dp"
-            android:backgroundTint="#781E4B"
-            android:onClick="clickBotonModificarCliente"
-            android:text="Modificar Cliente"
-            android:textSize="24sp"
-            app:cornerRadius="5dp"/>
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnAsignarTrabajo"
+                android:layout_width="347dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_gravity="center"
+                android:paddingStart="80dp"
+                android:paddingEnd="80dp"
+                android:backgroundTint="#781E4B"
+                android:onClick="clickBotonAsignarTrabajo"
+                android:text="Asignar Trabajo"
+                android:textSize="24sp"
+                app:cornerRadius="5dp"/>
 
+            <Button
+                android:id="@+id/btnEditarTrabajoAsignado"
+                android:layout_width="347dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_gravity="center"
+                android:paddingStart="80dp"
+                android:paddingEnd="80dp"
+                android:backgroundTint="#781E4B"
+                android:onClick="clickBotonEditarTrabajoAsignado"
+                android:text="Editar Trabajo Asignado"
+                android:textSize="24sp"
+                app:cornerRadius="5dp"/>
+
+            <Button
+                android:id="@+id/btnValoraciones"
+                android:layout_width="347dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_gravity="center"
+                android:paddingStart="80dp"
+                android:paddingEnd="80dp"
+                android:backgroundTint="#781E4B"
+                android:onClick="clickBotonValoraciones"
+                android:text="Valoraciones"
+                android:textSize="24sp"
+                app:cornerRadius="5dp"/>
+            <Button
+                android:id="@+id/btnIncidencias"
+                android:layout_width="347dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_gravity="center"
+                android:paddingStart="80dp"
+                android:paddingEnd="80dp"
+                android:backgroundTint="#781E4B"
+                android:onClick="clickBotonIncidencias"
+                android:text="Incidencias"
+                android:textSize="24sp"
+                app:cornerRadius="5dp"/>
+
+            <Button
+                android:id="@+id/btnVerFichaje"
+                android:layout_width="347dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_gravity="center"
+                android:paddingStart="80dp"
+                android:paddingEnd="80dp"
+                android:backgroundTint="#781E4B"
+                android:onClick="clickBotonVerFichaje"
+                android:text="Ver Fichaje"
+                android:textSize="24sp"
+                app:cornerRadius="5dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>

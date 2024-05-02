@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <!-- PERMISOS -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CMCT"
         tools:targetApi="31" >
+
+        <!-- CLAVE API DE GOOGLE MAPS -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCaTKZyCuZqu38q21xgXRIfhKazfOm1L80" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true" >
@@ -23,16 +32,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".modelo.admo.EleccionGestion" >
-        </activity>
-        <activity android:name=".modelo.admo.gestion_clientes.GestionClientes" >
-        </activity>
-        <activity android:name=".modelo.admo.gestion_trabajadores.GestionTrabajadores" >
-        </activity>
-        <activity android:name=".modelo.admo.gestion_clientes.AltaCliente" >
-        </activity>
-        <activity android:name=".modelo.admo.gestion_clientes.VerClientes" >
-        </activity>
+        <activity android:name=".modelo.admo.EleccionGestion" />
+        <activity android:name=".modelo.admo.gestion_clientes.GestionClientes" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.GestionTrabajadores" />
+        <activity android:name=".modelo.admo.gestion_clientes.AltaCliente" />
+        <activity android:name=".modelo.admo.gestion_clientes.VerClientes" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.VerTrabajadores" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.ListaTrabajadoresAsignarTrabajo" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.AsignarTrabajo" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.BuscarTrabajador" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.Valoraciones" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.ListaTrabajadoresIncidencias" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.Fichaje" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.AltaModificacionTrabajador" />
     </application>
 
 </manifest>
