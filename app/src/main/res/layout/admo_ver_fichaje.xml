@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageViewFichaje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="40dp"
+        android:paddingBottom="20dp"
+        app:srcCompat="@drawable/logotipo_horizontal" />
+
+    <TextView
+        android:id="@+id/tvNombreApellidosFichaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Nombre y Apellidos"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/dividerFichaje"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="?android:attr/listDivider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextClock
+                    android:id="@+id/textClock1Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="30sp"
+                    android:textIsSelectable="false"/>
+
+                <TextView
+                    android:id="@+id/tvMapa1Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Ver Mapa"
+                    android:textSize="30sp"
+                    android:textStyle="bold|italic"
+                    android:onClick="clickVerMapa1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextClock
+                    android:id="@+id/textClock2Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="30sp"
+                    android:textIsSelectable="false"/>
+
+                <TextView
+                    android:id="@+id/tvMapa2Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Ver Mapa"
+                    android:textSize="30sp"
+                    android:textStyle="bold|italic"
+                    android:onClick="clickVerMapa2"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextClock
+                    android:id="@+id/textClock3Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="30sp"
+                    android:textIsSelectable="false"/>
+
+                <TextView
+                    android:id="@+id/tvMapa3Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Ver Mapa"
+                    android:textSize="30sp"
+                    android:textStyle="bold|italic"
+                    android:onClick="clickVerMapa3"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextClock
+                    android:id="@+id/textClock4Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="30sp"
+                    android:textIsSelectable="false"/>
+
+                <TextView
+                    android:id="@+id/tvMapa4Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Ver Mapa"
+                    android:textSize="30sp"
+                    android:textStyle="bold|italic"
+                    android:onClick="clickVerMapa4"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextClock
+                    android:id="@+id/textClock5Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="30sp"
+                    android:textIsSelectable="false"/>
+
+                <TextView
+                    android:id="@+id/tvMapa5Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Ver Mapa"
+                    android:textSize="30sp"
+                    android:textStyle="bold|italic"
+                    android:onClick="clickVerMapa5"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextClock
+                    android:id="@+id/textClock6Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="30sp"
+                    android:textIsSelectable="false"/>
+
+                <TextView
+                    android:id="@+id/tvMapa6Fichaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Ver Mapa"
+                    android:textSize="30sp"
+                    android:textStyle="bold|italic"
+                    android:onClick="clickVerMapa6"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

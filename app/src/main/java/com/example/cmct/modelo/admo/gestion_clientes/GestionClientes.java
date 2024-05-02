@@ -16,9 +16,9 @@ public class GestionClientes extends AppCompatActivity {
         setContentView(R.layout.admo_gestor_clientes);
     }
 
-    // CLICK DEL BOTON "Alta Cliente"
+    // CLICK DEL BOTON "Ver Trabajadores"
     public void clickBotonAltaCliente(View view) {
-        //Iniciar la nueva pantalla para dar de alta a clientes
+        //Iniciar la nueva pantalla para ver los trabajadores de la empresa
         intent = new Intent(this, AltaCliente.class);
         startActivity(intent);
     }
