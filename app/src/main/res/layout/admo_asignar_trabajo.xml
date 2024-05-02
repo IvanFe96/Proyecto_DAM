@@ -13,290 +13,296 @@
         android:paddingBottom="20dp"
         app:srcCompat="@drawable/logotipo_horizontal" />
 
-    <TextView
-        android:id="@+id/tvNombreApellidosAsignarTrabajo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:text="Nombre y Apellidos"
-        android:textSize="30sp"
-        android:textStyle="bold"/>
-
-    <View
-        android:id="@+id/dividerAsignarTrabajo"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="?android:attr/listDivider" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
         android:layout_marginBottom="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvNombreApellidosAsignarTrabajo"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:text="Nombre y Apellidos"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
 
-                <Spinner
-                    android:id="@+id/spinner1AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextClock
-                    android:id="@+id/textClock1AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
-
-                <TextView
-                    android:id="@+id/tvGuionAsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="-"
-                    android:textSize="30sp"/>
-
-                <TextClock
-                    android:id="@+id/textClock2AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <View
+                android:id="@+id/dividerAsignarTrabajo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_height="5dp"
+                android:background="?android:attr/listDivider" />
 
-                <Spinner
-                    android:id="@+id/spinner2AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextClock
-                    android:id="@+id/textClock3AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
-
-                <TextView
-                    android:id="@+id/tvGuion2AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="-"
-                    android:textSize="30sp"/>
-
-                <TextClock
-                    android:id="@+id/textClock4AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <Spinner
-                    android:id="@+id/spinner3AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextClock
-                    android:id="@+id/textClock5AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
-
-                <TextView
-                    android:id="@+id/tvGuion3AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="-"
-                    android:textSize="30sp"/>
-
-                <TextClock
-                    android:id="@+id/textClock6AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="DESCANSO"
-                    android:textSize="30sp"
-                    android:textStyle="bold|italic"/>
+                    android:orientation="vertical">
 
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:gravity="center">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                <Spinner
-                    android:id="@+id/spinner4AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                        <Spinner
+                            android:id="@+id/spinner1AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
-                <TextClock
-                    android:id="@+id/textClock7AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
+                        <TextClock
+                            android:id="@+id/textClock1AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
 
-                <TextView
-                    android:id="@+id/tvGuion4AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="-"
-                    android:textSize="30sp"/>
+                        <TextView
+                            android:id="@+id/tvGuionAsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="-"
+                            android:textSize="30sp"/>
 
-                <TextClock
-                    android:id="@+id/textClock8AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
+                        <TextClock
+                            android:id="@+id/textClock2AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
 
-            </LinearLayout>
+                    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:gravity="center">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                <Spinner
-                    android:id="@+id/spinner5AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                        <Spinner
+                            android:id="@+id/spinner2AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
-                <TextClock
-                    android:id="@+id/textClock9AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
+                        <TextClock
+                            android:id="@+id/textClock3AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
 
-                <TextView
-                    android:id="@+id/tvGuion5AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="-"
-                    android:textSize="30sp"/>
+                        <TextView
+                            android:id="@+id/tvGuion2AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="-"
+                            android:textSize="30sp"/>
 
-                <TextClock
-                    android:id="@+id/textClock10AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
+                        <TextClock
+                            android:id="@+id/textClock4AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
 
-            </LinearLayout>
+                    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:gravity="center">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                <Spinner
-                    android:id="@+id/spinner6AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                        <Spinner
+                            android:id="@+id/spinner3AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
-                <TextClock
-                    android:id="@+id/textClock11AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
+                        <TextClock
+                            android:id="@+id/textClock5AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
 
-                <TextView
-                    android:id="@+id/tvGuion6AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="-"
-                    android:textSize="30sp"/>
+                        <TextView
+                            android:id="@+id/tvGuion3AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="-"
+                            android:textSize="30sp"/>
 
-                <TextClock
-                    android:id="@+id/textClock12AsignarTrabajo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="20sp"
-                    android:onClick="mostrarTimePickerDialog"/>
+                        <TextClock
+                            android:id="@+id/textClock6AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
 
-            </LinearLayout>
+                    </LinearLayout>
 
-            <Button
-                android:id="@+id/btnAceptarAsignarTrabajo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_gravity="center"
-                android:backgroundTint="#781E4B"
-                android:onClick="clickBotonAceptarAsignarTrabajo"
-                android:text="Aceptar"
-                android:textSize="30sp"
-                app:cornerRadius="5dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="DESCANSO"
+                            android:textSize="30sp"
+                            android:textStyle="bold|italic"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <Spinner
+                            android:id="@+id/spinner4AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextClock
+                            android:id="@+id/textClock7AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
+
+                        <TextView
+                            android:id="@+id/tvGuion4AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="-"
+                                android:textSize="30sp"/>
+
+                        <TextClock
+                            android:id="@+id/textClock8AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <Spinner
+                            android:id="@+id/spinner5AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextClock
+                            android:id="@+id/textClock9AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
+
+                        <TextView
+                            android:id="@+id/tvGuion5AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="-"
+                            android:textSize="30sp"/>
+
+                        <TextClock
+                            android:id="@+id/textClock10AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <Spinner
+                            android:id="@+id/spinner6AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextClock
+                            android:id="@+id/textClock11AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
+
+                        <TextView
+                            android:id="@+id/tvGuion6AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="-"
+                            android:textSize="30sp"/>
+
+                        <TextClock
+                            android:id="@+id/textClock12AsignarTrabajo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textSize="20sp"
+                            android:onClick="mostrarTimePickerDialog"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnAceptarAsignarTrabajo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="#781E4B"
+                        android:onClick="clickBotonAceptarAsignarTrabajo"
+                        android:text="Aceptar"
+                        android:textSize="30sp"
+                        app:cornerRadius="5dp"/>
+
+                </LinearLayout>
 
         </LinearLayout>
 

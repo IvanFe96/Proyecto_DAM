@@ -2,12 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modelo.admo.EleccionGestion">
-
+    android:orientation="vertical"
+    tools:context=".modelo.cliente.Valorar">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,7 +17,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewValorar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="100dp"
@@ -31,27 +29,30 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/btnTrabajadores"
-                    android:layout_width="347dp"
+                <ImageView
+                    android:id="@+id/ivTrabajadorValorar"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="150dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#781E4B"
-                    android:onClick="clickBotonTrabajadores"
-                    android:text="Gestión Trabajadores"
-                    android:textSize="24sp"
-                    app:cornerRadius="5dp"/>
+                    android:layout_marginTop="50dp"
+                    app:srcCompat="@drawable/ic_launcher_foreground" />
+
+                <RatingBar
+                    android:id="@+id/ratingBarValorar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"/>
 
                 <Button
-                    android:id="@+id/btnClientes"
+                    android:id="@+id/btnAceptarValorar"
                     android:layout_width="347dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="40dp"
                     android:layout_gravity="center"
                     android:backgroundTint="#781E4B"
-                    android:onClick="clickBotonClientes"
-                    android:text="Gestión Clientes"
+                    android:onClick="clickBotonAceptar"
+                    android:text="Aceptar"
                     android:textSize="24sp"
                     app:cornerRadius="5dp"/>
 

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".modelo.cliente.RegistrarNecesidades">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageViewRegistrarNecesidades"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="60dp"
+                android:paddingBottom="20dp"
+                app:srcCompat="@drawable/logotipo_horizontal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/cbAseoPersonal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aseo Personal"
+                    android:textSize="30sp"/>
+
+                <CheckBox
+                    android:id="@+id/cbCompra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Compra"
+                    android:textSize="30sp"/>
+
+                <CheckBox
+                    android:id="@+id/cbComida"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comida"
+                    android:textSize="30sp"/>
+
+                <CheckBox
+                    android:id="@+id/cbAyudaDomestica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ayuda Domestica"
+                    android:textSize="30sp"/>
+
+                <CheckBox
+                    android:id="@+id/cbAcompañamiento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Acompañamiento"
+                    android:textSize="30sp"/>
+
+                <CheckBox
+                    android:id="@+id/cbAyudaMovilidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ayuda Movilidad"
+                    android:textSize="30sp"/>
+
+                <CheckBox
+                    android:id="@+id/cbEjerciciosCognitivos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ejercicios Cognitivos"
+                    android:textSize="30sp"/>
+
+                <Button
+                    android:id="@+id/btnAceptarRegistrarNecesidades"
+                    android:layout_width="347dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#781E4B"
+                    android:onClick="clickBotonAceptarRegistrarNecesidades"
+                    android:text="Aceptar"
+                    android:textSize="24sp"
+                    app:cornerRadius="5dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

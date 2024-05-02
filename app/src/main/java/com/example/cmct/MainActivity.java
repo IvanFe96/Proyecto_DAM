@@ -8,6 +8,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.modelo.admo.EleccionGestion;
+import com.example.cmct.modelo.cliente.EleccionCliente;
+import com.example.cmct.modelo.trabajador.EleccionTrabajador;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,10 +22,16 @@ public class MainActivity extends AppCompatActivity {
         btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
     }
 
-    // CLICK DEL BOTON ENTRAR
+    // CLICK DEL BOTON INICIAR SESION
     public void clickBotonIniciarSesion(View view) {
-        //Iniciar la nueva pantalla para elegir entre gestionar trabajadores o clientes
+        /*// Iniciar la nueva pantalla para elegir entre gestionar trabajadores o clientes
         Intent intent = new Intent(this, EleccionGestion.class);
+        startActivity(intent);*/
+
+        /*Intent intent = new Intent(this, EleccionCliente.class);
+        startActivity(intent);*/
+
+        Intent intent = new Intent(this, EleccionTrabajador.class);
         startActivity(intent);
     }
 }

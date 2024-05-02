@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
-
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- PERMISOS -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CMCT"
-        tools:targetApi="31" >
+        tools:targetApi="31">
 
         <!-- CLAVE API DE GOOGLE MAPS -->
         <meta-data
@@ -25,7 +24,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,6 +44,14 @@
         <activity android:name=".modelo.admo.gestion_trabajadores.ListaTrabajadoresIncidencias" />
         <activity android:name=".modelo.admo.gestion_trabajadores.Fichaje" />
         <activity android:name=".modelo.admo.gestion_trabajadores.AltaModificacionTrabajador" />
+        <activity android:name=".modelo.cliente.EleccionCliente" />
+        <activity android:name=".modelo.cliente.Valorar" />
+        <activity android:name=".modelo.cliente.RegistrarNecesidades" />
+        <activity android:name=".modelo.trabajador.EleccionTrabajador" />
+        <activity android:name=".modelo.trabajador.Incidencia" />
+        <activity android:name=".modelo.trabajador.ListaClientesHorario" />
+        <activity android:name=".modelo.trabajador.DatosCliente" />
+
     </application>
 
 </manifest>

@@ -2,12 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modelo.admo.EleccionGestion">
-
+    android:orientation="vertical"
+    tools:context=".modelo.trabajador.EleccionTrabajador">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,7 +17,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewEleccionTrabajador"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="100dp"
@@ -32,26 +30,38 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btnTrabajadores"
+                    android:id="@+id/btnFichar"
                     android:layout_width="347dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="150dp"
+                    android:layout_marginTop="100dp"
                     android:layout_gravity="center"
                     android:backgroundTint="#781E4B"
-                    android:onClick="clickBotonTrabajadores"
-                    android:text="Gestión Trabajadores"
+                    android:onClick="clickBotonFichar"
+                    android:text="Fichar"
                     android:textSize="24sp"
                     app:cornerRadius="5dp"/>
 
                 <Button
-                    android:id="@+id/btnClientes"
+                    android:id="@+id/btnIncidencia"
                     android:layout_width="347dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="60dp"
                     android:layout_gravity="center"
                     android:backgroundTint="#781E4B"
-                    android:onClick="clickBotonClientes"
-                    android:text="Gestión Clientes"
+                    android:onClick="clickBotonIncidencia"
+                    android:text="Incidencia"
+                    android:textSize="24sp"
+                    app:cornerRadius="5dp"/>
+
+                <Button
+                    android:id="@+id/btnHorario"
+                    android:layout_width="347dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#781E4B"
+                    android:onClick="clickBotonHorario"
+                    android:text="Horario"
                     android:textSize="24sp"
                     app:cornerRadius="5dp"/>
 
