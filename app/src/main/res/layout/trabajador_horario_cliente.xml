@@ -53,10 +53,10 @@
                         android:layout_marginEnd="10dp"
                         android:gravity="center">
 
-                        <Spinner
-                            android:id="@+id/spinner6AsignarTrabajo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/mapViewCliente"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp" />
 
                     </LinearLayout>
 
@@ -68,11 +68,13 @@
 
                         <ImageView
                             android:id="@+id/imageViewCliente"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="120dp"
+                            android:layout_marginEnd="120dp"
                             android:paddingTop="40dp"
                             android:paddingBottom="20dp"
-                            app:srcCompat="@drawable/logotipo_horizontal" />
+                            app:srcCompat="@drawable/ic_launcher_foreground" />
 
                     </LinearLayout>
 

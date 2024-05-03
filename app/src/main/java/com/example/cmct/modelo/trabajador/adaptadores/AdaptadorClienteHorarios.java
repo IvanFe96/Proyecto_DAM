@@ -36,12 +36,9 @@ public class AdaptadorClienteHorarios extends RecyclerView.Adapter<AdaptadorClie
     public void onBindViewHolder(@NonNull DatosHolder holder, int position) {
         //if (!c.moveToPosition(position)) {return;}
 
-        /*@SuppressLint("Range") Bitmap imagen = c.get;
-        @SuppressLint("Range") String nombre = c.getString(c.getColumnIndex("nombre"));*/
-
         String nombre = lista[position];
 
-        // Añadir informacion al Item del recycler.
+        // AÑADIR INFORMACION AL ITEM DEL RecyclerView
         holder.nombre.setText(nombre);
 
         // Obtener la hora actual
@@ -72,7 +69,7 @@ public class AdaptadorClienteHorarios extends RecyclerView.Adapter<AdaptadorClie
         public DatosHolder(@NonNull View itemView) {
             super(itemView);
 
-            nombre = itemView.findViewById(R.id.tvNombreApellidosTrabajador);
+            nombre = itemView.findViewById(R.id.tvNombreApellidosCliente);
             horario = itemView.findViewById(R.id.tvHorario);
 
             //ESTABLECER ON CLICK LISTENER AL ITEM DEL RECYCLERVIEW
@@ -80,7 +77,7 @@ public class AdaptadorClienteHorarios extends RecyclerView.Adapter<AdaptadorClie
 
         }
 
-        // CLICK EN EL CLIENTE
+        // CLICK EN EL CLIENTE PARA ABRIR UNA NUEVA PANTALLA CON TODOS LOS DATOS DEL CLIENTE
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(v.getContext(), DatosCliente.class);

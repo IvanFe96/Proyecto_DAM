@@ -20,7 +20,7 @@ public class ListaClientesHorario extends AppCompatActivity {
         String[] lista = new String[4];
 
         for (int i = 0; i < lista.length; i++) {
-            lista[i] = "Trabajador"+i;
+            lista[i] = "Cliente"+i;
         }
 
         this.lista = findViewById(R.id.recyclerListaClientesHorario);

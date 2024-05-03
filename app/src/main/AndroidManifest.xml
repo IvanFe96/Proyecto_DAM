@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- PERMISOS -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -23,7 +24,7 @@
             android:value="AIzaSyCaTKZyCuZqu38q21xgXRIfhKazfOm1L80" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +52,6 @@
         <activity android:name=".modelo.trabajador.Incidencia" />
         <activity android:name=".modelo.trabajador.ListaClientesHorario" />
         <activity android:name=".modelo.trabajador.DatosCliente" />
-
     </application>
 
 </manifest>
