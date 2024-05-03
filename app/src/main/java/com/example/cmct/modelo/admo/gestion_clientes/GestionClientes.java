@@ -19,7 +19,7 @@ public class GestionClientes extends AppCompatActivity {
     // CLICK DEL BOTON "Ver Trabajadores"
     public void clickBotonAltaCliente(View view) {
         //Iniciar la nueva pantalla para ver los trabajadores de la empresa
-        intent = new Intent(this, AltaCliente.class);
+        intent = new Intent(this, AltaModificacionCliente.class);
         startActivity(intent);
     }
 

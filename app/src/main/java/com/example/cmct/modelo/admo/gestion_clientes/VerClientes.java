@@ -1,10 +1,15 @@
 package com.example.cmct.modelo.admo.gestion_clientes;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +18,7 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerClientes;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
+import com.example.cmct.modelo.admo.gestion_trabajadores.AltaModificacionTrabajador;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +27,12 @@ public class VerClientes extends AppCompatActivity {
     AdaptadorVerClientes adaptadorVerClientes;
     EditText buscador;
     RecyclerView recyclerClientes;
+    Cliente[] lista = new Cliente[3];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admo_ver_clientes);
-
-        Cliente[] lista = new Cliente[3];
 
         for (int i = 0; i < lista.length; i++) {
             Cliente cliente = new Cliente("1","Cliente"+i,"Apellido1","Apellido2"
@@ -80,5 +86,48 @@ public class VerClientes extends AppCompatActivity {
 
         // CONVERTIR LA LISTA FILTRADA EN UNA MATRIZ
         return listaFiltrada.toArray(new Cliente[0]);
+    }
+
+    // CLICK DEL BOTON PARA HACER EL FORMULARIO DE ALTA TRABAJADOR
+    public void clickBotonAltaCliente(View view) {
+        Intent intent = new Intent(this, AltaModificacionCliente.class);
+        intent.setAction("NUEVO");
+        startActivity(intent);
+    }
+    @Override
+    public boolean onContextItemSelected( MenuItem item) {
+        int posicion = item.getItemId();
+
+        if(posicion == 100) {
+
+            // SE QUIERE EDITAR LA INFORMACION DEL CLIENTE
+            Intent intent = new Intent(this, AltaModificacionCliente.class);
+            intent.putExtra("cliente",lista[item.getGroupId()]);
+            intent.setAction("EDITAR");
+            startActivity(intent);
+
+        } else {
+
+            // SE QUIERE ELIMINAR AL CLIENTE
+            AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
+            dialogo.setTitle("¿Estás seguro de eliminar a " + lista[item.getGroupId()].getNombre() + "?");
+
+            // BOTON PARA QUE ELIMINE AL TRABAJADOR DE LA BASE DE DATOS
+            dialogo.setNegativeButton("SI", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            // BOTON PARA QUE CIERRE EL DIALOGO
+            dialogo.setPositiveButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        return super.onContextItemSelected(item);
     }
 }

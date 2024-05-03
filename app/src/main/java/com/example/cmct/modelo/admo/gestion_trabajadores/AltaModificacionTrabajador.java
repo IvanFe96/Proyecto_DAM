@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
+import com.example.cmct.clases.Trabajador;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -44,15 +45,14 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         // COMPROBAR SI EL USUARIO QUIERE EDITAR A UN TRABAJADOR
         intent = getIntent();
         if(intent.getAction().equals("EDITAR")) {
-
-            nombre.setText(intent.getStringExtra("nombre"));
-            /*foto = ;
-            nombre = ;
-            apellido1 = ;
-            apellido2 = ;
-            correo = ;
-            telefono = ;
-            dni = ;*/
+            Trabajador trabajador = (Trabajador) intent.getSerializableExtra("trabajador");
+            //foto = ;
+            nombre.setText(trabajador.getNombre());
+            apellido1.setText(trabajador.getApellido1());
+            apellido2.setText(trabajador.getApellido2());
+            correo.setText(trabajador.getCorreo());
+            telefono.setText(trabajador.getTelefono());
+            dni.setText(trabajador.getDni());
         }
     }
 

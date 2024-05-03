@@ -1,5 +1,6 @@
 package com.example.cmct.modelo.admo.gestion_trabajadores;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,14 +101,34 @@ public class VerTrabajadores extends AppCompatActivity {
         int posicion = item.getItemId();
 
         if(posicion == 100) {
-            // EL USUARIO QUIERE EDITAR LA INFORMACION DEL TRABAJADOR
+
+            // SE QUIERE EDITAR LA INFORMACION DEL TRABAJADOR
             Intent intent = new Intent(this, AltaModificacionTrabajador.class);
-            intent.putExtra("nombre",lista[item.getGroupId()].getNombre());
+            intent.putExtra("trabajador",lista[item.getGroupId()]);
             intent.setAction("EDITAR");
             startActivity(intent);
-        } else {
-            // EL USUARIO QUIERE ELIMINAR AL TRABAJADOR
 
+        } else {
+
+            // SE QUIERE ELIMINAR AL TRABAJADOR
+            AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
+            dialogo.setTitle("¿Estás seguro de eliminar a " + lista[item.getGroupId()].getNombre() + "?");
+
+            // BOTON PARA QUE ELIMINE AL TRABAJADOR DE LA BASE DE DATOS
+            dialogo.setNegativeButton("SI", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            // BOTON PARA QUE CIERRE EL DIALOGO
+            dialogo.setPositiveButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
         }
         return super.onContextItemSelected(item);
     }

@@ -1,6 +1,8 @@
 package com.example.cmct.clases;
 
-public class Cliente extends Usuario{
+import java.io.Serializable;
+
+public class Cliente extends Usuario implements Serializable {
     private String direccion;
     private String horaEntradaTrabajador;
     private String horaSalidaTrabajador;
