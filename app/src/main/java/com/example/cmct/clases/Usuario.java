@@ -1,6 +1,8 @@
 package com.example.cmct.clases;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
 
     private String idUsuario;
     private String nombre;
@@ -9,6 +11,10 @@ public class Usuario {
     private String telefono;
     private String dni;
     private String correo;
+
+    public Usuario() {
+
+    }
 
     public Usuario(String idUsuario, String nombre, String apellido1, String apellido2, String telefono, String dni, String correo) {
         this.idUsuario = idUsuario;

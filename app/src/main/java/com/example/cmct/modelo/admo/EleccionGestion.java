@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
 import com.example.cmct.modelo.admo.gestion_clientes.GestionClientes;
+import com.example.cmct.modelo.admo.gestion_clientes.VerClientes;
 import com.example.cmct.modelo.admo.gestion_trabajadores.GestionTrabajadores;
 
 public class EleccionGestion extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class EleccionGestion extends AppCompatActivity {
     // CLICK DEL BOTON "Gestion Clientes"
     public void clickBotonClientes(View view) {
         //Iniciar la nueva pantalla para elegir las opciones de clientes
-        intent = new Intent(this, GestionClientes.class);
+        intent = new Intent(this, VerClientes.class);
         startActivity(intent);
     }
 }

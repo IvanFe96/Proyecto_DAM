@@ -30,10 +30,4 @@ public class GestionClientes extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // CLICK DEL BOTON "Modificar Cliente"
-    public void clickBotonModificarCliente(View view) {
-        //Iniciar la nueva pantalla para introducir el dni del cliente al que modificar los datos
-        intent = new Intent(this, ModificarCliente.class);
-        startActivity(intent);
-    }
 }

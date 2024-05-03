@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -46,6 +47,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         intent = getIntent();
         if(intent.getAction().equals("EDITAR")) {
             Trabajador trabajador = (Trabajador) intent.getSerializableExtra("trabajador");
+            Toast.makeText(this, trabajador.getNombre(), Toast.LENGTH_SHORT).show();
             //foto = ;
             nombre.setText(trabajador.getNombre());
             apellido1.setText(trabajador.getApellido1());

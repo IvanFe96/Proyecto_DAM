@@ -91,7 +91,7 @@ public class AdaptadorVerTrabajadores extends RecyclerView.Adapter<AdaptadorVerT
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-            menu.add(getAdapterPosition(), 100, 0, "EDTIAR");
+            menu.add(getAdapterPosition(), 100, 0, "EDITAR");
             menu.add(getAdapterPosition(), 200, 0, "ELIMINAR");
 
         }

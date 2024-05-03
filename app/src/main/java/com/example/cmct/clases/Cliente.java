@@ -8,8 +8,12 @@ public class Cliente extends Usuario implements Serializable {
     private String horaSalidaTrabajador;
     private String[] necesidades;
 
+    public Cliente() {
+        super();
+    }
+
     public Cliente(String idUsuario, String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String direccion
-                        ,String horaEntradaTrabajador, String horaSalidaTrabajador, String[] necesidades) {
+                        , String horaEntradaTrabajador, String horaSalidaTrabajador, String[] necesidades) {
         super(idUsuario, nombre, apellido1, apellido2, telefono, dni, correo);
 
         this.direccion = direccion;

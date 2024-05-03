@@ -10,14 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmct.R;
-import com.example.cmct.clases.Cliente;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
 
@@ -104,7 +102,7 @@ public class VerTrabajadores extends AppCompatActivity {
 
             // SE QUIERE EDITAR LA INFORMACION DEL TRABAJADOR
             Intent intent = new Intent(this, AltaModificacionTrabajador.class);
-            intent.putExtra("trabajador",lista[item.getGroupId()]);
+            intent.putExtra("trabajador", lista[item.getGroupId()]);
             intent.setAction("EDITAR");
             startActivity(intent);
 
@@ -129,6 +127,9 @@ public class VerTrabajadores extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
+
+            // MOSTRAR EL DIALOGO
+            dialogo.show();
         }
         return super.onContextItemSelected(item);
     }

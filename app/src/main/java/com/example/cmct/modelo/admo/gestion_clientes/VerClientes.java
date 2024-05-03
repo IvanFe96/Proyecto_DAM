@@ -94,6 +94,7 @@ public class VerClientes extends AppCompatActivity {
         intent.setAction("NUEVO");
         startActivity(intent);
     }
+
     @Override
     public boolean onContextItemSelected( MenuItem item) {
         int posicion = item.getItemId();
@@ -127,6 +128,9 @@ public class VerClientes extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
+
+            // MOSTRAR EL DIALOGO
+            dialogo.show();
         }
         return super.onContextItemSelected(item);
     }
