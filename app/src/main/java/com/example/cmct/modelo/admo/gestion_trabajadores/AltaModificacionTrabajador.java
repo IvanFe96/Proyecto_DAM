@@ -172,10 +172,10 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
             Uri imageUri = data.getData();
 
             try {
-                // Decodifica la imagen desde la URI
+                // DECODIFICAR LA IMAGEN DESDE LA URI
                 Bitmap imagenOriginal = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
-                // Redimensiona la imagen para que se ajuste al tamaño del ImageView
+                // REDIMENSIONAR LA IMAGEN PARA QUE SE AJUSTE AL TAMAÑO DEL IMAGEVIEW
                 int ancho = foto.getWidth();
                 int alto = foto.getHeight();
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(imagenOriginal, ancho, alto, false);

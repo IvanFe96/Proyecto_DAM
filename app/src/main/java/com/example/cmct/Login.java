@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.modelo.admo.EleccionGestion;
+import com.example.cmct.modelo.cliente.EleccionCliente;
 import com.example.cmct.modelo.trabajador.EleccionTrabajador;
 
 public class Login extends AppCompatActivity {

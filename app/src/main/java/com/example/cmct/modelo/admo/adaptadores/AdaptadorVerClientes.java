@@ -39,13 +39,14 @@ public class AdaptadorVerClientes extends RecyclerView.Adapter<AdaptadorVerClien
         String direccion = lista[position].getDireccion();
         String telefono = lista[position].getTelefono();
         String correo = lista[position].getCorreo();
+        String ciudad = lista[position].getCiudad();
 
         // Añadir informacion al Item del recycler.
         holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
         holder.nombre.setText(nombre);
         holder.telefono.setText(telefono);
         holder.correo.setText(correo);
-        holder.direccion.setText(direccion);
+        holder.direccion.setText(direccion + "," + ciudad);
     }
 
     @Override

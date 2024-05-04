@@ -3,6 +3,8 @@ package com.example.cmct.clases;
 import java.io.Serializable;
 
 public class Cliente extends Usuario implements Serializable {
+
+    private String ciudad;
     private String direccion;
     private String horaEntradaTrabajador;
     private String horaSalidaTrabajador;
@@ -12,14 +14,23 @@ public class Cliente extends Usuario implements Serializable {
         super();
     }
 
-    public Cliente(String idUsuario, String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String direccion
-                        , String horaEntradaTrabajador, String horaSalidaTrabajador, String[] necesidades) {
+    public Cliente(String idUsuario, String nombre, String apellido1, String apellido2, String telefono, String dni, String correo,
+                   String ciudad, String direccion, String horaEntradaTrabajador, String horaSalidaTrabajador, String[] necesidades) {
         super(idUsuario, nombre, apellido1, apellido2, telefono, dni, correo);
 
+        this.ciudad = ciudad;
         this.direccion = direccion;
         this.horaEntradaTrabajador = horaEntradaTrabajador;
         this.horaSalidaTrabajador = horaSalidaTrabajador;
         this.necesidades = necesidades;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 
     public String getDireccion() {

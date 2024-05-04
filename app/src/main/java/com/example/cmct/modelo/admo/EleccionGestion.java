@@ -8,7 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
-import com.example.cmct.modelo.admo.gestion_clientes.GestionClientes;
 import com.example.cmct.modelo.admo.gestion_clientes.VerClientes;
 import com.example.cmct.modelo.admo.gestion_trabajadores.GestionTrabajadores;
 

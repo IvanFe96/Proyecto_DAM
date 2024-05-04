@@ -13,10 +13,7 @@
         android:paddingBottom="20dp"
         app:srcCompat="@drawable/logotipo_horizontal" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="0dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,6 +35,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="?android:attr/listDivider" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -303,9 +305,7 @@
                         app:cornerRadius="5dp"/>
 
                 </LinearLayout>
-
+            </ScrollView>
         </LinearLayout>
-
-    </ScrollView>
 
 </LinearLayout>

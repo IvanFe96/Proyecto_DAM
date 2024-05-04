@@ -16,69 +16,73 @@
         android:paddingBottom="20dp"
         app:srcCompat="@drawable/logotipo_horizontal" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="40dp">
+        android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/tvMail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:text="Correo"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/mail"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:ems="40"
-            android:inputType="text"
-            android:background="@drawable/style_background_fields"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp">
 
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="50dp"
-            android:text="Contraseña"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tvMail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:text="Correo"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:background="@drawable/style_background_fields"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" />
+            <EditText
+                android:id="@+id/mail"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:ems="40"
+                android:inputType="text"
+                android:background="@drawable/style_background_fields"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
 
-        <Button
-            android:id="@+id/btnIniciarSesion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:paddingEnd="40dp"
-            android:paddingStart="40dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:backgroundTint="#781E4B"
-            android:onClick="clickBotonIniciarSesion"
-            android:text="Iniciar Sesión"
-            android:textSize="24sp"
-            app:cornerRadius="5dp" />
+            <TextView
+                android:id="@+id/tvPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="50dp"
+                android:text="Contraseña"
+                android:textSize="20sp" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:background="@drawable/style_background_fields"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+            <Button
+                android:id="@+id/btnIniciarSesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="60dp"
+                android:backgroundTint="#781E4B"
+                android:onClick="clickBotonIniciarSesion"
+                android:text="Iniciar Sesión"
+                android:textSize="24sp"
+                app:cornerRadius="5dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
 </LinearLayout>

@@ -7,7 +7,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,11 +25,13 @@ import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
 import com.example.cmct.modelo.admo.gestion_trabajadores.AltaModificacionTrabajador;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VerClientes extends AppCompatActivity {
     AdaptadorVerClientes adaptadorVerClientes;
-    EditText buscador;
+    EditText buscadorNombre;
+    Spinner buscadorCiudades;
     RecyclerView recyclerClientes;
     Cliente[] lista = new Cliente[3];
 
@@ -37,7 +43,7 @@ public class VerClientes extends AppCompatActivity {
         for (int i = 0; i < lista.length; i++) {
             Cliente cliente = new Cliente("1","Cliente"+i,"Apellido1","Apellido2"
                     ,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,"cliente"+i+"@gmail.com"
-                    ,"C/Los Cliente"+i+" Nº"+i,"8:40","9:20",null);
+                    ,"San Mateo de Gállego","C/Los Cliente"+i+" Nº"+i,"8:40","9:20",null);
             lista[i] = cliente;
         }
 
@@ -47,9 +53,9 @@ public class VerClientes extends AppCompatActivity {
         recyclerClientes.setLayoutManager(linearLayoutManager);
         recyclerClientes.setAdapter(adaptadorVerClientes);
 
-        // AÑADIR UN LISTENER AL BUSCADOR
-        buscador = findViewById(R.id.etBuscadorClientesVerClientes);
-        buscador.addTextChangedListener(new TextWatcher() {
+        // AÑADIR UN LISTENER AL BUSCADOR POR NOMBRE
+        buscadorNombre = findViewById(R.id.etBuscadorClientesVerClientes);
+        buscadorNombre.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -58,12 +64,11 @@ public class VerClientes extends AppCompatActivity {
             // CUANDO SE ESCRIBA EN EL BUSCADOR SE ACTUALIZARA LA LISTA CON EL FILTRO QUE SE ESCRIBA
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // FILTRAR ELEMENTOS EN LA MATRIZ ORIGINAL SEGUN EL TEXTO DEL BUSCADOR
-                String filtro = s.toString().toLowerCase();
-                Cliente[] listaFiltrada = filtrarClientes(lista, filtro);
-
+                // OBTENER LOS FILTROS
+                String filtroNombre = s.toString().toLowerCase();
+                String filtroCiudad = buscadorCiudades.getSelectedItem().toString();
                 // ACTUALIZAR LA LISTA CON LOS ELEMENTOS FILTRADOS
-                adaptadorVerClientes.actualizarDatos(listaFiltrada);
+                adaptadorVerClientes.actualizarDatos(filtrarClientes(lista, filtroNombre, filtroCiudad));
             }
 
             @Override
@@ -71,15 +76,54 @@ public class VerClientes extends AppCompatActivity {
 
             }
         });
+
+        buscadorCiudades = findViewById(R.id.spinnerCiudadesVerClientes);
+        // RELLENAR EL DESPLEGABLE DE CIUDADES
+        List<String> opcionesCiudad = Arrays.asList("Todas ciudades", "Zuera", "San Mateo de Gállego", "Villanueva de Gállego", "Ontinar del Salz");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcionesCiudad);
+        // ESPECIFICAR EL DISEÑO QUE SE UTILIZARA CUANDO SE MUESTREN LAS OPCIONES
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ESTABLECER EL ADAPTADOR AL DESPLEGABLE
+        buscadorCiudades.setAdapter(adapter);
+
+        // AÑADIR UN LISTENER AL BUSCADOR POR CIUDAD
+        buscadorCiudades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // OBTENER LOS FILTROS
+                String filtroNombre = buscadorNombre.getText().toString().toLowerCase();
+                String filtroCiudad = parent.getItemAtPosition(position).toString();
+                // ACTUALIZAR LA LISTA CON LOS ELEMENTOS FILTRADOS
+                adaptadorVerClientes.actualizarDatos(filtrarClientes(lista, filtroNombre, filtroCiudad));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
-    private Cliente[] filtrarClientes(Cliente[] lista, String filtro) {
+    private Cliente[] filtrarClientes(Cliente[] lista, String filtroNombre, String filtroCiudad) {
         // CREAR UNA LISTA PARA ALMACENAR LOS ELEMENTOS FILTRADOS
         List<Cliente> listaFiltrada = new ArrayList<>();
 
-        // RECORRER LA MATRIZ ORIGINAL Y AGREGAR A LA LISTA FILTRADA LOS ELEMENTOS QUE COINCIDAN CON EL FILTRO
+        // RECORRER LA MATRIZ ORIGINAL Y AGREGAR A LA LISTA FILTRADA LOS ELEMENTOS QUE COINCIDAN CON LOS FILTROS
         for (Cliente cliente : lista) {
-            if (cliente.getNombre().toLowerCase().contains(filtro)) {
+            boolean nombreCoincide = cliente.getNombre().toLowerCase().contains(filtroNombre);
+            boolean ciudadCoincide = cliente.getCiudad().toLowerCase().contains(filtroCiudad.toLowerCase());
+
+            // FILTRAR SOLO POR NOMBRE SI EN EL SPINNER ESTÁ SELECCIONADA LA OPCIÓN "Sin filtro"
+            if (filtroCiudad.equals("Todas ciudades") && nombreCoincide) {
+                listaFiltrada.add(cliente);
+            }
+            // FILTRAR SOLO POR CIUDAD SI EN EL EDITTEXT NO HAY NADA ESCRITO
+            else if (filtroNombre.isEmpty() && ciudadCoincide) {
+                listaFiltrada.add(cliente);
+            }
+            // FILTRAR POR NOMBRE Y CIUDAD A LA VEZ SI SE HA SELECCIONADO UNA CIUDAD EN EL SPINNER Y HAY ALGO ESCRITO EN EL EDITTEXT
+            else if (!filtroCiudad.equals("Todas ciudades") && !filtroNombre.isEmpty() && nombreCoincide && ciudadCoincide) {
                 listaFiltrada.add(cliente);
             }
         }
@@ -87,6 +131,7 @@ public class VerClientes extends AppCompatActivity {
         // CONVERTIR LA LISTA FILTRADA EN UNA MATRIZ
         return listaFiltrada.toArray(new Cliente[0]);
     }
+
 
     // CLICK DEL BOTON PARA HACER EL FORMULARIO DE ALTA TRABAJADOR
     public void clickBotonAltaCliente(View view) {
