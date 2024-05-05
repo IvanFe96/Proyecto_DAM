@@ -5,9 +5,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -18,8 +21,11 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Trabajador;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AltaModificacionTrabajador extends AppCompatActivity {
 
@@ -29,6 +35,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
     EditText nombre,apellido1,apellido2,correo,telefono,dni;
     ImageView foto;
     boolean fotoRellenada = false;
+    Trabajador trabajador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +53,9 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         // COMPROBAR SI EL USUARIO QUIERE EDITAR A UN TRABAJADOR
         intent = getIntent();
         if(intent.getAction().equals("EDITAR")) {
-            Trabajador trabajador = (Trabajador) intent.getSerializableExtra("trabajador");
+            trabajador = (Trabajador) intent.getSerializableExtra("trabajador");
             Toast.makeText(this, trabajador.getNombre(), Toast.LENGTH_SHORT).show();
+
             //foto = ;
             nombre.setText(trabajador.getNombre());
             apellido1.setText(trabajador.getApellido1());
@@ -55,6 +63,9 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
             correo.setText(trabajador.getCorreo());
             telefono.setText(trabajador.getTelefono());
             dni.setText(trabajador.getDni());
+        } else {
+            // SE QUIERE DAR DE ALTA UN NUEVO TRABAJADOR
+            trabajador = new Trabajador();
         }
     }
 
@@ -105,6 +116,32 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         // COMPROBAR QUE LA DESCRIPCION ESTA VACIA PARA DAR DE ALTA AL TRABAJADOR EN LA BASE DE DATOS
         if(descripcion.isEmpty()) {
 
+            // OBTENER LA INSTANCIA DE FIREBASE
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            // OBTENER TODOS LOS CAMPOS PARA EL TRABAJADOR
+            trabajador.setNombre(nombre.getText().toString());
+            trabajador.setApellido1(apellido1.getText().toString());
+            trabajador.setApellido2(apellido2.getText().toString());
+
+            // CREAR UN OBJETO TRABAJADOR
+            Map<String, Object> trabajadorBD = new HashMap<>();
+
+            // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.toast_personalizado, null);
+
+            TextView text = (TextView) layout.findViewById(R.id.toast_text);
+            text.setText("Trabajador dado de alta");
+
+            Toast toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+
+            // CERRAR PANTALLA
+            finish();
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO
             ventana.setMessage(descripcion);

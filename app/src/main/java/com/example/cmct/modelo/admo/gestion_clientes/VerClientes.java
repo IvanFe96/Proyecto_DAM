@@ -41,7 +41,7 @@ public class VerClientes extends AppCompatActivity {
         setContentView(R.layout.admo_ver_clientes);
 
         for (int i = 0; i < lista.length; i++) {
-            Cliente cliente = new Cliente("1","Cliente"+i,"Apellido1","Apellido2"
+            Cliente cliente = new Cliente("Cliente"+i,"Apellido1","Apellido2"
                     ,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,"cliente"+i+"@gmail.com"
                     ,"San Mateo de Gállego","C/Los Cliente"+i+" Nº"+i,"8:40","9:20",null);
             lista[i] = cliente;
