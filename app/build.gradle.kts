@@ -47,9 +47,8 @@ dependencies {
     implementation(libs.play.services.location)
 
     // FIREBASE
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
-    implementation("com.google.firebase:firebase-analytics")
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

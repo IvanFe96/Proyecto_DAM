@@ -79,7 +79,7 @@ public class VerClientes extends AppCompatActivity {
 
         buscadorCiudades = findViewById(R.id.spinnerCiudadesVerClientes);
         // RELLENAR EL DESPLEGABLE DE CIUDADES
-        List<String> opcionesCiudad = Arrays.asList("Todas ciudades", "Zuera", "San Mateo de Gállego", "Villanueva de Gállego", "Ontinar del Salz");
+        List<String> opcionesCiudad = Arrays.asList("Todas localidades", "Zuera", "San Mateo de Gállego", "Villanueva de Gállego", "Ontinar del Salz");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcionesCiudad);
         // ESPECIFICAR EL DISEÑO QUE SE UTILIZARA CUANDO SE MUESTREN LAS OPCIONES
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -115,7 +115,7 @@ public class VerClientes extends AppCompatActivity {
             boolean ciudadCoincide = cliente.getCiudad().toLowerCase().contains(filtroCiudad.toLowerCase());
 
             // FILTRAR SOLO POR NOMBRE SI EN EL SPINNER ESTÁ SELECCIONADA LA OPCIÓN "Sin filtro"
-            if (filtroCiudad.equals("Todas ciudades") && nombreCoincide) {
+            if (filtroCiudad.equals("Todas localidades") && nombreCoincide) {
                 listaFiltrada.add(cliente);
             }
             // FILTRAR SOLO POR CIUDAD SI EN EL EDITTEXT NO HAY NADA ESCRITO
@@ -123,7 +123,7 @@ public class VerClientes extends AppCompatActivity {
                 listaFiltrada.add(cliente);
             }
             // FILTRAR POR NOMBRE Y CIUDAD A LA VEZ SI SE HA SELECCIONADO UNA CIUDAD EN EL SPINNER Y HAY ALGO ESCRITO EN EL EDITTEXT
-            else if (!filtroCiudad.equals("Todas ciudades") && !filtroNombre.isEmpty() && nombreCoincide && ciudadCoincide) {
+            else if (!filtroCiudad.equals("Todas localidades") && !filtroNombre.isEmpty() && nombreCoincide && ciudadCoincide) {
                 listaFiltrada.add(cliente);
             }
         }
