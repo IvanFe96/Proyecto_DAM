@@ -20,6 +20,7 @@ import com.example.cmct.clases.Trabajador;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VerTrabajadores extends AppCompatActivity {
@@ -116,7 +117,18 @@ public class VerTrabajadores extends AppCompatActivity {
             dialogo.setNegativeButton("SI", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    // ELIMINAR EL TRABAJADOR EN UN ARRAY LIST
+                    List<Trabajador> listaModificada = new ArrayList<>(Arrays.asList(lista));
+                    listaModificada.remove(item.getGroupId());
 
+                    // ACTUALIZAR LA LISTA ORIGINAL CON LA NUEVA LISTA SIN EL TRABAJADOR
+                    lista = listaModificada.toArray(new Trabajador[0]);
+
+                    // NOTIFICAR AL ADAPTADOR QUE TIENE QUE ACTUALIZAR LA LISTA
+                    adaptadorVerTrabajadores.actualizarDatos(lista);
+
+                    // Cerrar el diálogo
+                    dialog.dismiss();
                 }
             });
 
