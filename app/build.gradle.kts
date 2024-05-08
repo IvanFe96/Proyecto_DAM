@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -44,6 +45,12 @@ dependencies {
     // GOOGLE MAPS
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+
+    // FIREBASE
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebaseStorage)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

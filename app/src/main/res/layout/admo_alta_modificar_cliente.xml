@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".modelo.admo.gestion_clientes.AltaCliente"
+    tools:context=".modelo.admo.gestion_clientes.AltaModificacionCliente"
     android:orientation="vertical">
 
 
@@ -23,7 +23,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp">
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Nombre"
+                android:text="Nombre:"
                 android:textSize="20sp"/>
 
             <EditText
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Primer Apellido"
+                android:text="Primer Apellido:"
                 android:textSize="20sp"/>
 
             <EditText
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Segundo Apellido"
+                android:text="Segundo Apellido:"
                 android:textSize="20sp"/>
 
             <EditText
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Correo"
+                android:text="Correo:"
                 android:textSize="20sp"/>
 
             <EditText
@@ -125,6 +125,7 @@
                 android:layout_marginEnd="20dp"
                 android:ems="10"
                 android:inputType="text"
+                android:hint="Ejemplo: correo@gmail.com"
                 android:background="@drawable/style_background_fields"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -135,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Teléfono"
+                android:text="Teléfono:"
                 android:textSize="20sp"/>
 
             <EditText
@@ -156,7 +157,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="DNI"
+                android:text="DNI:"
                 android:textSize="20sp"/>
 
             <EditText
@@ -173,11 +174,28 @@
                 android:layout_marginBottom="20dp"/>
 
             <TextView
+                android:id="@+id/tvCiudad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Ciudad:"
+                android:textSize="20sp"/>
+
+            <Spinner
+                android:id="@+id/spinnerCiudades"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/style_background_spinners"/>
+
+            <TextView
                 android:id="@+id/tvDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Dirección"
+                android:text="Dirección:"
                 android:textSize="20sp"/>
 
             <EditText
@@ -188,13 +206,14 @@
                 android:layout_marginEnd="20dp"
                 android:ems="10"
                 android:inputType="text"
+                android:hint="Ejemplo: Calvario 7"
                 android:background="@drawable/style_background_fields"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:layout_marginBottom="20dp"/>
 
             <Button
-                android:id="@+id/btnGuardar"
+                android:id="@+id/btnGuardarCliente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

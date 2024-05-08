@@ -5,19 +5,36 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
+import com.example.cmct.clases.Trabajador;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class AltaModificacionTrabajador extends AppCompatActivity {
 
@@ -27,6 +44,18 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
     EditText nombre,apellido1,apellido2,correo,telefono,dni;
     ImageView foto;
     boolean fotoRellenada = false;
+    Trabajador trabajador;
+
+    // OBTENER LAS INSTANCIAS DE AUTENTICACION Y LA BASE DE DATOS DE FIREBASE
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth autenticacion = FirebaseAuth.getInstance();
+
+    // OBTENER LA INSTANCIA DE ALMACENAMIENTO DE IMAGENES Y LA REFERENCIA
+    FirebaseStorage almacenamientoImagenes = FirebaseStorage.getInstance();
+    StorageReference referenciaImagenes = almacenamientoImagenes.getReference();
+
+    // URI DE LA IMAGEN DEL TRABAJADOR
+    Uri imagenUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +73,18 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         // COMPROBAR SI EL USUARIO QUIERE EDITAR A UN TRABAJADOR
         intent = getIntent();
         if(intent.getAction().equals("EDITAR")) {
+            trabajador = (Trabajador) intent.getSerializableExtra("trabajador");
 
-            nombre.setText(intent.getStringExtra("nombre"));
-            /*foto = ;
-            nombre = ;
-            apellido1 = ;
-            apellido2 = ;
-            correo = ;
-            telefono = ;
-            dni = ;*/
+            //foto = ;
+            nombre.setText(trabajador.getNombre());
+            apellido1.setText(trabajador.getApellido1());
+            apellido2.setText(trabajador.getApellido2());
+            correo.setText(trabajador.getCorreo());
+            telefono.setText(trabajador.getTelefono());
+            dni.setText(trabajador.getDni());
+        } else {
+            // SE QUIERE DAR DE ALTA UN NUEVO TRABAJADOR
+            trabajador = new Trabajador();
         }
     }
 
@@ -78,6 +110,13 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
         } else {
 
+            // VALIDAR SI EL NOMBRE Y LOS APELLIDOS NO CONTIENEN DIGITOS
+            if(!validarNombreApellidos(nombre.getText().toString(),apellido1.getText().toString(),apellido2.getText().toString())) {
+
+                descripcion += "- El nombre o los apellidos solo pueden contener letras";
+
+            }
+
             // VALIDAR SI EL CORREO ES CORRECTO
             if (!validarCorreo(correo.getText().toString())) {
 
@@ -102,12 +141,147 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
         // COMPROBAR QUE LA DESCRIPCION ESTA VACIA PARA DAR DE ALTA AL TRABAJADOR EN LA BASE DE DATOS
         if(descripcion.isEmpty()) {
+            // OBTENER TODOS LOS CAMPOS PARA EL TRABAJADOR
+            trabajador.setNombre(nombre.getText().toString());
+            trabajador.setApellido1(apellido1.getText().toString());
+            trabajador.setApellido2(apellido2.getText().toString());
+            trabajador.setCorreo(correo.getText().toString());
+            trabajador.setTelefono(telefono.getText().toString());
+            trabajador.setDni(dni.getText().toString());
+
+            // CREAR UN OBJETO TRABAJADOR
+            Map<String, Object> trabajadorBD = new HashMap<>();
+            trabajadorBD.put("nombre", trabajador.getNombre());
+            trabajadorBD.put("apellido1", trabajador.getApellido1());
+            trabajadorBD.put("apellido2", trabajador.getApellido2());
+            trabajadorBD.put("dni", trabajador.getDni().toUpperCase());
+            trabajadorBD.put("correo", trabajador.getCorreo());
+            trabajadorBD.put("telefono", trabajador.getTelefono());
+            trabajadorBD.put("rol", "trabajador");
+
+            // COMPROBAR SI SE QUIERE DAR DE ALTA UN NUEVO USUARIO
+            // PARA NO MODIFICAR LA CONTRASEÑA EN CASO DE QUE SE ESTE EDITANDO
+            /*if(intent.getAction().equals("NUEVO")) {
+                // SE QUIERE DAR DE ALTA UN USUARIO NUEVO POR LO QUE SE ESTABLECE UNA CONTRASEÑA POR DEFECTO
+                trabajadorBD.put("contraseña","123456");
+            }*/
+            trabajadorBD.put("contraseña","123456");
+            // REGISTRAR AL USUARIO EN AUTENTICACION Y DARLO DE ALTA EN LA BASE DE DATOS
+            registrarUsuario(trabajadorBD);
 
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO
             ventana.setMessage(descripcion);
             ventana.show();
         }
+    }
+
+    // REGISTRAR USUARIO EN LA BASE DE DATOS
+    private void registrarUsuario(Map<String, Object> trabajadorBD) {
+
+        StorageReference imagenRef = referenciaImagenes.child("imagenes/" + imagenUri.getLastPathSegment());
+
+        UploadTask uploadTask = imagenRef.putFile(imagenUri);
+
+        // AÑADIR LA IMAGEN AL ALMACENAMIENTO DE IMAGENES
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // URL DE DESCARGA DEL ARCHIVO SUBIDO
+                        String urlDescarga = uri.toString();
+
+                        // GUARDAR LA URL DE DESCARGA EN EL TRABAJADOR
+                        trabajadorBD.put("imagen", urlDescarga);
+                        // CREAR AL USUARIO EN AUTENTICACION
+                        autenticacion.createUserWithEmailAndPassword(trabajadorBD.get("correo").toString(), trabajadorBD.get("contraseña").toString())
+                                .addOnCompleteListener(AltaModificacionTrabajador.this, task -> {
+                                    if (task.isSuccessful()) {
+                                        // SE OBTIENE EL USUARIO AL SER EL REGISTRO EXITOSO
+                                        FirebaseUser firebaseUser = autenticacion.getCurrentUser();
+                                        if (firebaseUser != null) {
+                                            // CREAR EL USUARIO EN LA BASE DE DATOSCrear o actualizar el documento del usuario en Firestore
+                                            String userId = firebaseUser.getUid(); // ID DEL USUARIO
+                                            db.collection("usuarios").document(userId)
+                                                    .set(trabajadorBD)
+                                                    .addOnSuccessListener(aVoid -> {
+                                                        // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
+                                                        LayoutInflater inflater = getLayoutInflater();
+                                                        View layout = inflater.inflate(R.layout.toast_personalizado, null);
+
+                                                        TextView text = layout.findViewById(R.id.toast_text);
+                                                        text.setText("Trabajador dado de alta ");
+
+                                                        Toast toast = new Toast(getApplicationContext());
+                                                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                                        toast.setDuration(Toast.LENGTH_LONG);
+                                                        toast.setView(layout);
+                                                        toast.show();
+
+                                                        // CERRAR PANTALLA
+                                                        finish();
+                                                    })
+                                                    .addOnFailureListener(e -> {
+                                                        // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL ALTA
+                                                        LayoutInflater inflater = getLayoutInflater();
+                                                        View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
+
+                                                        TextView text = (TextView) layout.findViewById(R.id.toast_text);
+                                                        text.setText("Error al dar el alta");
+
+                                                        Toast toast = new Toast(getApplicationContext());
+                                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                                        toast.setDuration(Toast.LENGTH_LONG);
+                                                        toast.setView(layout);
+                                                        toast.show();
+                                                    });
+                                        }
+                                    } else {
+                                        // EL REGISTRO FALLA Y SE INFORMA AL USUARIO
+                                        LayoutInflater inflater = getLayoutInflater();
+                                        View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
+
+                                        TextView text = (TextView) layout.findViewById(R.id.toast_text);
+                                        text.setText("Error al dar el alta");
+
+                                        Toast toast = new Toast(getApplicationContext());
+                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                        toast.setDuration(Toast.LENGTH_LONG);
+                                        toast.setView(layout);
+                                        toast.show();
+                                    }
+                                });
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL GUARDADO DE LA IMAGEN
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
+
+                TextView text = (TextView) layout.findViewById(R.id.toast_text);
+                text.setText("Error al guardar la imagen");
+
+                Toast toast = new Toast(getApplicationContext());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
+            }
+        });
+
+    }
+
+    // COMPROBAR QUE EL NOMBRE Y LOS APELLIDOS ES TEXTO Y NO HAY NUMEROS
+    private boolean validarNombreApellidos(String nombre, String apellido1, String apellido2) {
+        // UTILIZAR UNA EXPRESION REGULAR QUE PERMITA SOLO LETRAS Y ESPACIOS EN BLANCO
+        String regex = "^[\\p{L} ]+$";
+        // COMPROBAR QUE LOS CAMPOS CUMPLEN CON LA EXPRESION REGULAR
+        return nombre.matches(regex) && apellido1.matches(regex) && apellido2.matches(regex);
     }
 
     // COMPROBAR QUE EL CORREO ES UNA CUENTA DE GMAIL
@@ -167,13 +341,13 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGEN) {
             // OBTENER LA IMAGEN DE LA GALERIA Y ESTABLECERLA COMO IMAGEN EN EL FORMULARIO
-            Uri imageUri = data.getData();
+            imagenUri = data.getData();
 
             try {
-                // Decodifica la imagen desde la URI
-                Bitmap imagenOriginal = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                // DECODIFICAR LA IMAGEN DESDE LA URI
+                Bitmap imagenOriginal = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenUri);
 
-                // Redimensiona la imagen para que se ajuste al tamaño del ImageView
+                // REDIMENSIONAR LA IMAGEN PARA QUE SE AJUSTE AL TAMAÑO DEL IMAGEVIEW
                 int ancho = foto.getWidth();
                 int alto = foto.getHeight();
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(imagenOriginal, ancho, alto, false);

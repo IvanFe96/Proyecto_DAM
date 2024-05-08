@@ -21,7 +21,7 @@
         android:layout_below="@id/imageView">
 
         <EditText
-            android:id="@+id/buscadorTrabajadores"
+            android:id="@+id/etBuscadorTrabajadoresVerTrabajadores"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="500"

@@ -14,19 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
-import com.example.cmct.clases.Trabajador;
 
-public class AdaptadorVerTrabajadores extends RecyclerView.Adapter<AdaptadorVerTrabajadores.DatosHolder>{
+public class AdaptadorVerClientes extends RecyclerView.Adapter<AdaptadorVerClientes.DatosHolder>{
     Cursor c;
     //Adaptador(Cursor c) {this.c = c;}
-    Trabajador[] lista;
-    public AdaptadorVerTrabajadores(Trabajador[] lista) {this.lista = lista;}
+    Cliente[] lista;
+    public AdaptadorVerClientes(Cliente[] lista) {this.lista = lista;}
 
     @NonNull
     @Override
     public DatosHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflador = LayoutInflater.from(parent.getContext());
-        View v = inflador.inflate(R.layout.ver_datos_trabajador_layout, parent, false);
+        View v = inflador.inflate(R.layout.ver_datos_cliente_layout, parent, false);
         return new DatosHolder(v);
     }
 
@@ -37,16 +36,17 @@ public class AdaptadorVerTrabajadores extends RecyclerView.Adapter<AdaptadorVerT
         /*Bitmap imagen = c.get;*/
 
         String nombre = lista[position].getNombre();
-        String dni = lista[position].getDni();
+        String direccion = lista[position].getDireccion();
         String telefono = lista[position].getTelefono();
         String correo = lista[position].getCorreo();
+        String ciudad = lista[position].getCiudad();
 
         // Añadir informacion al Item del recycler.
         holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
         holder.nombre.setText(nombre);
         holder.telefono.setText(telefono);
         holder.correo.setText(correo);
-        holder.dni.setText(dni);
+        holder.direccion.setText(direccion + "," + ciudad);
     }
 
     @Override
@@ -64,23 +64,23 @@ public class AdaptadorVerTrabajadores extends RecyclerView.Adapter<AdaptadorVerT
     }
 
     // ACTUALIZAR LA LISTA CON EL NUEVO FILTRO
-    public void actualizarDatos(Trabajador[] nuevosDatos) {
+    public void actualizarDatos(Cliente[] nuevosDatos) {
         lista = nuevosDatos;
         notifyDataSetChanged();
     }
 
     //CLASE CON EL CONTENEDOR.
     public class DatosHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-        TextView nombre, telefono, correo, dni;
+        TextView nombre, telefono, correo, direccion;
         ImageView imagen;
         public DatosHolder(@NonNull View itemView) {
             super(itemView);
 
-            imagen = itemView.findViewById(R.id.imageViewVerTrabajadores);
-            nombre = itemView.findViewById(R.id.tvVerTrabajadoresNombreApellidos);
-            telefono = itemView.findViewById(R.id.tvVerTrabajadoresTelefono);
-            correo = itemView.findViewById(R.id.tvVerTrabajadoresCorreo);
-            dni = itemView.findViewById(R.id.tvVerTrabajadoresDni);
+            imagen = itemView.findViewById(R.id.imageViewVerClientes);
+            nombre = itemView.findViewById(R.id.tvVerClientesNombreApellidos);
+            telefono = itemView.findViewById(R.id.tvVerClientesTelefono);
+            correo = itemView.findViewById(R.id.tvVerClientesCorreo);
+            direccion = itemView.findViewById(R.id.tvVerClientesDireccion);
 
             // ESTABLECER MENU CONTEXTUAL AL ITEM DEL RECYCLERVIEW
             itemView.setOnCreateContextMenuListener(this);

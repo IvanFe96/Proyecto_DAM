@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -14,21 +14,47 @@
         app:srcCompat="@drawable/logotipo_horizontal" />
 
     <LinearLayout
+        android:id="@+id/busquedaLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/imageView">
 
-        <EditText
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="500"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:background="@drawable/style_background_fields"
-            android:inputType="text"
-            android:textSize="22dp"/>
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/etBuscadorClientesVerClientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="500"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="@drawable/style_background_fields"
+                android:inputType="text"
+                android:textSize="22dp"
+                android:hint="Nombre"/>
+
+            <Spinner
+                android:id="@+id/spinnerCiudadesVerClientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/style_background_spinners"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/iconoLupa"
@@ -43,6 +69,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+        android:layout_below="@id/busquedaLayout"
         android:id="@+id/recyclerClientes"/>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btnAltaCliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:text="+"
+        android:textSize="20sp"
+        app:cornerRadius="3dp"
+        android:backgroundTint="#781E4B"
+        android:onClick="clickBotonAltaCliente"/>
+
+
+</RelativeLayout>

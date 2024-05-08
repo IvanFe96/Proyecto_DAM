@@ -7,7 +7,6 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
-import com.example.cmct.modelo.admo.gestion_clientes.AltaCliente;
 
 public class GestionTrabajadores extends AppCompatActivity {
 

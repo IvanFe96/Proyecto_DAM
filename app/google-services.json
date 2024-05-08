@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1034086523766",
+    "project_id": "cmct-cac3d",
+    "storage_bucket": "cmct-cac3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034086523766:android:41c4f079e1bb05c4e51057",
+        "android_client_info": {
+          "package_name": "com.example.cmct"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQlQ9yFTYc16TkgaqEeJ1A1uaGDk6Ecxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
