@@ -59,12 +59,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock1AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="8:00"
                             android:onClick="mostrarTimePickerDialog"/>
 
                         <TextView
@@ -75,12 +76,13 @@
                             android:text="-"
                             android:textSize="30sp"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock2AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="8:55"
                             android:onClick="mostrarTimePickerDialog"/>
 
                     </LinearLayout>
@@ -97,12 +99,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock3AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="9:05"
                             android:onClick="mostrarTimePickerDialog"/>
 
                         <TextView
@@ -113,12 +116,13 @@
                             android:text="-"
                             android:textSize="30sp"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock4AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="10:00"
                             android:onClick="mostrarTimePickerDialog"/>
 
                     </LinearLayout>
@@ -135,12 +139,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock5AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="10:10"
                             android:onClick="mostrarTimePickerDialog"/>
 
                         <TextView
@@ -151,12 +156,13 @@
                             android:text="-"
                             android:textSize="30sp"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock6AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="11:05"
                             android:onClick="mostrarTimePickerDialog"/>
 
                     </LinearLayout>
@@ -189,12 +195,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock7AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="11:45"
                             android:onClick="mostrarTimePickerDialog"/>
 
                         <TextView
@@ -205,12 +212,13 @@
                                 android:text="-"
                                 android:textSize="30sp"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock8AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="12:40"
                             android:onClick="mostrarTimePickerDialog"/>
 
                     </LinearLayout>
@@ -227,12 +235,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock9AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="12:50"
                             android:onClick="mostrarTimePickerDialog"/>
 
                         <TextView
@@ -243,12 +252,13 @@
                             android:text="-"
                             android:textSize="30sp"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock10AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="13:45"
                             android:onClick="mostrarTimePickerDialog"/>
 
                     </LinearLayout>
@@ -265,12 +275,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock11AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="13:55"
                             android:onClick="mostrarTimePickerDialog"/>
 
                         <TextView
@@ -281,12 +292,13 @@
                             android:text="-"
                             android:textSize="30sp"/>
 
-                        <TextClock
+                        <TextView
                             android:id="@+id/textClock12AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
+                            android:text="14:50"
                             android:onClick="mostrarTimePickerDialog"/>
 
                     </LinearLayout>

@@ -4,6 +4,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextClock;
@@ -24,9 +25,11 @@ public class AsignarTrabajo extends AppCompatActivity {
 
     Spinner[] desplegables;
 
-    TextClock[] horarios;
+    TextView[] horarios;
 
     Button botonAceptar;
+
+    String[] items = new String[]{"Cliente 1", "Cliente 2", "Cliente 3", "Cliente 4", "Cliente 5", "Cliente 6"};
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,7 @@ public class AsignarTrabajo extends AppCompatActivity {
         desplegables[4] = findViewById(R.id.spinner5AsignarTrabajo);
         desplegables[5] = findViewById(R.id.spinner6AsignarTrabajo);
 
-        horarios = new TextClock[12];
+        horarios = new TextView[12];
         horarios[0] = findViewById(R.id.textClock1AsignarTrabajo);
         horarios[1] = findViewById(R.id.textClock2AsignarTrabajo);
         horarios[2] = findViewById(R.id.textClock3AsignarTrabajo);
@@ -61,12 +64,30 @@ public class AsignarTrabajo extends AppCompatActivity {
         // COMPROBAR SI LA ACTIVIDAD ESTA INICIADA DESDE LA LISTA DE TRABAJADORES QUE NO TIENEN ASIGNADOS CLIENTES
         if(intent.getAction().equals("NUEVO")) {
 
+            // ESTABLECER EL NOMBRE DEL TRABAJADOR DEL CUAL HEMOS SELECCIONADO EN LA PANTALLA ANTERIOR
             nombreTrabajador.setText(intent.getStringExtra("nombre"));
+
+            // CREAR UN ADAPTADOR PARA PONER LOS DATOS DE PRUEBA EN LOS SPINNERS
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // ESTABLECER A LOS DESPLEGABLES LOS DATOS DE PRUEBA DEL ADAPTADOR
+            for (Spinner spinner : desplegables) {
+                spinner.setAdapter(adapter);
+            }
 
         } else if (intent.getAction().equals("EDITAR")) {
             // LA ACTIVIDAD ES INICIADA DESDE EL BOTON EDITAR Y SE PROCEDE A RELLENAR
             // LOS DESPLEGABLES Y LOS HORARIOS CON LOS DATOS QUE YA TIENE EL TRABAJADOR
 
+            // CREAR UN ADAPTADOR PARA PONER LOS DATOS DE PRUEBA EN LOS SPINNERS
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // ESTABLECER A LOS DESPLEGABLES LOS DATOS DE PRUEBA DEL ADAPTADOR
+            for (Spinner spinner : desplegables) {
+                spinner.setAdapter(adapter);
+            }
         }
     }
 
@@ -78,7 +99,7 @@ public class AsignarTrabajo extends AppCompatActivity {
 
     public void mostrarTimePickerDialog(View view) {
 
-        final TextClock textClock = (TextClock) view; // ALMACENAR UNA REFERENCIA AL TEXTCLOCK AL QUE HAGO CLICK
+        final TextView textView = (TextView) view; // ALMACENAR UNA REFERENCIA AL TEXTVIEW AL QUE HAGO CLICK
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -87,7 +108,7 @@ public class AsignarTrabajo extends AppCompatActivity {
 
                 // Aquí puedes hacer lo que quieras con la hora seleccionada
                 String selectedTime = String.format(Locale.getDefault(), "%02d:%02d ", hourOfDay, minute, amOPm);
-                textClock.setText(selectedTime);
+                textView.setText(selectedTime);
             }
         }, 12, 0, false);
         timePickerDialog.show();

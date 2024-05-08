@@ -1,6 +1,7 @@
 package com.example.cmct.clases;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Cliente extends Usuario implements Serializable {
 
@@ -8,14 +9,15 @@ public class Cliente extends Usuario implements Serializable {
     private String direccion;
     private String horaEntradaTrabajador;
     private String horaSalidaTrabajador;
-    private String[] necesidades;
+    private HashMap<String, String> necesidades;
+    private String trabajadorAsignado;
 
     public Cliente() {
         super();
     }
 
     public Cliente(String nombre, String apellido1, String apellido2, String telefono, String dni, String correo,
-                   String ciudad, String direccion, String horaEntradaTrabajador, String horaSalidaTrabajador, String[] necesidades) {
+                   String ciudad, String direccion, String horaEntradaTrabajador, String horaSalidaTrabajador, HashMap<String, String> necesidades, String trabajadorAsignado) {
         super(nombre, apellido1, apellido2, telefono, dni, correo);
 
         this.ciudad = ciudad;
@@ -23,6 +25,7 @@ public class Cliente extends Usuario implements Serializable {
         this.horaEntradaTrabajador = horaEntradaTrabajador;
         this.horaSalidaTrabajador = horaSalidaTrabajador;
         this.necesidades = necesidades;
+        this.trabajadorAsignado = trabajadorAsignado;
     }
 
     public String getCiudad() {
@@ -57,11 +60,19 @@ public class Cliente extends Usuario implements Serializable {
         this.horaSalidaTrabajador = horaSalidaTrabajador;
     }
 
-    public String[] getNecesidades() {
+    public HashMap<String, String> getNecesidades() {
         return necesidades;
     }
 
-    public void setNecesidades(String[] necesidades) {
+    public void setNecesidades(HashMap<String, String> necesidades) {
         this.necesidades = necesidades;
+    }
+
+    public String getTrabajadorAsignado() {
+        return trabajadorAsignado;
+    }
+
+    public void setTrabajadorAsignado(String trabajadorAsignado) {
+        this.trabajadorAsignado = trabajadorAsignado;
     }
 }
