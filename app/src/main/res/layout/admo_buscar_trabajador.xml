@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/estilo_fondo">
 
     <ImageView
         android:id="@+id/imageViewBuscarTrabajador"
@@ -23,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="90dp"
             android:layout_marginStart="20dp"
+            style="@style/EstiloTextView"
             android:text="DNI:"
             android:textSize="25sp"/>
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    style="@style/EstiloListas"
     android:orientation="horizontal">
 
     <ImageView
@@ -19,9 +20,11 @@
             android:id="@+id/tvNombreApellidosTrabajador"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/EstiloTextView"
             android:paddingEnd="5dp"
             android:text="Nombre y Apellidos"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

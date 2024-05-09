@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    style="@style/EstiloListas"
     android:orientation="horizontal">
 
     <ImageView
@@ -20,8 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="5dp"
+            style="@style/EstiloTextView"
             android:text="Nombre y Apellidos"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold"/>
 
         <RatingBar
             android:id="@+id/ratingBarValoracion"
