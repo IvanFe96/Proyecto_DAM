@@ -226,6 +226,7 @@ public class AltaModificacionCliente extends AppCompatActivity {
     // REGISTRAR USUARIO EN LA BASE DE DATOS
     private void registrarUsuario(Map<String, Object> clienteBD) {
 
+        // RUTA EN LA QUE SE VA A GUARDAR LA IMAGEN CON EL DNI DEL CLIENTE
         StorageReference imagenRef = referenciaImagenes.child("imagenes/" + clienteBD.get("dni"));
 
         UploadTask uploadTask = imagenRef.putFile(imagenUri);
