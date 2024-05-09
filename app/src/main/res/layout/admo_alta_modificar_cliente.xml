@@ -65,7 +65,7 @@
                 android:layout_marginEnd="20dp"
                 android:ems="40"
                 android:inputType="text"
-                android:background="@drawable/style_background_fields"
+                android:background="@drawable/estilo_background_campos_texto"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:layout_marginBottom="20dp" />
@@ -87,7 +87,7 @@
                 android:layout_marginEnd="20dp"
                 android:ems="10"
                 android:inputType="text"
-                android:background="@drawable/style_background_fields"
+                android:background="@drawable/estilo_background_campos_texto"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:layout_marginBottom="20dp"/>
@@ -109,7 +109,7 @@
                 android:layout_marginEnd="20dp"
                 android:ems="10"
                 android:inputType="text"
-                android:background="@drawable/style_background_fields"
+                android:background="@drawable/estilo_background_campos_texto"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:layout_marginBottom="20dp"/>
@@ -132,7 +132,7 @@
                 android:ems="10"
                 android:inputType="text"
                 android:hint="Ejemplo: correo@gmail.com"
-                android:background="@drawable/style_background_fields"
+                android:background="@drawable/estilo_background_campos_texto"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:layout_marginBottom="20dp"/>
@@ -154,7 +154,7 @@
                 android:layout_marginStart="20dp"
                 android:ems="10"
                 android:inputType="text"
-                android:background="@drawable/style_background_fields"
+                android:background="@drawable/estilo_background_campos_texto"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:layout_marginBottom="20dp"/>
@@ -176,7 +176,7 @@
                 android:layout_marginEnd="20dp"
                 android:ems="10"
                 android:inputType="text"
-                android:background="@drawable/style_background_fields"
+                android:background="@drawable/estilo_background_campos_texto"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:layout_marginBottom="20dp"/>
@@ -217,7 +217,7 @@
                 android:ems="10"
                 android:inputType="text"
                 android:hint="Ejemplo: Calvario 7"
-                android:background="@drawable/style_background_fields"
+                android:background="@drawable/estilo_background_campos_texto"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:layout_marginBottom="20dp"/>
