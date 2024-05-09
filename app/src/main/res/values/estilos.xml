@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="EstiloTextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#FFFFFF</item> <!-- Texto blanco para contraste -->
+        <item name="android:shadowColor">#000000</item> <!-- Sombra negra -->
+        <item name="android:shadowDx">1</item> <!-- Desplazamiento horizontal de la sombra -->
+        <item name="android:shadowDy">1</item> <!-- Desplazamiento vertical de la sombra -->
+        <item name="android:shadowRadius">3</item> <!-- Radio de la sombra para suavizar -->
+    </style>
+</resources>

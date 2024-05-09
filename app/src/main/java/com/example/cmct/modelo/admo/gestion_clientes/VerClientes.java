@@ -43,7 +43,7 @@ public class VerClientes extends AppCompatActivity {
         for (int i = 0; i < lista.length; i++) {
             Cliente cliente = new Cliente("Cliente"+i,"Apellido1","Apellido2"
                     ,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,"cliente"+i+"@gmail.com"
-                    ,"San Mateo de Gállego","C/Los Cliente"+i+" Nº"+i,"8:40","9:20",null);
+                    ,"San Mateo de Gállego","C/Los Cliente"+i+" "+i,"8:40","9:20",null, null);
             lista[i] = cliente;
         }
 
