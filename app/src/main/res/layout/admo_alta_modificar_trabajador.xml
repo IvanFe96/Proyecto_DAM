@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".modelo.admo.gestion_trabajadores.AltaModificacionTrabajador"
+    android:background="@drawable/estilo_fondo"
     android:orientation="vertical">
 
 
@@ -35,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                style="@style/EstiloTextView"
                 android:text="Imagen"
                 android:textSize="20sp"/>
 
@@ -51,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                style="@style/EstiloTextView"
                 android:text="Nombre"
                 android:textSize="20sp"/>
 
@@ -72,6 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                style="@style/EstiloTextView"
                 android:text="Primer Apellido"
                 android:textSize="20sp"/>
 
@@ -93,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                style="@style/EstiloTextView"
                 android:text="Segundo Apellido"
                 android:textSize="20sp"/>
 
@@ -114,6 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                style="@style/EstiloTextView"
                 android:text="Correo"
                 android:textSize="20sp"/>
 
@@ -136,6 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                style="@style/EstiloTextView"
                 android:text="Teléfono"
                 android:textSize="20sp"/>
 
@@ -157,6 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                style="@style/EstiloTextView"
                 android:text="DNI"
                 android:textSize="20sp"/>
 

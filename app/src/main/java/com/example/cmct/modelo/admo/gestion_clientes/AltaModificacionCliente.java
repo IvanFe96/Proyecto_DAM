@@ -25,8 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
-import com.example.cmct.clases.Trabajador;
-import com.example.cmct.modelo.admo.gestion_trabajadores.AltaModificacionTrabajador;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,7 +78,7 @@ public class AltaModificacionCliente extends AppCompatActivity {
         telefono = findViewById(R.id.telefono);
         dni = findViewById(R.id.dni);
         direccion = findViewById(R.id.direccion);
-        localidades = findViewById(R.id.spinnerCiudades);
+        localidades = findViewById(R.id.spinnerLocalidades);
         botonGuardar = findViewById(R.id.btnGuardarCliente);
 
         // RELLENAR EL DESPLEGABLE DE CIUDADES

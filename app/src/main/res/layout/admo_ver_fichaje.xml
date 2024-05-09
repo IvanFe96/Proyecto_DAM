@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/estilo_fondo">
 
     <ImageView
         android:id="@+id/imageViewFichaje"
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
+        style="@style/EstiloTextView"
         android:text="Nombre y Apellidos"
         android:textSize="30sp"
         android:textStyle="bold"/>
@@ -61,6 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    style="@style/EstiloTextView"
                     android:text="Ver Mapa"
                     android:textSize="30sp"
                     android:textStyle="bold|italic"
@@ -88,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    style="@style/EstiloTextView"
                     android:text="Ver Mapa"
                     android:textSize="30sp"
                     android:textStyle="bold|italic"
@@ -115,6 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    style="@style/EstiloTextView"
                     android:text="Ver Mapa"
                     android:textSize="30sp"
                     android:textStyle="bold|italic"
@@ -142,6 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    style="@style/EstiloTextView"
                     android:text="Ver Mapa"
                     android:textSize="30sp"
                     android:textStyle="bold|italic"
@@ -169,6 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    style="@style/EstiloTextView"
                     android:text="Ver Mapa"
                     android:textSize="30sp"
                     android:textStyle="bold|italic"
@@ -196,6 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    style="@style/EstiloTextView"
                     android:text="Ver Mapa"
                     android:textSize="30sp"
                     android:textStyle="bold|italic"

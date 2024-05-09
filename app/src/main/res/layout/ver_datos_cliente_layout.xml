@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    style="@style/EstiloListas"
     android:orientation="horizontal">
 
     <ImageView
@@ -22,13 +23,16 @@
             android:id="@+id/tvVerClientesNombreApellidos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/EstiloTextView"
             android:text="Nombre"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvVerClientesTelefono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/EstiloTextView"
             android:text="Telefono"
             android:textSize="20sp" />
 
@@ -36,6 +40,7 @@
             android:id="@+id/tvVerClientesCorreo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/EstiloTextView"
             android:text="Correo"
             android:textSize="20sp" />
 
@@ -43,6 +48,7 @@
             android:id="@+id/tvVerClientesDireccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/EstiloTextView"
             android:text="Direccion"
             android:textSize="20sp" />
 
