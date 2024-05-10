@@ -37,7 +37,7 @@ public class VerTrabajadores extends AppCompatActivity {
 
         for (int i = 0; i < lista.length; i++) {
             Trabajador trabajador = new Trabajador("Trabajador"+i,"Apellido1","Apellido2"
-                    ,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,"trabajador"+i+"@gmail.com");
+                    ,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,"trabajador"+i+"@gmail.com","");
             lista[i] = trabajador;
         }
 

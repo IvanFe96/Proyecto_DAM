@@ -1,5 +1,6 @@
 package com.example.cmct.modelo.admo.gestion_trabajadores;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -90,9 +91,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
     // CLICK EN EL BOTON DE GUARDAR PARA DAR DE ALTA EN LA BASE DE DATOS AL TRABAJADOR
     public void clickBotonGuardar(View view) {
-        // CREAR UN DIALOGO EN CASO DE QUE HAYA ALGO MAL EN LOS CAMPOS RELLENADOS
-        final AlertDialog.Builder ventana = new AlertDialog.Builder(this);
-        ventana.setTitle("ERROR");
+        // GUARDAR LOS TIPOS DE ERRORES QUE HAY EN LOS CAMPOS
         String descripcion = "";
 
         // COMPROBAR SI SE HA SELECCIONADO UNA IMAGEN
@@ -161,18 +160,20 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
             // COMPROBAR SI SE QUIERE DAR DE ALTA UN NUEVO USUARIO
             // PARA NO MODIFICAR LA CONTRASEÑA EN CASO DE QUE SE ESTE EDITANDO
-            /*if(intent.getAction().equals("NUEVO")) {
+            if(intent.getAction().equals("NUEVO")) {
                 // SE QUIERE DAR DE ALTA UN USUARIO NUEVO POR LO QUE SE ESTABLECE UNA CONTRASEÑA POR DEFECTO
                 trabajadorBD.put("contraseña","123456");
-            }*/
-            trabajadorBD.put("contraseña","123456");
+            } else {
+                // SE QUIERE EDITAR AL TRABAJADOR POR LO QUE LA CONTRASEÑA SE QUEDA IGUAL QUE LA QUE TIENE
+                trabajadorBD.put("contraseña",trabajador.getContrasenia());
+            }
+
             // REGISTRAR AL USUARIO EN AUTENTICACION Y DARLO DE ALTA EN LA BASE DE DATOS
             registrarUsuario(trabajadorBD);
 
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO
-            ventana.setMessage(descripcion);
-            ventana.show();
+            mostrarMensajes(getApplicationContext(),1, descripcion);
         }
     }
 
@@ -201,56 +202,35 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // SE OBTIENE EL USUARIO AL SER EL REGISTRO EXITOSO
                                         FirebaseUser firebaseUser = autenticacion.getCurrentUser();
+
                                         if (firebaseUser != null) {
-                                            // CREAR EL USUARIO EN LA BASE DE DATOSCrear o actualizar el documento del usuario en Firestore
+
+                                            // CREAR EL USUARIO O ACTUALIZARLO EN LA BASE DE DATOS
                                             String userId = firebaseUser.getUid(); // ID DEL USUARIO
                                             db.collection("usuarios").document(userId)
                                                     .set(trabajadorBD)
                                                     .addOnSuccessListener(aVoid -> {
-                                                        // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
-                                                        LayoutInflater inflater = getLayoutInflater();
-                                                        View layout = inflater.inflate(R.layout.toast_personalizado, null);
 
-                                                        TextView text = layout.findViewById(R.id.toast_text);
-                                                        text.setText("Trabajador dado de alta ");
-
-                                                        Toast toast = new Toast(getApplicationContext());
-                                                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                                        toast.setDuration(Toast.LENGTH_LONG);
-                                                        toast.setView(layout);
-                                                        toast.show();
-
+                                                        // COMPROBAR SI SE QUERIA DAR DE ALTA UN NUEVO TRABAJADOR
+                                                        if(intent.getAction().equals("NUEVO")) {
+                                                            // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
+                                                            mostrarMensajes(getApplicationContext(), 0, "Trabajador dado de alta");
+                                                        } else {
+                                                            // SE QUIERE EDITAR AL TRABAJADOR
+                                                            // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DE LA MODIFICACION
+                                                            mostrarMensajes(getApplicationContext(), 0, "Trabajador modificado");
+                                                        }
                                                         // CERRAR PANTALLA
                                                         finish();
                                                     })
                                                     .addOnFailureListener(e -> {
                                                         // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL ALTA
-                                                        LayoutInflater inflater = getLayoutInflater();
-                                                        View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-                                                        TextView text = (TextView) layout.findViewById(R.id.toast_text);
-                                                        text.setText("Error al dar el alta");
-
-                                                        Toast toast = new Toast(getApplicationContext());
-                                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                                        toast.setDuration(Toast.LENGTH_LONG);
-                                                        toast.setView(layout);
-                                                        toast.show();
+                                                        mostrarMensajes(getApplicationContext(),1,"Error al dar el alta");
                                                     });
                                         }
                                     } else {
                                         // EL REGISTRO FALLA Y SE INFORMA AL USUARIO
-                                        LayoutInflater inflater = getLayoutInflater();
-                                        View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-                                        TextView text = (TextView) layout.findViewById(R.id.toast_text);
-                                        text.setText("Error al dar el alta");
-
-                                        Toast toast = new Toast(getApplicationContext());
-                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                        toast.setDuration(Toast.LENGTH_LONG);
-                                        toast.setView(layout);
-                                        toast.show();
+                                        mostrarMensajes(getApplicationContext(),1,"Error al dar el alta");
                                     }
                                 });
                     }
@@ -260,17 +240,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL GUARDADO DE LA IMAGEN
-                LayoutInflater inflater = getLayoutInflater();
-                View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-                TextView text = (TextView) layout.findViewById(R.id.toast_text);
-                text.setText("Error al guardar la imagen");
-
-                Toast toast = new Toast(getApplicationContext());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
+                mostrarMensajes(getApplicationContext(),1,"Error al guardar la imagen");
             }
         });
 
@@ -334,6 +304,37 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         //MOSTRAR LA GALERIA DEL MOVIL
         intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_IMAGEN);
+    }
+
+    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
+    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
+        // MENSAJE DE QUE ES CORRECTO
+        if(tipo == 0) {
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.toast_personalizado, null);
+
+            TextView text = (TextView) layout.findViewById(R.id.toast_text);
+            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
+
+            Toast toast = new Toast(contexto.getApplicationContext());
+            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+        } else {
+            // MENSAJE DE ERRORES
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
+
+            TextView text = (TextView) layout.findViewById(R.id.toast_text);
+            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
+
+            Toast toast = new Toast(contexto.getApplicationContext());
+            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+        }
     }
 
     @Override

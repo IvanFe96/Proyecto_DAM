@@ -10,18 +10,20 @@ public class Usuario implements Serializable {
     private String telefono;
     private String dni;
     private String correo;
+    private String contrasenia;
 
     public Usuario() {
 
     }
 
-    public Usuario(String nombre, String apellido1, String apellido2, String telefono, String dni, String correo) {
+    public Usuario(String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
         this.telefono = telefono;
         this.dni = dni;
         this.correo = correo;
+        this.contrasenia = contrasenia;
     }
 
     public String getNombre() {
@@ -72,4 +74,11 @@ public class Usuario implements Serializable {
         this.correo = correo;
     }
 
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
 }
