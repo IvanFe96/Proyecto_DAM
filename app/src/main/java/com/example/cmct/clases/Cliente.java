@@ -16,9 +16,9 @@ public class Cliente extends Usuario implements Serializable {
         super();
     }
 
-    public Cliente(String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia,
+    public Cliente(String imagen,String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia, String rol,
                    String ciudad, String direccion, String horaEntradaTrabajador, String horaSalidaTrabajador, HashMap<String, String> necesidades, String trabajadorAsignado) {
-        super(nombre, apellido1, apellido2, telefono, dni, correo, contrasenia);
+        super(imagen, nombre, apellido1, apellido2, telefono, dni, correo, contrasenia, rol);
 
         this.ciudad = ciudad;
         this.direccion = direccion;

@@ -50,7 +50,10 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
     implementation(libs.firebaseStorage)
+    implementation(libs.firebase.ui.firestore)
 
+    // PICASSO PARA RECUPERAR IMAGENES DE FIREBASE STORAGE
+    implementation(libs.picasso)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

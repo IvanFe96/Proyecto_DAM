@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
@@ -36,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class AltaModificacionTrabajador extends AppCompatActivity {
 
@@ -76,7 +76,6 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         if(intent.getAction().equals("EDITAR")) {
             trabajador = (Trabajador) intent.getSerializableExtra("trabajador");
 
-            //foto = ;
             nombre.setText(trabajador.getNombre());
             apellido1.setText(trabajador.getApellido1());
             apellido2.setText(trabajador.getApellido2());
@@ -148,7 +147,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
             trabajador.setTelefono(telefono.getText().toString());
             trabajador.setDni(dni.getText().toString());
 
-            // CREAR UN OBJETO TRABAJADOR
+            // CREAR UN DOCUMENTO TRABAJADOR
             Map<String, Object> trabajadorBD = new HashMap<>();
             trabajadorBD.put("nombre", trabajador.getNombre());
             trabajadorBD.put("apellido1", trabajador.getApellido1());
@@ -196,12 +195,13 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
                         // GUARDAR LA URL DE DESCARGA EN EL TRABAJADOR
                         trabajadorBD.put("imagen", urlDescarga);
+
                         // CREAR AL USUARIO EN AUTENTICACION
                         autenticacion.createUserWithEmailAndPassword(trabajadorBD.get("correo").toString(), trabajadorBD.get("contraseña").toString())
                                 .addOnCompleteListener(AltaModificacionTrabajador.this, task -> {
                                     if (task.isSuccessful()) {
                                         // SE OBTIENE EL USUARIO AL SER EL REGISTRO EXITOSO
-                                        FirebaseUser firebaseUser = autenticacion.getCurrentUser();
+                                        FirebaseUser firebaseUser = task.getResult().getUser();
 
                                         if (firebaseUser != null) {
 
@@ -230,7 +230,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
                                         }
                                     } else {
                                         // EL REGISTRO FALLA Y SE INFORMA AL USUARIO
-                                        mostrarMensajes(getApplicationContext(),1,"Error al dar el alta");
+                                        mostrarMensajes(getApplicationContext(),1,"El correo ya existe");
                                     }
                                 });
                     }
@@ -302,7 +302,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
     // CLICK PARA ABRIR LA GALERIA Y ELEGIR LA IMAGEN
     public void clickImagen(View view) {
         //MOSTRAR LA GALERIA DEL MOVIL
-        intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_IMAGEN);
     }
 

@@ -40,12 +40,12 @@ public class VerClientes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admo_ver_clientes);
 
-        for (int i = 0; i < lista.length; i++) {
+        /*for (int i = 0; i < lista.length; i++) {
             Cliente cliente = new Cliente("Cliente"+i,"Apellido1","Apellido2"
                     ,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,"cliente"+i+"@gmail.com", ""
                     ,"San Mateo de Gállego","C/Los Cliente"+i+" "+i,"8:40","9:20",null, null);
             lista[i] = cliente;
-        }
+        }*/
 
         recyclerClientes = findViewById(R.id.recyclerClientes);
         adaptadorVerClientes = new AdaptadorVerClientes(lista);

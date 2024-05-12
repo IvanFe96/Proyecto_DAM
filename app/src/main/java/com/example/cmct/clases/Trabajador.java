@@ -8,7 +8,7 @@ public class Trabajador extends Usuario implements Serializable {
         super();
     }
 
-    public Trabajador(String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia) {
-        super(nombre, apellido1, apellido2, telefono, dni, correo, contrasenia);
+    public Trabajador(String imagen, String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia, String rol) {
+        super(imagen, nombre, apellido1, apellido2, telefono, dni, correo, contrasenia, rol);
     }
 }
