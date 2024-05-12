@@ -19,11 +19,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 public class AdaptadorVerTrabajadores extends FirestoreRecyclerAdapter<Trabajador, AdaptadorVerTrabajadores.DatosHolder>{
-    private FirestoreRecyclerOptions<Trabajador> lista;
 
     public AdaptadorVerTrabajadores(FirestoreRecyclerOptions<Trabajador> options) {
         super(options);
-        this.lista = options;
     }
 
     @NonNull
@@ -81,11 +79,7 @@ public class AdaptadorVerTrabajadores extends FirestoreRecyclerAdapter<Trabajado
 
     }
 
-    // Método para obtener un objeto Trabajador basado en la posición
-    public Trabajador obtenerTrabajador(int position) {
-        return lista.getSnapshots().get(position);
-    }
-
+    // METODO PARA OBTENER EL TRABAJADOR DE LA BASE DE DATOS
     public DocumentSnapshot obtenerSnapshot(int position) {
         return super.getSnapshots().getSnapshot(position);
     }

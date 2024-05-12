@@ -74,14 +74,41 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         // COMPROBAR SI EL USUARIO QUIERE EDITAR A UN TRABAJADOR
         intent = getIntent();
         if(intent.getAction().equals("EDITAR")) {
-            trabajador = (Trabajador) intent.getSerializableExtra("trabajador");
+            // OBTENER EL ID DEL USUARIO
+            String idUsuario = intent.getStringExtra("idusuario");
+            
+            // OBTENER TODOS LOS DATOS DEL USUARIO DE LA BASE DE DATOS
+            db.collection("usuarios").document(idUsuario)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot ->  {
+                        trabajador = documentSnapshot.toObject(Trabajador.class);
+                        
+                        if(trabajador != null) {
+                            // CARGAR LA IMAGEN DESDE FIREBASE STORAGE CON PICASSO
+                            if (trabajador.getImagen() != null && !trabajador.getImagen().isEmpty()) {
+                                Picasso.get()
+                                        .load(trabajador.getImagen())
+                                        .resize(foto.getWidth(), foto.getHeight())
+                                        .centerCrop()
+                                        .into(foto);
+                            } else {
+                                foto.setImageResource(R.drawable.ic_launcher_foreground); // IMAGEN PREDETERMINADA SI NO HAY URL (NO DEBERIA OCURRIR)
+                            }
 
-            nombre.setText(trabajador.getNombre());
-            apellido1.setText(trabajador.getApellido1());
-            apellido2.setText(trabajador.getApellido2());
-            correo.setText(trabajador.getCorreo());
-            telefono.setText(trabajador.getTelefono());
-            dni.setText(trabajador.getDni());
+                            nombre.setText(trabajador.getNombre());
+                            apellido1.setText(trabajador.getApellido1());
+                            apellido2.setText(trabajador.getApellido2());
+                            correo.setText(trabajador.getCorreo());
+                            telefono.setText(trabajador.getTelefono());
+                            dni.setText(trabajador.getDni());
+
+                        } else {
+                            Toast.makeText(this, "algo anda mal", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        mostrarMensajes(getApplicationContext(),1,"Error al recuperar los datos");
+                    });
         } else {
             // SE QUIERE DAR DE ALTA UN NUEVO TRABAJADOR
             trabajador = new Trabajador();
@@ -214,7 +241,10 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
                                                         // COMPROBAR SI SE QUERIA DAR DE ALTA UN NUEVO TRABAJADOR
                                                         if(intent.getAction().equals("NUEVO")) {
                                                             // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
-                                                            mostrarMensajes(getApplicationContext(), 0, "Trabajador dado de alta");
+
+                                                            Intent volverAnteriorPantalla = new Intent();
+                                                            setResult(RESULT_OK, volverAnteriorPantalla);
+                                                            finish();
                                                         } else {
                                                             // SE QUIERE EDITAR AL TRABAJADOR
                                                             // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DE LA MODIFICACION
@@ -365,4 +395,5 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
         }
     }
+
 }

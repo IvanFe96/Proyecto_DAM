@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +35,7 @@ public class VerTrabajadores extends AppCompatActivity {
     Button botonAltaTrabajador;
     EditText buscador;
     Trabajador[] lista = new Trabajador[4];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,28 +112,34 @@ public class VerTrabajadores extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        int posicion = item.getItemId();
+        int posicion = item.getGroupId();
 
-        if(posicion == 100) {
+        if(item.getItemId() == 100) {
 
             // SE QUIERE EDITAR LA INFORMACION DEL TRABAJADOR
+            // OBTENER EL ID DEL USUARIO EN LA BASE DE DATOS
+            String idUsuario = adaptadorVerTrabajadores.obtenerSnapshot(posicion).getId();
+
+            // INICIAR EL INTENT Y PASAR EL ID DEL TRABAJADOR
             Intent intent = new Intent(this, AltaModificacionTrabajador.class);
-            intent.putExtra("trabajador", adaptadorVerTrabajadores.obtenerTrabajador(posicion));
+            intent.putExtra("idusuario", idUsuario);
             intent.setAction("EDITAR");
             startActivity(intent);
 
         } else {
 
+            // OBTENER EL DOCUMENTO A ELIMINAR
+            DocumentSnapshot snapshot = adaptadorVerTrabajadores.obtenerSnapshot(posicion);
+            Trabajador trabajador = snapshot.toObject(Trabajador.class);
+
             // SE QUIERE ELIMINAR AL TRABAJADOR
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
-            dialogo.setTitle("¿Estás seguro de eliminar a " + adaptadorVerTrabajadores.obtenerTrabajador(posicion).getNombre() + "?");
+            dialogo.setTitle("¿Estás seguro de eliminar a " + trabajador.getNombre() + "?");
 
             // BOTON PARA QUE ELIMINE AL TRABAJADOR DE LA BASE DE DATOS
             dialogo.setNegativeButton("SI", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // OBTENER EL DOCUMENTO A ELIMINAR
-                    DocumentSnapshot snapshot = adaptadorVerTrabajadores.obtenerSnapshot(posicion);
                     snapshot.getReference().delete()
                             .addOnSuccessListener(aVoid -> {
                                 mostrarMensajes(getApplicationContext(), 0, "Trabajador eliminado con éxito");
@@ -164,7 +172,7 @@ public class VerTrabajadores extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (adaptadorVerTrabajadores != null) {
-            adaptadorVerTrabajadores.startListening();
+            adaptadorVerTrabajadores.notifyDataSetChanged();
         }
     }
 
@@ -216,4 +224,5 @@ public class VerTrabajadores extends AppCompatActivity {
             toast.show();
         }
     }
+
 }
