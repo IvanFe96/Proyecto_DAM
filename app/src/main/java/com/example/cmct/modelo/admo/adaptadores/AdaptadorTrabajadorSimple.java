@@ -12,6 +12,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmct.R;
@@ -102,7 +103,10 @@ public class AdaptadorTrabajadorSimple extends RecyclerView.Adapter<AdaptadorTra
 
                         if(id == R.id.menu_opcion1) {
                             // Lógica para la opción 1
-
+                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                            builder.setTitle(item.getTitle());
+                            builder.setMessage("Esto es una prueba de la descripción de una incidencia.");
+                            builder.show();
                         } else if (id == R.id.menu_opcion2) {
                             // Lógica para la opción 2
                         }
