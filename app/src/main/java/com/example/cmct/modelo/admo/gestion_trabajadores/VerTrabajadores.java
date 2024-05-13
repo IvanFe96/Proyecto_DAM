@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmct.R;
+import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -36,13 +37,15 @@ public class VerTrabajadores extends AppCompatActivity {
     RecyclerView recyclerTrabajadores;
     Button botonAltaTrabajador;
     EditText buscador;
-    Trabajador[] lista = new Trabajador[4];
-
+    Administrador administrador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admo_ver_trabajadores);
+
+        // OBTENER EL ADMINISTRADOR
+        obtenerAdministrador();
 
         // CONFIGURAR LA LISTA CON LOS DATOS DE LA BASE DE DATOS
         recyclerTrabajadores = findViewById(R.id.recyclerTrabajadores);
@@ -136,43 +139,17 @@ public class VerTrabajadores extends AppCompatActivity {
 
             // SE QUIERE ELIMINAR AL TRABAJADOR
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
-            dialogo.setTitle("¿Estás seguro de eliminar a " + trabajador.getNombre() + "?");
+            dialogo.setTitle("¿Estás seguro de eliminar a " + trabajador.getNombre() +"?");
 
             // BOTON PARA QUE ELIMINE AL TRABAJADOR DE LA BASE DE DATOS
             dialogo.setNegativeButton("SI", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    // DAR DE BAJA AL TRABAJADOR
+                    administrador.bajaTrabajadorAutenticacion(snapshot, VerTrabajadores.this);
 
-                    if (auth.getCurrentUser() != null) {
-                        // COMPROBAR QUE EL USUARIO ACTUAL
-                        String idUsuarioActual = auth.getCurrentUser().getUid();
-                        db.collection("usuarios").document(idUsuarioActual).get().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                // COMPROBAR LOS PERMISOS DEL USUARIO
-                                if (document.exists() && "administrador".equals(document.getString("rol"))) {
-                                    // ELIMINAR TRABAJADOR
-                                    db.collection("usuarios").document(snapshot.getReference().getId())
-                                            .delete()
-                                            .addOnSuccessListener(documentSnapshot -> {
-                                                mostrarMensajes(getApplicationContext(), 0, "Trabajador eliminado con éxito");
-                                            })
-                                            .addOnFailureListener(e -> {
-                                                mostrarMensajes(getApplicationContext(), 1, "Error al eliminar trabajador");
-                                            });
-                                } else {
-                                    // Esconder la opción de eliminar o mostrar un mensaje de error
-                                    Log.d("Firestore", "Error getting documents: ", task.getException());
-                                }
-                            } else {
-                                Log.d("Firestore", "Error getting documents: ", task.getException());
-                            }
-                        });
-                    }
-
-                    // Cerrar el diálogo
+                    onResume();
+                    // CERRAR EL DIALOGO
                     dialog.dismiss();
                 }
             });
@@ -216,6 +193,25 @@ public class VerTrabajadores extends AppCompatActivity {
         if (adaptadorVerTrabajadores != null) {
             adaptadorVerTrabajadores.stopListening();
         }
+    }
+
+    private void obtenerAdministrador() {
+        FirebaseFirestore.getInstance().collection("usuarios")
+                .whereEqualTo("rol", "administrador")
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // OBTENER EL USUARIO ADMINISTRADOR
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        administrador = documentSnapshot.toObject(Administrador.class);
+                    } else {
+                        mostrarMensajes(getApplicationContext(), 1, "No se encontraron administradores");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos de administrador");
+                });
     }
 
     // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO

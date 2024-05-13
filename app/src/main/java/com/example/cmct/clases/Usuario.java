@@ -1,5 +1,7 @@
 package com.example.cmct.clases;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 
 public class Usuario implements Serializable {

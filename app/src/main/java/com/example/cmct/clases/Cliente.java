@@ -1,5 +1,7 @@
 package com.example.cmct.clases;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -16,7 +18,7 @@ public class Cliente extends Usuario implements Serializable {
         super();
     }
 
-    public Cliente(String imagen,String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia, String rol,
+    public Cliente(String imagen, String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia, String rol,
                    String ciudad, String direccion, String horaEntradaTrabajador, String horaSalidaTrabajador, HashMap<String, String> necesidades, String trabajadorAsignado) {
         super(imagen, nombre, apellido1, apellido2, telefono, dni, correo, contrasenia, rol);
 

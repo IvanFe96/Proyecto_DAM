@@ -85,7 +85,7 @@ public class Login extends AppCompatActivity {
 
                     if (documentSnapshot.exists()) {
                         // COMPROBAR SI EL USUARIO TIENE LA CONTRASEÑA POR DEFECTO
-                        if(documentSnapshot.getString("contraseña").equals("123456")) {
+                        if(documentSnapshot.getString("contrasenia").equals("123456")) {
                             // SE MUESTRA UN DIALOGO PARA CAMBIAR LA CONTRASEÑA
                             mostrarDialogoCambioContrasenia(usuario);
                         } else {
