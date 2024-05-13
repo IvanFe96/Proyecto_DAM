@@ -241,10 +241,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
                                                         // COMPROBAR SI SE QUERIA DAR DE ALTA UN NUEVO TRABAJADOR
                                                         if(intent.getAction().equals("NUEVO")) {
                                                             // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
-
-                                                            Intent volverAnteriorPantalla = new Intent();
-                                                            setResult(RESULT_OK, volverAnteriorPantalla);
-                                                            finish();
+                                                            mostrarMensajes(getApplicationContext(), 0, "Trabajador dado de alta");
                                                         } else {
                                                             // SE QUIERE EDITAR AL TRABAJADOR
                                                             // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DE LA MODIFICACION

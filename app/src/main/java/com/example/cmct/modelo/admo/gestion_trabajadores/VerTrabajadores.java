@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -140,13 +142,35 @@ public class VerTrabajadores extends AppCompatActivity {
             dialogo.setNegativeButton("SI", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    snapshot.getReference().delete()
-                            .addOnSuccessListener(aVoid -> {
-                                mostrarMensajes(getApplicationContext(), 0, "Trabajador eliminado con éxito");
-                            })
-                            .addOnFailureListener(e -> {
-                                mostrarMensajes(getApplicationContext(), 0, "Error al eliminar trabajador");
-                            });
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                    if (auth.getCurrentUser() != null) {
+                        // COMPROBAR QUE EL USUARIO ACTUAL
+                        String idUsuarioActual = auth.getCurrentUser().getUid();
+                        db.collection("usuarios").document(idUsuarioActual).get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                // COMPROBAR LOS PERMISOS DEL USUARIO
+                                if (document.exists() && "administrador".equals(document.getString("rol"))) {
+                                    // ELIMINAR TRABAJADOR
+                                    db.collection("usuarios").document(snapshot.getReference().getId())
+                                            .delete()
+                                            .addOnSuccessListener(documentSnapshot -> {
+                                                mostrarMensajes(getApplicationContext(), 0, "Trabajador eliminado con éxito");
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                mostrarMensajes(getApplicationContext(), 1, "Error al eliminar trabajador");
+                                            });
+                                } else {
+                                    // Esconder la opción de eliminar o mostrar un mensaje de error
+                                    Log.d("Firestore", "Error getting documents: ", task.getException());
+                                }
+                            } else {
+                                Log.d("Firestore", "Error getting documents: ", task.getException());
+                            }
+                        });
+                    }
 
                     // Cerrar el diálogo
                     dialog.dismiss();
