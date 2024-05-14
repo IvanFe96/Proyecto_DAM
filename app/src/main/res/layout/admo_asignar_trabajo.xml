@@ -46,6 +46,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -59,7 +60,8 @@
                         <Spinner
                             android:id="@+id/spinner1AsignarTrabajo"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            style="@style/EstiloDesplegables"/>
 
                         <TextView
                             android:id="@+id/textClock1AsignarTrabajo"
@@ -102,7 +104,8 @@
                         <Spinner
                             android:id="@+id/spinner2AsignarTrabajo"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            style="@style/EstiloDesplegables"/>
 
                         <TextView
                             android:id="@+id/textClock3AsignarTrabajo"
@@ -145,7 +148,8 @@
                         <Spinner
                             android:id="@+id/spinner3AsignarTrabajo"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            style="@style/EstiloDesplegables"/>
 
                         <TextView
                             android:id="@+id/textClock5AsignarTrabajo"
@@ -205,7 +209,8 @@
                         <Spinner
                             android:id="@+id/spinner4AsignarTrabajo"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            style="@style/EstiloDesplegables"/>
 
                         <TextView
                             android:id="@+id/textClock7AsignarTrabajo"
@@ -248,7 +253,8 @@
                         <Spinner
                             android:id="@+id/spinner5AsignarTrabajo"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            style="@style/EstiloDesplegables"/>
 
                         <TextView
                             android:id="@+id/textClock9AsignarTrabajo"
@@ -291,7 +297,8 @@
                         <Spinner
                             android:id="@+id/spinner6AsignarTrabajo"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            style="@style/EstiloDesplegables"/>
 
                         <TextView
                             android:id="@+id/textClock11AsignarTrabajo"

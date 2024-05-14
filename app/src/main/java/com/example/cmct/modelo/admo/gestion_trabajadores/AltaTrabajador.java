@@ -16,28 +16,26 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
+import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Trabajador;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-public class AltaModificacionTrabajador extends AppCompatActivity {
+public class AltaTrabajador extends AppCompatActivity {
 
     private static final int REQUEST_IMAGEN = 200;
 
@@ -51,6 +49,8 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth autenticacion = FirebaseAuth.getInstance();
 
+    Administrador administrador;
+
     // OBTENER LA INSTANCIA DE ALMACENAMIENTO DE IMAGENES Y LA REFERENCIA
     FirebaseStorage almacenamientoImagenes = FirebaseStorage.getInstance();
     StorageReference referenciaImagenes = almacenamientoImagenes.getReference();
@@ -61,7 +61,10 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admo_alta_modificar_trabajador);
+        setContentView(R.layout.admo_alta_trabajador);
+
+        // OBTENER EL ADMINISTRADOR
+        obtenerAdministrador();
 
         foto = findViewById(R.id.imagen);
         nombre = findViewById(R.id.nombre);
@@ -71,22 +74,9 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         telefono = findViewById(R.id.telefono);
         dni = findViewById(R.id.dni);
 
-        // COMPROBAR SI EL USUARIO QUIERE EDITAR A UN TRABAJADOR
-        intent = getIntent();
-        if(intent.getAction().equals("EDITAR")) {
-            trabajador = (Trabajador) intent.getSerializableExtra("trabajador");
+        // INICIALIZAR TRABAJADOR NUEVO
+        trabajador = new Trabajador();
 
-            //foto = ;
-            nombre.setText(trabajador.getNombre());
-            apellido1.setText(trabajador.getApellido1());
-            apellido2.setText(trabajador.getApellido2());
-            correo.setText(trabajador.getCorreo());
-            telefono.setText(trabajador.getTelefono());
-            dni.setText(trabajador.getDni());
-        } else {
-            // SE QUIERE DAR DE ALTA UN NUEVO TRABAJADOR
-            trabajador = new Trabajador();
-        }
     }
 
     // CLICK EN EL BOTON DE GUARDAR PARA DAR DE ALTA EN LA BASE DE DATOS AL TRABAJADOR
@@ -141,109 +131,21 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         // COMPROBAR QUE LA DESCRIPCION ESTA VACIA PARA DAR DE ALTA AL TRABAJADOR EN LA BASE DE DATOS
         if(descripcion.isEmpty()) {
             // OBTENER TODOS LOS CAMPOS PARA EL TRABAJADOR
-            trabajador.setNombre(nombre.getText().toString());
-            trabajador.setApellido1(apellido1.getText().toString());
-            trabajador.setApellido2(apellido2.getText().toString());
-            trabajador.setCorreo(correo.getText().toString());
-            trabajador.setTelefono(telefono.getText().toString());
-            trabajador.setDni(dni.getText().toString());
+            trabajador.setNombre(nombre.getText().toString().trim());
+            trabajador.setApellido1(apellido1.getText().toString().trim());
+            trabajador.setApellido2(apellido2.getText().toString().trim());
+            trabajador.setCorreo(correo.getText().toString().trim());
+            trabajador.setTelefono(telefono.getText().toString().trim());
+            trabajador.setDni(dni.getText().toString().toUpperCase().trim());
+            trabajador.setContrasenia("123456");
 
-            // CREAR UN OBJETO TRABAJADOR
-            Map<String, Object> trabajadorBD = new HashMap<>();
-            trabajadorBD.put("nombre", trabajador.getNombre());
-            trabajadorBD.put("apellido1", trabajador.getApellido1());
-            trabajadorBD.put("apellido2", trabajador.getApellido2());
-            trabajadorBD.put("dni", trabajador.getDni().toUpperCase());
-            trabajadorBD.put("correo", trabajador.getCorreo());
-            trabajadorBD.put("telefono", trabajador.getTelefono());
-            trabajadorBD.put("rol", "trabajador");
-
-            // COMPROBAR SI SE QUIERE DAR DE ALTA UN NUEVO USUARIO
-            // PARA NO MODIFICAR LA CONTRASEÑA EN CASO DE QUE SE ESTE EDITANDO
-            if(intent.getAction().equals("NUEVO")) {
-                // SE QUIERE DAR DE ALTA UN USUARIO NUEVO POR LO QUE SE ESTABLECE UNA CONTRASEÑA POR DEFECTO
-                trabajadorBD.put("contraseña","123456");
-            } else {
-                // SE QUIERE EDITAR AL TRABAJADOR POR LO QUE LA CONTRASEÑA SE QUEDA IGUAL QUE LA QUE TIENE
-                trabajadorBD.put("contraseña",trabajador.getContrasenia());
-            }
-
-            // REGISTRAR AL USUARIO EN AUTENTICACION Y DARLO DE ALTA EN LA BASE DE DATOS
-            registrarUsuario(trabajadorBD);
+            // VERIFICAR QUE EL DNI NO ESTA EN LA BASE DE DATOS PARA DAR DE ALTA AL TRABAJADOR
+            verificarDniExistente(trabajador);
 
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO
             mostrarMensajes(getApplicationContext(),1, descripcion);
         }
-    }
-
-    // REGISTRAR USUARIO EN LA BASE DE DATOS
-    private void registrarUsuario(Map<String, Object> trabajadorBD) {
-
-        StorageReference imagenRef = referenciaImagenes.child("imagenes/" + imagenUri.getLastPathSegment());
-
-        UploadTask uploadTask = imagenRef.putFile(imagenUri);
-
-        // AÑADIR LA IMAGEN AL ALMACENAMIENTO DE IMAGENES
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        // URL DE DESCARGA DEL ARCHIVO SUBIDO
-                        String urlDescarga = uri.toString();
-
-                        // GUARDAR LA URL DE DESCARGA EN EL TRABAJADOR
-                        trabajadorBD.put("imagen", urlDescarga);
-                        // CREAR AL USUARIO EN AUTENTICACION
-                        autenticacion.createUserWithEmailAndPassword(trabajadorBD.get("correo").toString(), trabajadorBD.get("contraseña").toString())
-                                .addOnCompleteListener(AltaModificacionTrabajador.this, task -> {
-                                    if (task.isSuccessful()) {
-                                        // SE OBTIENE EL USUARIO AL SER EL REGISTRO EXITOSO
-                                        FirebaseUser firebaseUser = autenticacion.getCurrentUser();
-
-                                        if (firebaseUser != null) {
-
-                                            // CREAR EL USUARIO O ACTUALIZARLO EN LA BASE DE DATOS
-                                            String userId = firebaseUser.getUid(); // ID DEL USUARIO
-                                            db.collection("usuarios").document(userId)
-                                                    .set(trabajadorBD)
-                                                    .addOnSuccessListener(aVoid -> {
-
-                                                        // COMPROBAR SI SE QUERIA DAR DE ALTA UN NUEVO TRABAJADOR
-                                                        if(intent.getAction().equals("NUEVO")) {
-                                                            // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
-                                                            mostrarMensajes(getApplicationContext(), 0, "Trabajador dado de alta");
-                                                        } else {
-                                                            // SE QUIERE EDITAR AL TRABAJADOR
-                                                            // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DE LA MODIFICACION
-                                                            mostrarMensajes(getApplicationContext(), 0, "Trabajador modificado");
-                                                        }
-                                                        // CERRAR PANTALLA
-                                                        finish();
-                                                    })
-                                                    .addOnFailureListener(e -> {
-                                                        // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL ALTA
-                                                        mostrarMensajes(getApplicationContext(),1,"Error al dar el alta");
-                                                    });
-                                        }
-                                    } else {
-                                        // EL REGISTRO FALLA Y SE INFORMA AL USUARIO
-                                        mostrarMensajes(getApplicationContext(),1,"Error al dar el alta");
-                                    }
-                                });
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL GUARDADO DE LA IMAGEN
-                mostrarMensajes(getApplicationContext(),1,"Error al guardar la imagen");
-            }
-        });
-
     }
 
     // COMPROBAR QUE EL NOMBRE Y LOS APELLIDOS ES TEXTO Y NO HAY NUMEROS
@@ -252,6 +154,30 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         String regex = "^[\\p{L} ]+$";
         // COMPROBAR QUE LOS CAMPOS CUMPLEN CON LA EXPRESION REGULAR
         return nombre.matches(regex) && apellido1.matches(regex) && apellido2.matches(regex);
+    }
+
+    // VERIFICAR QUE EL DNI NO EXISTE EN LA BASE DE DATOS
+    private void verificarDniExistente(Trabajador trabajador) {
+        db.collection("usuarios")
+                .whereEqualTo("dni", trabajador.getDni())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                // DNI EXISTE SE MUESTRA POR PANTALLA
+                                mostrarMensajes(getApplicationContext(), 1, "El DNI ya está registrado en la base de datos");
+                            } else {
+                                // DNI NO EXISTE, REGISTRAR AL USUARIO
+                                administrador.altaTrabajadorAutenticacion(trabajador, AltaTrabajador.this, imagenUri);
+                            }
+                        } else {
+                            mostrarMensajes(getApplicationContext(), 1, "Error al verificar el DNI");
+                        }
+                    }
+                });
     }
 
     // COMPROBAR QUE EL CORREO ES UNA CUENTA DE GMAIL
@@ -302,7 +228,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
     // CLICK PARA ABRIR LA GALERIA Y ELEGIR LA IMAGEN
     public void clickImagen(View view) {
         //MOSTRAR LA GALERIA DEL MOVIL
-        intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_IMAGEN);
     }
 
@@ -365,4 +291,24 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
         }
     }
+
+    private void obtenerAdministrador() {
+        db.collection("usuarios")
+                .whereEqualTo("rol", "administrador")
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // OBTENER EL USUARIO ADMINISTRADOR
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        administrador = documentSnapshot.toObject(Administrador.class);
+                    } else {
+                        mostrarMensajes(getApplicationContext(), 1, "No se encontraron administradores");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos de administrador");
+                });
+    }
+
 }

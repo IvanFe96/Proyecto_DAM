@@ -1,7 +1,6 @@
 package com.example.cmct.modelo.admo.adaptadores;
 
 
-import android.database.Cursor;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmct.R;
-import com.example.cmct.clases.Cliente;
 import com.example.cmct.clases.Trabajador;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
-public class AdaptadorVerTrabajadores extends RecyclerView.Adapter<AdaptadorVerTrabajadores.DatosHolder>{
-    Cursor c;
-    //Adaptador(Cursor c) {this.c = c;}
-    Trabajador[] lista;
-    public AdaptadorVerTrabajadores(Trabajador[] lista) {this.lista = lista;}
+public class AdaptadorVerTrabajadores extends FirestoreRecyclerAdapter<Trabajador, AdaptadorVerTrabajadores.DatosHolder>{
+
+    public AdaptadorVerTrabajadores(FirestoreRecyclerOptions<Trabajador> options) {
+        super(options);
+    }
 
     @NonNull
     @Override
@@ -31,45 +35,28 @@ public class AdaptadorVerTrabajadores extends RecyclerView.Adapter<AdaptadorVerT
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DatosHolder holder, int position) {
-        //if (!c.moveToPosition(position)) {return;}
-
-        /*Bitmap imagen = c.get;*/
-
-        String nombre = lista[position].getNombre();
-        String dni = lista[position].getDni();
-        String telefono = lista[position].getTelefono();
-        String correo = lista[position].getCorreo();
-
-        // Añadir informacion al Item del recycler.
-        holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
-        holder.nombre.setText(nombre);
-        holder.telefono.setText(telefono);
-        holder.correo.setText(correo);
-        holder.dni.setText(dni);
-    }
-
-    @Override
-    public int getItemCount() {
-        //return c.getCount();
-        return lista.length;
-    }
-
-    public void swapCursor(Cursor newCursor) {
-        if (c != null) {
-            c.close();
+    public void onBindViewHolder(@NonNull DatosHolder holder, int position, @NonNull Trabajador modelo) {
+        // AÑADIR LOS DATOS AL ITEM DEL RECYCLER
+        // CARGAR LA IMAGEN DESDE FIREBASE STORAGE CON PICASSO
+        if (modelo.getImagen() != null && !modelo.getImagen().isEmpty()) {
+            Picasso.get()
+                    .load(modelo.getImagen())
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .placeholder(R.drawable.ic_launcher_foreground) // IMAGEN DE CARGA
+                    .error(R.drawable.ic_launcher_foreground) // IMAGEN EN CASO DE ERROR
+                    .into(holder.imagen);
+        } else {
+            holder.imagen.setImageResource(R.drawable.ic_launcher_foreground); // IMAGEN PREDETERMINADA SI NO HAY URL (NO DEBERIA OCURRIR)
         }
-        c = newCursor;
-        notifyDataSetChanged();
+        holder.nombre.setText(modelo.getNombre());
+        holder.telefono.setText(modelo.getTelefono());
+        holder.correo.setText(modelo.getCorreo());
+        holder.dni.setText(modelo.getDni());
+
     }
 
-    // ACTUALIZAR LA LISTA CON EL NUEVO FILTRO
-    public void actualizarDatos(Trabajador[] nuevosDatos) {
-        lista = nuevosDatos;
-        notifyDataSetChanged();
-    }
-
-    //CLASE CON EL CONTENEDOR.
+    //CLASE CON EL CONTENEDOR
     public class DatosHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView nombre, telefono, correo, dni;
         ImageView imagen;
@@ -82,9 +69,7 @@ public class AdaptadorVerTrabajadores extends RecyclerView.Adapter<AdaptadorVerT
             correo = itemView.findViewById(R.id.tvVerTrabajadoresCorreo);
             dni = itemView.findViewById(R.id.tvVerTrabajadoresDni);
 
-            // ESTABLECER MENU CONTEXTUAL AL ITEM DEL RECYCLERVIEW
             itemView.setOnCreateContextMenuListener(this);
-
         }
 
         //MENU CONTEXTUAL PARA RECYCLER
@@ -96,5 +81,10 @@ public class AdaptadorVerTrabajadores extends RecyclerView.Adapter<AdaptadorVerT
 
         }
 
+    }
+
+    // METODO PARA OBTENER EL TRABAJADOR DE LA BASE DE DATOS
+    public DocumentSnapshot obtenerSnapshot(int position) {
+        return super.getSnapshots().getSnapshot(position);
     }
 }

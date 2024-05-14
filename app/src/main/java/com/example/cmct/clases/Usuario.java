@@ -1,9 +1,12 @@
 package com.example.cmct.clases;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
 
+    private String imagen;
     private String nombre;
     private String apellido1;
     private String apellido2;
@@ -11,12 +14,14 @@ public class Usuario implements Serializable {
     private String dni;
     private String correo;
     private String contrasenia;
+    private String rol;
 
     public Usuario() {
 
     }
 
-    public Usuario(String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia) {
+    public Usuario(String imagen, String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia, String rol) {
+        this.imagen = imagen;
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
@@ -24,6 +29,15 @@ public class Usuario implements Serializable {
         this.dni = dni;
         this.correo = correo;
         this.contrasenia = contrasenia;
+        this.rol = rol;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -80,5 +94,13 @@ public class Usuario implements Serializable {
 
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

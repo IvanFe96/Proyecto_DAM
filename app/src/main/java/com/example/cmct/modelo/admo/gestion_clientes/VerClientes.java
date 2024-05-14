@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,8 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerClientes;
-import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
-import com.example.cmct.modelo.admo.gestion_trabajadores.AltaModificacionTrabajador;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,12 +37,12 @@ public class VerClientes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admo_ver_clientes);
 
-        for (int i = 0; i < lista.length; i++) {
+        /*for (int i = 0; i < lista.length; i++) {
             Cliente cliente = new Cliente("Cliente"+i,"Apellido1","Apellido2"
                     ,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+""+i,"cliente"+i+"@gmail.com", ""
                     ,"San Mateo de Gállego","C/Los Cliente"+i+" "+i,"8:40","9:20",null, null);
             lista[i] = cliente;
-        }
+        }*/
 
         recyclerClientes = findViewById(R.id.recyclerClientes);
         adaptadorVerClientes = new AdaptadorVerClientes(lista);
