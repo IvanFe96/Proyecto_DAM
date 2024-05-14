@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,47 +21,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cmct.R;
 import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Trabajador;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
-
-public class AltaModificacionTrabajador extends AppCompatActivity {
+public class ModificacionTrabajador extends AppCompatActivity {
 
     private static final int REQUEST_IMAGEN = 200;
 
     Intent intent;
-    EditText nombre,apellido1,apellido2,correo,telefono,dni;
+    EditText nombre,apellido1,apellido2,correo,telefono;
     ImageView foto;
+
     boolean fotoRellenada = false;
+
     Trabajador trabajador;
 
     // OBTENER LAS INSTANCIAS DE AUTENTICACION Y LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth autenticacion = FirebaseAuth.getInstance();
 
     Administrador administrador;
-
-    // OBTENER LA INSTANCIA DE ALMACENAMIENTO DE IMAGENES Y LA REFERENCIA
-    FirebaseStorage almacenamientoImagenes = FirebaseStorage.getInstance();
-    StorageReference referenciaImagenes = almacenamientoImagenes.getReference();
 
     // URI DE LA IMAGEN DEL TRABAJADOR
     Uri imagenUri;
@@ -70,7 +58,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admo_alta_modificar_trabajador);
+        setContentView(R.layout.admo_modificar_trabajador);
 
         // OBTENER EL ADMINISTRADOR
         obtenerAdministrador();
@@ -81,60 +69,52 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
         apellido2 = findViewById(R.id.apellido2);
         correo = findViewById(R.id.correo);
         telefono = findViewById(R.id.telefono);
-        dni = findViewById(R.id.dni);
 
-        // COMPROBAR SI EL USUARIO QUIERE EDITAR A UN TRABAJADOR
+        // OBTENER EL INTENTO CON LOS DATOS QUE ME PASAN
         intent = getIntent();
-        if(intent.getAction().equals("EDITAR")) {
-            // OBTENER EL ID DEL USUARIO
-            String idUsuario = intent.getStringExtra("idusuario");
+        // OBTENER EL ID DEL USUARIO
+        String idUsuario = intent.getStringExtra("idusuario");
             
-            // OBTENER TODOS LOS DATOS DEL USUARIO DE LA BASE DE DATOS
-            db.collection("usuarios").document(idUsuario)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot ->  {
-                        trabajador = documentSnapshot.toObject(Trabajador.class);
+        // OBTENER TODOS LOS DATOS DEL USUARIO DE LA BASE DE DATOS
+        db.collection("usuarios").document(idUsuario)
+                .get()
+                .addOnSuccessListener(documentSnapshot ->  {
+                    trabajador = documentSnapshot.toObject(Trabajador.class);
                         
-                        if(trabajador != null) {
-                            if (trabajador.getImagen() != null && !trabajador.getImagen().isEmpty()) {
-                                // CARGAR LA IMAGEN DESDE FIREBASE STORAGE CON PICASSO
-                                    Picasso.get()
-                                            .load(trabajador.getImagen().toString())
-                                            .resize(foto.getWidth(), foto.getHeight())
-                                            .centerCrop()
-                                            .into(foto);
-                                    // DECIR QUE EL IMAGEVIEW ESTA RELLENADO
-                                    fotoRellenada = true;
+                    if(trabajador != null) {
+                        if (trabajador.getImagen() != null && !trabajador.getImagen().isEmpty()) {
+                            // CARGAR LA IMAGEN DESDE FIREBASE STORAGE CON PICASSO
+                            Picasso.get()
+                                    .load(trabajador.getImagen().toString())
+                                    .resize(foto.getWidth(), foto.getHeight())
+                                    .centerCrop()
+                                    .into(foto);
+                            // DECIR QUE EL IMAGEVIEW ESTA RELLENADO
+                            fotoRellenada = true;
 
-                                    Toast.makeText(this, trabajador.getImagen().toString(), Toast.LENGTH_SHORT).show();
-
-                                    // ALMACENAR LA URI DE LA IMAGEN
-                                    //imagenUri = trabajador.getImagen();
-                            } else {
-                                foto.setImageResource(R.drawable.ic_launcher_foreground); // IMAGEN PREDETERMINADA SI NO HAY URL (NO DEBERIA OCURRIR)
-                            }
-
-                            nombre.setText(trabajador.getNombre());
-                            apellido1.setText(trabajador.getApellido1());
-                            apellido2.setText(trabajador.getApellido2());
-                            correo.setText(trabajador.getCorreo());
-                            telefono.setText(trabajador.getTelefono());
-                            dni.setText(trabajador.getDni());
+                            // DECIR QUE LA URI ES NULA PARA SABER SI SE HA CAMBIADO LA IMAGEN
+                            imagenUri = null;
 
                         } else {
-                            Toast.makeText(this, "algo anda mal", Toast.LENGTH_SHORT).show();
+                            foto.setImageResource(R.drawable.ic_launcher_foreground); // IMAGEN PREDETERMINADA SI NO HAY URL (NO DEBERIA OCURRIR)
                         }
-                    })
-                    .addOnFailureListener(e -> {
-                        mostrarMensajes(getApplicationContext(),1,"Error al recuperar los datos");
-                    });
-        } else {
-            // SE QUIERE DAR DE ALTA UN NUEVO TRABAJADOR
-            trabajador = new Trabajador();
-        }
+
+                        nombre.setText(trabajador.getNombre());
+                        apellido1.setText(trabajador.getApellido1());
+                        apellido2.setText(trabajador.getApellido2());
+                        correo.setText(trabajador.getCorreo());
+                        telefono.setText(trabajador.getTelefono());
+
+                    } else {
+                        Toast.makeText(this, "El trabajador es null", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(getApplicationContext(),1,"Error al recuperar los datos");
+                });
     }
 
-    // CLICK EN EL BOTON DE GUARDAR PARA DAR DE ALTA EN LA BASE DE DATOS AL TRABAJADOR
+    // CLICK EN EL BOTON DE GUARDAR PARA MODIFICAR EN LA BASE DE DATOS AL TRABAJADOR
     public void clickBotonGuardar(View view) {
         // GUARDAR LOS TIPOS DE ERRORES QUE HAY EN LOS CAMPOS
         String descripcion = "";
@@ -148,7 +128,7 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
         // COMPROBAR SI TODOS LOS CAMPOS ESTAN RELLENADOS
         if(nombre.getText().toString().isEmpty() || apellido1.getText().toString().isEmpty() || apellido2.getText().toString().isEmpty()
-                || correo.getText().toString().isEmpty() || telefono.getText().toString().isEmpty() || dni.getText().toString().isEmpty()) {
+                || correo.getText().toString().isEmpty() || telefono.getText().toString().isEmpty()) {
 
             descripcion += "- Todos los campos deben estar rellenados.\n";
 
@@ -175,36 +155,21 @@ public class AltaModificacionTrabajador extends AppCompatActivity {
 
             }
 
-            // VALIDAR SI EL DNI ES CORRECTO
-            if (!validarDni(dni.getText().toString())) {
-
-                descripcion += "- El DNI no es válido.\n";
-
-            }
         }
 
-        // COMPROBAR QUE LA DESCRIPCION ESTA VACIA PARA DAR DE ALTA AL TRABAJADOR EN LA BASE DE DATOS
+        // COMPROBAR QUE LA DESCRIPCION ESTA VACIA PARA MODIFICAR AL TRABAJADOR EN LA BASE DE DATOS
         if(descripcion.isEmpty()) {
-            // COMPROBAR SI SE QUIERE DAR DE ALTA UN NUEVO USUARIO
-            if(intent.getAction().equals("NUEVO")) {
-                // SE QUIERE DAR DE ALTA UN TRABAJADOR NUEVO
-                // OBTENER TODOS LOS CAMPOS PARA EL TRABAJADOR
-                trabajador.setNombre(nombre.getText().toString());
-                trabajador.setApellido1(apellido1.getText().toString());
-                trabajador.setApellido2(apellido2.getText().toString());
-                trabajador.setCorreo(correo.getText().toString());
-                trabajador.setTelefono(telefono.getText().toString());
-                trabajador.setDni(dni.getText().toString());
-                trabajador.setContrasenia("123456");
+            // GUARDAMOS EL CORREO PARA QUE EN CASO DE CAMBIO NOS PODAMOS AUTENTICAR PARA VERIIFICAR DATOS MAS TARDE
+            String correoTrabajador = trabajador.getCorreo();
 
+            // OBTENER TODOS LOS CAMPOS PARA EL TRABAJADOR
+            trabajador.setNombre(nombre.getText().toString().trim());
+            trabajador.setApellido1(apellido1.getText().toString().trim());
+            trabajador.setApellido2(apellido2.getText().toString().trim());
+            trabajador.setCorreo(correo.getText().toString().trim());
+            trabajador.setTelefono(telefono.getText().toString().trim());
 
-                // REGISTRAR AL USUARIO
-                administrador.altaTrabajadorAutenticacion(trabajador, this, imagenUri);
-
-            } else {
-                // SE QUIERE EDITAR AL TRABAJADOR
-
-            }
+            administrador.editarTrabajador(trabajador,correoTrabajador,imagenUri,this);
 
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO

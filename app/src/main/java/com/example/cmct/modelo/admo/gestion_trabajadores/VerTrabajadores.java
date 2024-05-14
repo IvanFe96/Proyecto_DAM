@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +25,6 @@ import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -110,7 +107,7 @@ public class VerTrabajadores extends AppCompatActivity {
 
     // CLICK DEL BOTON PARA HACER EL FORMULARIO DE ALTA TRABAJADOR
     public void clickBotonAltaTrabajador(View view) {
-        Intent intent = new Intent(this, AltaModificacionTrabajador.class);
+        Intent intent = new Intent(this, AltaTrabajador.class);
         intent.setAction("NUEVO");
         startActivity(intent);
     }
@@ -126,7 +123,7 @@ public class VerTrabajadores extends AppCompatActivity {
             String idUsuario = adaptadorVerTrabajadores.obtenerSnapshot(posicion).getId();
 
             // INICIAR EL INTENT Y PASAR EL ID DEL TRABAJADOR
-            Intent intent = new Intent(this, AltaModificacionTrabajador.class);
+            Intent intent = new Intent(this, ModificacionTrabajador.class);
             intent.putExtra("idusuario", idUsuario);
             intent.setAction("EDITAR");
             startActivity(intent);
@@ -148,7 +145,9 @@ public class VerTrabajadores extends AppCompatActivity {
                     // DAR DE BAJA AL TRABAJADOR
                     administrador.bajaTrabajadorAutenticacion(snapshot, VerTrabajadores.this);
 
+                    // ACTUALIZAR LA LISTA
                     onResume();
+
                     // CERRAR EL DIALOGO
                     dialog.dismiss();
                 }

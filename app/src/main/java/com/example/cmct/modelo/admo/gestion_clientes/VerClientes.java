@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,8 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerClientes;
-import com.example.cmct.modelo.admo.adaptadores.AdaptadorVerTrabajadores;
-import com.example.cmct.modelo.admo.gestion_trabajadores.AltaModificacionTrabajador;
 
 import java.util.ArrayList;
 import java.util.Arrays;

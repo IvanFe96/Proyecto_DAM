@@ -16,6 +16,8 @@ import com.example.cmct.clases.Trabajador;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 public class AdaptadorVerTrabajadores extends FirestoreRecyclerAdapter<Trabajador, AdaptadorVerTrabajadores.DatosHolder>{
@@ -39,6 +41,8 @@ public class AdaptadorVerTrabajadores extends FirestoreRecyclerAdapter<Trabajado
         if (modelo.getImagen() != null && !modelo.getImagen().isEmpty()) {
             Picasso.get()
                     .load(modelo.getImagen())
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .placeholder(R.drawable.ic_launcher_foreground) // IMAGEN DE CARGA
                     .error(R.drawable.ic_launcher_foreground) // IMAGEN EN CASO DE ERROR
                     .into(holder.imagen);

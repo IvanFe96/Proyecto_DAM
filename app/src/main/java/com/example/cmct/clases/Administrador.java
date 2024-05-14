@@ -62,7 +62,7 @@ public class Administrador extends Usuario implements Serializable {
                                             if (task.isSuccessful()) {
                                                 // CREAR EL USUARIO O ACTUALIZARLO EN LA BASE DE DATOS
                                                 String idUsuario = firebaseUser.getUid(); // ID DEL USUARIO
-                                                subirImagen(idUsuario, imagenUri, trabajador, actividad);
+                                                subirImagenTrabajador(idUsuario, imagenUri, trabajador, actividad);
                                             } else {
                                                 // ERROR AL REAUTENTICAR AL ADMINISTRADOR
                                                 mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
@@ -77,7 +77,7 @@ public class Administrador extends Usuario implements Serializable {
                 });
     }
 
-    private void subirImagen(String idUsuario, Uri imagenUri, Trabajador trabajador, Activity actividad) {
+    private void subirImagenTrabajador(String idUsuario, Uri imagenUri, Trabajador trabajador, Activity actividad) {
         StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + trabajador.getDni());
         imagenRef.putFile(imagenUri)
                 .addOnSuccessListener(taskSnapshot -> {
@@ -85,7 +85,7 @@ public class Administrador extends Usuario implements Serializable {
                         // URL DE LA IMAGEN SUBIDA
                         String imagenUrl = uri.toString();
                         // REGISTRAR AL USUARIO EN LA BASE DE DATOS
-                        registrarEnFirestore(idUsuario, imagenUrl, trabajador, actividad);
+                        registrarTrabajadorEnFirestore(idUsuario, imagenUrl, trabajador, actividad);
                     });
                 })
                 .addOnFailureListener(e -> {
@@ -93,7 +93,7 @@ public class Administrador extends Usuario implements Serializable {
                 });
     }
 
-    private void registrarEnFirestore(String idUsuario, String imagenUrl, Trabajador trabajador, Activity actividad) {
+    private void registrarTrabajadorEnFirestore(String idUsuario, String imagenUrl, Trabajador trabajador, Activity actividad) {
         // CREAR UN DOCUMENTO TRABAJADOR
         Map<String, Object> trabajadorBD = new HashMap<>();
         trabajadorBD.put("nombre", trabajador.getNombre());
@@ -102,7 +102,7 @@ public class Administrador extends Usuario implements Serializable {
         trabajadorBD.put("dni", trabajador.getDni().toUpperCase());
         trabajadorBD.put("correo", trabajador.getCorreo());
         trabajadorBD.put("telefono", trabajador.getTelefono());
-        trabajadorBD.put("contraseña", trabajador.getContrasenia());
+        trabajadorBD.put("contrasenia", trabajador.getContrasenia());
         trabajadorBD.put("rol", "trabajador");
         trabajadorBD.put("imagen", imagenUrl);
 
@@ -134,6 +134,7 @@ public class Administrador extends Usuario implements Serializable {
                                         FirebaseUser usuarioAEliminar = task.getResult().getUser();
                                         usuarioAEliminar.delete().addOnCompleteListener(deleteTask -> {
                                             if(deleteTask.isSuccessful()) {
+                                                eliminarImagenTrabajadorDeStorage(snapshot, actividad);
                                                 bajaTrabajadorEnFirestore(usuarioAEliminar, actividad);
                                             } else {
                                                 mostrarMensajes(actividad,1,"Error al eliminar al trabajador");
@@ -144,6 +145,24 @@ public class Administrador extends Usuario implements Serializable {
                     }
                 });
 
+    }
+
+    public void eliminarImagenTrabajadorDeStorage(DocumentSnapshot snapshot, Activity actividad) {
+        Trabajador trabajador = snapshot.toObject(Trabajador.class);
+        if (trabajador.getDni() != null && !trabajador.getDni().isEmpty()) {
+            // OBTENER LA REFERENCIA A LA IMAGEN EN STORAGE
+            StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + trabajador.getDni());
+
+            // ELIMINAR LA IMAGEN
+            imagenRef.delete().addOnSuccessListener(aVoid -> {
+
+            }).addOnFailureListener(e -> {
+                // MOSTRAR ERROR SI LA ELIMINACION FALLA
+                mostrarMensajes(actividad, 1, "Error al eliminar imagen: " + e.getMessage());
+            });
+        } else {
+            mostrarMensajes(actividad, 1, "No se encontró un DNI válido para eliminar la imagen.");
+        }
     }
 
     private void bajaTrabajadorEnFirestore(FirebaseUser usuarioAEliminar, Activity actividad) {
@@ -171,11 +190,12 @@ public class Administrador extends Usuario implements Serializable {
                                                     mostrarMensajes(actividad, 1, "Error al eliminar trabajador");
                                                 });
                                     } else {
-                                        // Esconder la opción de eliminar o mostrar un mensaje de error
-                                        Log.d("Firestore", "Error getting documents: ", task.getException());
+                                        //  ERROR POR FALTA DE PERMISOS O EL USUARIO NO EXISTE
+                                        mostrarMensajes(actividad,1,"No existe usuario o no tienes permisos suficientes");
                                     }
                                 } else {
-                                    Log.d("Firestore", "Error getting documents: ", task.getException());
+                                    // ERROR AL ELIMINAR AL USUARIO
+                                    mostrarMensajes(actividad,1,"Error al eliminar al usuario");
                                 }
                             });
                         } else {
@@ -184,6 +204,104 @@ public class Administrador extends Usuario implements Serializable {
                         }
                     }
                 });
+    }
+
+    public void editarTrabajador(Trabajador trabajador, String correoTrabajador, Uri imagenUri, Activity actividad) {
+
+        // ACTUALIZAR LOS DATOS
+        Map<String, Object> datosActualizados = new HashMap<>();
+        datosActualizados.put("nombre", trabajador.getNombre());
+        datosActualizados.put("apellido1", trabajador.getApellido1());
+        datosActualizados.put("apellido2", trabajador.getApellido2());
+        datosActualizados.put("telefono", trabajador.getTelefono());
+
+        // COMPROBAR SI SE HA CAMBIADO LA IMAGEN
+        if(imagenUri != null) {
+            // LA IMAGEN ES DIFERENTE A LA DE ANTES
+            actualizarImagenTrabajador(imagenUri, trabajador, actividad, new Callback<String>() {
+                @Override
+                public void onSuccess(String imagenUrl) {
+                    datosActualizados.put("imagen",imagenUrl); // INCLUIR LA NUEVA IMAGEN
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    mostrarMensajes(actividad, 1, "Error al actualizar la imagen en Firestore: " + e.getMessage());
+                }
+            });
+        }
+
+        // INICIAR SESION CON EL TRABAJADOR EN AUTENTICACION PARA MODIFICAR EL CORREO EN CASO DE QUE SE HAYA CAMBIADO
+        autenticacion.signInWithEmailAndPassword(correoTrabajador, trabajador.getContrasenia())
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // COMPROBAR SI EL CORREO ES DIFERENTE Y SI ES ASI ACTUALIZARLO
+                            FirebaseUser usuario = autenticacion.getCurrentUser();
+                            if (usuario != null && !usuario.getEmail().equals(trabajador.getCorreo())) {
+                                // ENVIAMOS AL USUARIO UN CORREO DE VERIFICACION PARA COMPROBAR QUE EL USUARIO TIENE ACCESO AL NUEVO CORREO
+                                usuario.verifyBeforeUpdateEmail(trabajador.getCorreo())
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                datosActualizados.put("correo",trabajador.getCorreo());
+                                                // REAUTENTICAR AL ADMINISTRADOR
+                                                autenticacion.signInWithEmailAndPassword(Administrador.this.getCorreo(), Administrador.this.getContrasenia())
+                                                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    actualizarTrabajadorFirestore(usuario.getUid(), datosActualizados, actividad);
+                                                                } else {
+                                                                    // ERROR AL REAUTENTICAR AL ADMINISTRADOR
+                                                                    mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                                                                }
+                                                            }
+                                                        });
+                                            } else {
+                                                mostrarMensajes(actividad, 1, "Error al actualizar el correo electrónico: " + task1.getException().getMessage());
+                                            }
+                                        });
+                            } else {
+                                actualizarTrabajadorFirestore(usuario.getUid(), datosActualizados, actividad);
+                            }
+
+                        } else {
+                            // ERROR AL REAUTENTICAR AL TRABAJADOR
+                            mostrarMensajes(actividad,1,"Error al reautenticar al trabajador");
+                        }
+                    }
+                });
+
+    }
+
+    private void actualizarTrabajadorFirestore(String idUsuario, Map<String,Object> datosActualizados, Activity actividad) {
+        db.collection("usuarios").document(idUsuario)
+                .update(datosActualizados)
+                .addOnSuccessListener(aVoid -> {
+                    // MOSTRAR MENSAJE DE EXITO
+                    mostrarMensajes(actividad, 0, "Datos actualizados con éxito.");
+
+                    // CERRAR PANTALLA
+                    actividad.finish();
+                })
+                .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al actualizar datos: " + e.getMessage()));
+    }
+
+    private String actualizarImagenTrabajador(Uri imagenUri,Trabajador trabajador, Activity actividad, Callback<String> callback) {
+        StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + trabajador.getDni());
+        imagenRef.putFile(imagenUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    imagenRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        callback.onSuccess(uri.toString());  // USAR CALLBACK PARA DEVOLVER LA URL
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
+                    callback.onFailure(e);
+                });
+
+        return "";
     }
 
     // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
@@ -216,4 +334,11 @@ public class Administrador extends Usuario implements Serializable {
             toast.show();
         }
     }
+
+    // INTERFAZ PARA DEVOLVER DATOS
+    public interface Callback<T> {
+        void onSuccess(T result);
+        void onFailure(Exception e);
+    }
+
 }
