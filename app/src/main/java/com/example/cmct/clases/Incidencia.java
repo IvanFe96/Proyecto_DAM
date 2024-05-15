@@ -1,30 +1,32 @@
 package com.example.cmct.clases;
 
+import com.google.firebase.Timestamp;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Incidencia implements Serializable {
-    String idUsuario;
+    String dni;
     String tipo;
     String descripcion;
-    Date fechaIncidencia;
+    Timestamp fechaIncidencia;
 
     public Incidencia() {
     }
 
-    public Incidencia(String idUsuario, String tipo, String descripcion, Date fechaIncidencia) {
-        this.idUsuario = idUsuario;
+    public Incidencia(String dni, String tipo, String descripcion, Timestamp fechaIncidencia) {
+        this.dni = dni;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.fechaIncidencia = fechaIncidencia;
     }
 
-    public String getIdUsuario() {
-        return idUsuario;
+    public String getDni() {
+        return dni;
     }
 
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getTipo() {
@@ -43,11 +45,11 @@ public class Incidencia implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaIncidencia() {
+    public Timestamp getFechaIncidencia() {
         return fechaIncidencia;
     }
 
-    public void setFechaIncidencia(Date fechaIncidencia) {
+    public void setFechaIncidencia(Timestamp fechaIncidencia) {
         this.fechaIncidencia = fechaIncidencia;
     }
 }

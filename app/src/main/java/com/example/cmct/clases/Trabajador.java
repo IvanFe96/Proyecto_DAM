@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmct.R;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -30,8 +31,8 @@ public class Trabajador extends Usuario implements Serializable {
     }
 
     // METODO PARA REGISTRAR INCIDENCIAS DEL TRABAJADOR
-    public void crearIncidencia(Activity actividad, String idUsuario, String tipoIncidencia, String descripcion, Date fechaIncidencia) {
-        db.collection("incidencias").add(new Incidencia(idUsuario,tipoIncidencia,descripcion, fechaIncidencia));
+    public void crearIncidencia(Activity actividad, String dniTrabajador, String tipoIncidencia, String descripcion, Timestamp fechaIncidencia) {
+        db.collection("incidencias").add(new Incidencia(dniTrabajador,tipoIncidencia,descripcion, fechaIncidencia));
         mostrarMensajes(actividad,actividad.getApplicationContext(),0,"Incidencia registrada con éxito");
     }
 

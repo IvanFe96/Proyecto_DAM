@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
 import com.example.cmct.clases.Trabajador;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,7 +30,6 @@ public class CrearIncidencias extends AppCompatActivity {
 
     // OBTENER LA INSTANCIA DE LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String idUsuario;
     Trabajador trabajador;
 
     @Override
@@ -65,10 +65,10 @@ public class CrearIncidencias extends AppCompatActivity {
             mostrarMensajes(getApplicationContext(),1,"Debes dar una descripción");
         } else {
             // OBTENER LA FECHA EN LA QUE SE VA A CREAR LA INCIDENCIA
-            Date fechaIncidencia = new Date();
+            Timestamp fechaIncidencia = Timestamp.now();
 
             // CREAR LA INCIDENCIA
-            trabajador.crearIncidencia(this, idUsuario, (String) tipoIncidencia.getSelectedItem(),descripcion.getText().toString(), fechaIncidencia);
+            trabajador.crearIncidencia(this, trabajador.getDni(), (String) tipoIncidencia.getSelectedItem(),descripcion.getText().toString(), fechaIncidencia);
             finish();
         }
     }
@@ -106,7 +106,7 @@ public class CrearIncidencias extends AppCompatActivity {
 
     private void obtenerTrabajador() {
         // OBTENER LA ID DEL USUARIO TRABAJADOR QUE ESTA AUTENTICADO
-        idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // OBTENER LOS DATOS DEL TRABAJADOR
         db.collection("usuarios")
