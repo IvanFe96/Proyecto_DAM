@@ -142,7 +142,7 @@ public class Login extends AppCompatActivity {
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 DocumentReference userRef = db.collection("usuarios").document(usuario.getUid());
 
-                                userRef.update("contraseña",nuevaContrasenia.getText().toString())
+                                userRef.update("contrasenia",nuevaContrasenia.getText().toString())
                                         .addOnSuccessListener(aVoid1 -> {
 
                                             // SE HA ACTUALIZADO LA CONTRASEÑA CORRECTAMENTE
