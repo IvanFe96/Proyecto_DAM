@@ -127,7 +127,7 @@ public class Administrador extends Usuario implements Serializable {
                 addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        autenticacion.signInWithEmailAndPassword(task.getResult().getString("correo"),task.getResult().getString("contraseña"))
+                        autenticacion.signInWithEmailAndPassword(task.getResult().getString("correo"),task.getResult().getString("contrasenia"))
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -336,7 +336,7 @@ public class Administrador extends Usuario implements Serializable {
     }
 
     // INTERFAZ PARA DEVOLVER DATOS
-    public interface Callback<T> {
+    private interface Callback<T> {
         void onSuccess(T result);
         void onFailure(Exception e);
     }
