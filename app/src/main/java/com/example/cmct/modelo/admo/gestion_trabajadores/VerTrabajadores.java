@@ -112,6 +112,7 @@ public class VerTrabajadores extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // SELECCION DE MENU EDITAR Y ELIMINAR DE CADA ITEM
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         int posicion = item.getGroupId();

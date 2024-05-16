@@ -465,6 +465,196 @@ public class Administrador extends Usuario implements Serializable {
                 });
     }
 
+    // ELIMINAR AL CLIENTE DE AUTENTICACION
+    public void bajaClienteAutenticacion(DocumentSnapshot snapshot, Activity actividad) {
+        db.collection("usuarios").document(snapshot.getId()).
+                get().
+                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        autenticacion.signInWithEmailAndPassword(task.getResult().getString("correo"),task.getResult().getString("contrasenia"))
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        FirebaseUser usuarioAEliminar = task.getResult().getUser();
+                                        usuarioAEliminar.delete().addOnCompleteListener(deleteTask -> {
+                                            if(deleteTask.isSuccessful()) {
+                                                eliminarImagenClienteDeStorage(snapshot, actividad);
+                                                bajaClienteEnFirestore(usuarioAEliminar, actividad);
+                                            } else {
+                                                mostrarMensajes(actividad,1,"Error al eliminar al cliente");
+                                            }
+                                        });
+                                    }
+                                });
+                    }
+                });
+
+    }
+
+    // ELIMINAR LA IMAGEN DEL CLIENTE DEL ALMACENAMIENTO DE IMAGENES
+    public void eliminarImagenClienteDeStorage(DocumentSnapshot snapshot, Activity actividad) {
+        Cliente cliente = snapshot.toObject(Cliente.class);
+        if (cliente.getDni() != null && !cliente.getDni().isEmpty()) {
+            // OBTENER LA REFERENCIA A LA IMAGEN EN STORAGE
+            StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + cliente.getDni());
+
+            // ELIMINAR LA IMAGEN
+            imagenRef.delete().addOnSuccessListener(aVoid -> {
+
+            }).addOnFailureListener(e -> {
+                // MOSTRAR ERROR SI LA ELIMINACION FALLA
+                mostrarMensajes(actividad, 1, "Error al eliminar imagen: " + e.getMessage());
+            });
+        } else {
+            mostrarMensajes(actividad, 1, "No se encontró un DNI válido para eliminar la imagen.");
+        }
+    }
+
+    // ELIMINAR AL CLIENTE EN LA BASE DE DATOS
+    private void bajaClienteEnFirestore(FirebaseUser usuarioAEliminar, Activity actividad) {
+        // REAUTENTICAR AL ADMINISTRADOR
+        autenticacion.signInWithEmailAndPassword(this.getCorreo(), this.getContrasenia())
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // ELIMINAR AL CLIENTE EN LA BASE DE DATOS
+                            String idUsuarioActual = autenticacion.getCurrentUser().getUid();
+                            db.collection("usuarios").document(idUsuarioActual).get().addOnCompleteListener(task1 -> {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task1.getResult();
+                                    // COMPROBAR LOS PERMISOS DEL USUARIO
+                                    if (document.exists() && "administrador".equals(document.getString("rol"))) {
+                                        // ELIMINAR CLIENTE
+                                        db.collection("usuarios").document(usuarioAEliminar.getUid())
+                                                .delete()
+                                                .addOnSuccessListener(documentSnapshot -> {
+                                                    mostrarMensajes(actividad, 0, "Cliente eliminado con éxito");
+                                                    actividad.recreate();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    mostrarMensajes(actividad, 1, "Error al eliminar cliente");
+                                                });
+                                    } else {
+                                        //  ERROR POR FALTA DE PERMISOS O EL USUARIO NO EXISTE
+                                        mostrarMensajes(actividad,1,"No existe usuario o no tienes permisos suficientes");
+                                    }
+                                } else {
+                                    // ERROR AL ELIMINAR AL USUARIO
+                                    mostrarMensajes(actividad,1,"Error al eliminar al usuario");
+                                }
+                            });
+                        } else {
+                            // ERROR AL REAUTENTICAR AL ADMINISTRADOR
+                            mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                        }
+                    }
+                });
+    }
+
+    // EDITAR LOS DATOS DEL CLIENTE
+    public void editarCliente(Cliente cliente, String correoCliente, Uri imagenUri, Activity actividad) {
+        // ACTUALIZAR LOS DATOS
+        Map<String, Object> datosActualizados = new HashMap<>();
+        datosActualizados.put("nombre", cliente.getNombre());
+        datosActualizados.put("apellido1", cliente.getApellido1());
+        datosActualizados.put("apellido2", cliente.getApellido2());
+        datosActualizados.put("telefono", cliente.getTelefono());
+        datosActualizados.put("localidad", cliente.getLocalidad());
+        datosActualizados.put("direccion", cliente.getDireccion());
+
+        // COMPROBAR SI SE HA CAMBIADO LA IMAGEN
+        if(imagenUri != null) {
+            // LA IMAGEN ES DIFERENTE A LA DE ANTES
+            actualizarImagenCliente(imagenUri, cliente, actividad, new Callback<String>() {
+                @Override
+                public void onSuccess(String imagenUrl) {
+                    datosActualizados.put("imagen",imagenUrl); // INCLUIR LA NUEVA IMAGEN
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    mostrarMensajes(actividad, 1, "Error al actualizar la imagen en Firestore: " + e.getMessage());
+                }
+            });
+        }
+
+        // INICIAR SESION CON EL TRABAJADOR EN AUTENTICACION PARA MODIFICAR EL CORREO EN CASO DE QUE SE HAYA CAMBIADO
+        autenticacion.signInWithEmailAndPassword(correoCliente, cliente.getContrasenia())
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // COMPROBAR SI EL CORREO ES DIFERENTE Y SI ES ASI ACTUALIZARLO
+                            FirebaseUser usuario = autenticacion.getCurrentUser();
+                            if (usuario != null && !usuario.getEmail().equals(cliente.getCorreo())) {
+                                // ENVIAMOS AL USUARIO UN CORREO DE VERIFICACION PARA COMPROBAR QUE EL USUARIO TIENE ACCESO AL NUEVO CORREO
+                                usuario.verifyBeforeUpdateEmail(cliente.getCorreo())
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                datosActualizados.put("correo",cliente.getCorreo());
+                                                // REAUTENTICAR AL ADMINISTRADOR
+                                                autenticacion.signInWithEmailAndPassword(Administrador.this.getCorreo(), Administrador.this.getContrasenia())
+                                                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    actualizarClienteFirestore(usuario.getUid(), datosActualizados, actividad);
+                                                                } else {
+                                                                    // ERROR AL REAUTENTICAR AL ADMINISTRADOR
+                                                                    mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                                                                }
+                                                            }
+                                                        });
+                                            } else {
+                                                mostrarMensajes(actividad, 1, "Error al actualizar el correo electrónico: " + task1.getException().getMessage());
+                                            }
+                                        });
+                            } else {
+                                actualizarClienteFirestore(usuario.getUid(), datosActualizados, actividad);
+                            }
+
+                        } else {
+                            // ERROR AL REAUTENTICAR AL TRABAJADOR
+                            mostrarMensajes(actividad,1,"Error al reautenticar al cliente");
+                        }
+                    }
+                });
+
+    }
+
+    // ACTUALIZAR LA IMAGEN DEL CLIENTE
+    private String actualizarImagenCliente(Uri imagenUri,Cliente cliente, Activity actividad, Callback<String> callback) {
+        StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + cliente.getDni());
+        imagenRef.putFile(imagenUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    imagenRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        callback.onSuccess(uri.toString());  // USAR CALLBACK PARA DEVOLVER LA URL
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
+                    callback.onFailure(e);
+                });
+
+        return "";
+    }
+
+    // ACTUALIZAR LOS DATOS DEL CLIENTE EN LA BASE DE DATOS
+    private void actualizarClienteFirestore(String idUsuario, Map<String,Object> datosActualizados, Activity actividad) {
+        db.collection("usuarios").document(idUsuario)
+                .update(datosActualizados)
+                .addOnSuccessListener(aVoid -> {
+                    // MOSTRAR MENSAJE DE EXITO
+                    mostrarMensajes(actividad, 0, "Datos actualizados con éxito.");
+
+                    // CERRAR PANTALLA
+                    actividad.finish();
+                })
+                .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al actualizar datos: " + e.getMessage()));
+    }
+
     // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
     private void mostrarMensajes(Activity actividad, int tipo, String mensaje) {
         // MENSAJE DE QUE ES CORRECTO

@@ -69,6 +69,7 @@ public class AdaptadorVerTrabajadores extends FirestoreRecyclerAdapter<Trabajado
             correo = itemView.findViewById(R.id.tvVerTrabajadoresCorreo);
             dni = itemView.findViewById(R.id.tvVerTrabajadoresDni);
 
+            // ESTABLECER MENU CONTEXTUAL AL ITEM DEL RECYCLERVIEW
             itemView.setOnCreateContextMenuListener(this);
         }
 

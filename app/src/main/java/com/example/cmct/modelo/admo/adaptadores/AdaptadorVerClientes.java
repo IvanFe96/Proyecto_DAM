@@ -84,7 +84,7 @@ public class AdaptadorVerClientes extends FirestoreRecyclerAdapter<Cliente, Adap
 
     }
 
-    // METODO PARA OBTENER EL TRABAJADOR DE LA BASE DE DATOS
+    // METODO PARA OBTENER EL CLIENTE DE LA BASE DE DATOS
     public DocumentSnapshot obtenerSnapshot(int position) {
         return super.getSnapshots().getSnapshot(position);
     }

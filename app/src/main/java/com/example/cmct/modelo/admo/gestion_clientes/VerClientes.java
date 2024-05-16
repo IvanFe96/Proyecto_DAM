@@ -145,32 +145,6 @@ public class VerClientes extends AppCompatActivity {
         }
     }
 
-    /*private Cliente[] filtrarClientes(Cliente[] lista, String filtroNombre, String filtroCiudad) {
-        // CREAR UNA LISTA PARA ALMACENAR LOS ELEMENTOS FILTRADOS
-        List<Cliente> listaFiltrada = new ArrayList<>();
-
-        // RECORRER LA MATRIZ ORIGINAL Y AGREGAR A LA LISTA FILTRADA LOS ELEMENTOS QUE COINCIDAN CON LOS FILTROS
-        for (Cliente cliente : lista) {
-            boolean nombreCoincide = cliente.getNombre().toLowerCase().contains(filtroNombre);
-            boolean ciudadCoincide = cliente.getCiudad().toLowerCase().contains(filtroCiudad.toLowerCase());
-
-            // FILTRAR SOLO POR NOMBRE SI EN EL SPINNER ESTÁ SELECCIONADA LA OPCIÓN "Sin filtro"
-            if (filtroCiudad.equals("Todas localidades") && nombreCoincide) {
-                listaFiltrada.add(cliente);
-            }
-            // FILTRAR SOLO POR CIUDAD SI EN EL EDITTEXT NO HAY NADA ESCRITO
-            else if (filtroNombre.isEmpty() && ciudadCoincide) {
-                listaFiltrada.add(cliente);
-            }
-            // FILTRAR POR NOMBRE Y CIUDAD A LA VEZ SI SE HA SELECCIONADO UNA CIUDAD EN EL SPINNER Y HAY ALGO ESCRITO EN EL EDITTEXT
-            else if (!filtroCiudad.equals("Todas localidades") && !filtroNombre.isEmpty() && nombreCoincide && ciudadCoincide) {
-                listaFiltrada.add(cliente);
-            }
-        }
-
-        // CONVERTIR LA LISTA FILTRADA EN UNA MATRIZ
-        return listaFiltrada.toArray(new Cliente[0]);
-    }*/
     private void actualizarSentencia(String texto) {
         if (adaptadorVerClientes != null) {
             adaptadorVerClientes.stopListening(); // DETENER EL LISTENER
@@ -232,9 +206,9 @@ public class VerClientes extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected( MenuItem item) {
-        int posicion = item.getItemId();
+        int posicion = item.getGroupId();
 
-        if(posicion == 100) {
+        if(item.getItemId() == 100) {
             // SE QUIERE EDITAR LA INFORMACION DEL CLIENTE
             // OBTENER EL ID DEL USUARIO EN LA BASE DE DATOS
             String idUsuario = adaptadorVerClientes.obtenerSnapshot(posicion).getId();
@@ -259,7 +233,7 @@ public class VerClientes extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // DAR DE BAJA AL CLIENTE
-                    //administrador.bajaClienteAutenticacion(snapshot, VerClientes.this);
+                    administrador.bajaClienteAutenticacion(snapshot, VerClientes.this);
 
                     // ACTUALIZAR LA LISTA
                     onResume();

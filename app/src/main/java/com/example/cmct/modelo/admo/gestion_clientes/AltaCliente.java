@@ -27,23 +27,17 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Cliente;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,13 +54,8 @@ public class AltaCliente extends AppCompatActivity {
     Cliente cliente;
     Administrador administrador;
 
-    // OBTENER LAS INSTANCIAS DE AUTENTICACION Y LA BASE DE DATOS DE FIREBASE
+    // OBTENER LA INSTANCIA DE  LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth autenticacion = FirebaseAuth.getInstance();
-
-    // OBTENER LA INSTANCIA DE ALMACENAMIENTO DE IMAGENES Y LA REFERENCIA
-    FirebaseStorage almacenamientoImagenes = FirebaseStorage.getInstance();
-    StorageReference referenciaImagenes = almacenamientoImagenes.getReference();
 
     // URI DE LA IMAGEN DEL CLIENTE
     Uri imagenUri;
@@ -74,7 +63,7 @@ public class AltaCliente extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admo_alta_modificar_cliente);
+        setContentView(R.layout.admo_alta_cliente);
 
         foto = findViewById(R.id.imagen);
         nombre = findViewById(R.id.nombre);
@@ -201,16 +190,6 @@ public class AltaCliente extends AppCompatActivity {
 
             // VERIFICAR QUE EL DNI NO ESTA EN LA BASE DE DATOS PARA DAR DE ALTA AL CLIENTE
             verificarDniExistente(cliente);
-
-            // COMPROBAR SI SE QUIERE DAR DE ALTA UN NUEVO USUARIO
-            // PARA NO MODIFICAR LA CONTRASEÑA EN CASO DE QUE SE ESTE EDITANDO
-            /*if(intent.getAction().equals("NUEVO")) {
-                // SE QUIERE DAR DE ALTA UN USUARIO NUEVO POR LO QUE SE ESTABLECE UNA CONTRASEÑA POR DEFECTO
-                clienteBD.put("contraseña","123456");
-            } else {
-                // SE QUIERE EDITAR AL CLIENTE POR LO QUE LA CONTRASEÑA SE QUEDA IGUAL QUE LA QUE TIENE
-                clienteBD.put("contraseña",cliente.getContrasenia());
-            }*/
 
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO

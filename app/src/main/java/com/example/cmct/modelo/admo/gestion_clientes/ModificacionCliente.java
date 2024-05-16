@@ -24,15 +24,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
+import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Cliente;
+import com.example.cmct.clases.Trabajador;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -53,14 +57,10 @@ public class ModificacionCliente extends AppCompatActivity {
     boolean fotoRellenada = false;
     Button botonGuardar;
     Cliente cliente;
+    Administrador administrador;
 
-    // OBTENER LAS INSTANCIAS DE AUTENTICACION Y LA BASE DE DATOS DE FIREBASE
+    // OBTENER LA INSTANCIA DE  LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth autenticacion = FirebaseAuth.getInstance();
-
-    // OBTENER LA INSTANCIA DE ALMACENAMIENTO DE IMAGENES Y LA REFERENCIA
-    FirebaseStorage almacenamientoImagenes = FirebaseStorage.getInstance();
-    StorageReference referenciaImagenes = almacenamientoImagenes.getReference();
 
     // URI DE LA IMAGEN DEL CLIENTE
     Uri imagenUri;
@@ -68,7 +68,10 @@ public class ModificacionCliente extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admo_alta_modificar_cliente);
+        setContentView(R.layout.admo_modificar_cliente);
+
+        // OBTENER EL ADMINISTRADOR
+        obtenerAdministrador();
 
         foto = findViewById(R.id.imagen);
         nombre = findViewById(R.id.nombre);
@@ -76,7 +79,6 @@ public class ModificacionCliente extends AppCompatActivity {
         apellido2 = findViewById(R.id.apellido2);
         correo = findViewById(R.id.correo);
         telefono = findViewById(R.id.telefono);
-        dni = findViewById(R.id.dni);
         direccion = findViewById(R.id.direccion);
         localidades = findViewById(R.id.spinnerLocalidades);
         botonGuardar = findViewById(R.id.btnGuardarCliente);
@@ -89,28 +91,51 @@ public class ModificacionCliente extends AppCompatActivity {
         // ESTABLECER EL ADAPTADOR AL DESPLEGABLE
         localidades.setAdapter(adapter);
 
-        // COMPROBAR SI EL USUARIO QUIERE EDITAR A UN CLIENTE
+
+        // OBTENER EL INTENTO CON LOS DATOS QUE ME PASAN
         intent = getIntent();
-        if(intent.getAction().equals("EDITAR")) {
-            // OBTENER EL CLIENTE QUE SE HA SELECCIONADO EN LA ANTERIOR PANTALLA
-            cliente = (Cliente) intent.getSerializableExtra("cliente");
+        // OBTENER EL ID DEL USUARIO
+        String idUsuario = intent.getStringExtra("idusuario");
 
-            // RELLENAR LOS CAMPOS CON LOS DATOS DEL CLIENTE QUE SE QUIERE MODIFICAR
-            //foto = ;
-            nombre.setText(cliente.getNombre());
-            apellido1.setText(cliente.getApellido1());
-            apellido2.setText(cliente.getApellido2());
-            correo.setText(cliente.getCorreo());
-            telefono.setText(cliente.getTelefono());
-            dni.setText(cliente.getDni());
-            direccion.setText(cliente.getDireccion());
+        // OBTENER TODOS LOS DATOS DEL USUARIO DE LA BASE DE DATOS
+        db.collection("usuarios").document(idUsuario)
+                .get()
+                .addOnSuccessListener(documentSnapshot ->  {
+                    cliente = documentSnapshot.toObject(Cliente.class);
 
-            // OBTENER EL ÍNDICE DE LA CIUDAD DEL CLIENTE EN LA LISTA DE OPCIONES
-            int index = opcionesCiudad.indexOf(cliente.getLocalidad());
+                    if(cliente != null) {
+                        if (cliente.getImagen() != null && !cliente.getImagen().isEmpty()) {
+                            // CARGAR LA IMAGEN DESDE FIREBASE STORAGE CON PICASSO
+                            Picasso.get()
+                                    .load(cliente.getImagen().toString())
+                                    .resize(foto.getWidth(), foto.getHeight())
+                                    .centerCrop()
+                                    .into(foto);
+                            // DECIR QUE EL IMAGEVIEW ESTA RELLENADO
+                            fotoRellenada = true;
 
-            // ESTABLECER LA CIUDAD DEL CLIENTE COMO LA SELECCIÓN ACTUAL DEL SPINNER
-            localidades.setSelection(index);
-        }
+                            // DECIR QUE LA URI ES NULA PARA SABER SI SE HA CAMBIADO LA IMAGEN
+                            imagenUri = null;
+
+                        } else {
+                            foto.setImageResource(R.drawable.ic_launcher_foreground); // IMAGEN PREDETERMINADA SI NO HAY URL (NO DEBERIA OCURRIR)
+                        }
+
+                        nombre.setText(cliente.getNombre());
+                        apellido1.setText(cliente.getApellido1());
+                        apellido2.setText(cliente.getApellido2());
+                        correo.setText(cliente.getCorreo());
+                        telefono.setText(cliente.getTelefono());
+                        direccion.setText(cliente.getDireccion());
+                        localidades.setSelection(opcionesCiudad.indexOf(cliente.getLocalidad()));
+
+                    } else {
+                        Toast.makeText(this, "El trabajador es null", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(getApplicationContext(),1,"Error al recuperar los datos");
+                });
     }
 
     // CLICK EN EL BOTON DE GUARDAR PARA DAR DE ALTA EN LA BASE DE DATOS AL CLIENTE
@@ -127,7 +152,7 @@ public class ModificacionCliente extends AppCompatActivity {
 
         // COMPROBAR SI TODOS LOS CAMPOS ESTAN RELLENADOS
         if(nombre.getText().toString().isEmpty() || apellido1.getText().toString().isEmpty() || apellido2.getText().toString().isEmpty()
-                || correo.getText().toString().isEmpty() || telefono.getText().toString().isEmpty() || dni.getText().toString().isEmpty() || direccion.getText().toString().isEmpty()) {
+                || correo.getText().toString().isEmpty() || telefono.getText().toString().isEmpty() || direccion.getText().toString().isEmpty()) {
 
             descripcion += "- Todos los campos deben estar rellenados.\n";
 
@@ -154,13 +179,6 @@ public class ModificacionCliente extends AppCompatActivity {
 
             }
 
-            // VALIDAR SI EL DNI ES CORRECTO
-            if (!validarDni(dni.getText().toString())) {
-
-                descripcion += "- El DNI no es válido.\n";
-
-            }
-
             if(!validarDireccion(direccion.getText().toString(), localidades.getSelectedItem().toString())) {
 
                 descripcion += "- La dirección no es válida.";
@@ -171,125 +189,24 @@ public class ModificacionCliente extends AppCompatActivity {
         // COMPROBAR QUE LA DESCRIPCION ESTA VACIA PARA DAR DE ALTA AL CLIENTE EN LA BASE DE DATOS
         if(descripcion.isEmpty()) {
 
+            // GUARDAMOS EL CORREO PARA QUE EN CASO DE CAMBIO NOS PODAMOS AUTENTICAR PARA VERIIFICAR DATOS MAS TARDE
+            String correoCliente = cliente.getCorreo();
+
             // OBTENER TODOS LOS CAMPOS PARA EL CLIENTE
-            cliente.setNombre(nombre.getText().toString());
-            cliente.setApellido1(apellido1.getText().toString());
-            cliente.setApellido2(apellido2.getText().toString());
-            cliente.setCorreo(correo.getText().toString());
-            cliente.setTelefono(telefono.getText().toString());
-            cliente.setDni(dni.getText().toString());
+            cliente.setNombre(nombre.getText().toString().trim());
+            cliente.setApellido1(apellido1.getText().toString().trim());
+            cliente.setApellido2(apellido2.getText().toString().trim());
+            cliente.setCorreo(correo.getText().toString().trim());
+            cliente.setTelefono(telefono.getText().toString().trim());
+            cliente.setLocalidad(localidades.getSelectedItem().toString());
             cliente.setDireccion(direccion.getText().toString());
-            cliente.setTrabajadorAsignado(null);
-            cliente.setHoraEntradaTrabajador(null);
-            cliente.setHoraSalidaTrabajador(null);
-            cliente.setNecesidades(null);
 
-            // CREAR UN OBJETO CLIENTE
-            Map<String, Object> clienteBD = new HashMap<>();
-            clienteBD.put("nombre", cliente.getNombre());
-            clienteBD.put("apellido1", cliente.getApellido1());
-            clienteBD.put("apellido2", cliente.getApellido2());
-            clienteBD.put("dni", cliente.getDni().toUpperCase());
-            clienteBD.put("correo", cliente.getCorreo());
-            clienteBD.put("telefono", cliente.getTelefono());
-            clienteBD.put("rol", "cliente");
-            clienteBD.put("direccion",cliente.getDireccion());
-            clienteBD.put("trabajadorAsignado",cliente.getTrabajadorAsignado());
-            clienteBD.put("horaEntradaTrabajador",cliente.getHoraEntradaTrabajador());
-            clienteBD.put("horaSalidaTrabajador",cliente.getHoraSalidaTrabajador());
-            clienteBD.put("necesidades",cliente.getNecesidades());
+            administrador.editarCliente(cliente,correoCliente,imagenUri,this);
 
-            // COMPROBAR SI SE QUIERE DAR DE ALTA UN NUEVO USUARIO
-            // PARA NO MODIFICAR LA CONTRASEÑA EN CASO DE QUE SE ESTE EDITANDO
-            if(intent.getAction().equals("NUEVO")) {
-                // SE QUIERE DAR DE ALTA UN USUARIO NUEVO POR LO QUE SE ESTABLECE UNA CONTRASEÑA POR DEFECTO
-                clienteBD.put("contraseña","123456");
-            } else {
-                // SE QUIERE EDITAR AL CLIENTE POR LO QUE LA CONTRASEÑA SE QUEDA IGUAL QUE LA QUE TIENE
-                clienteBD.put("contraseña",cliente.getContrasenia());
-            }
-
-            // REGISTRAR AL USUARIO EN AUTENTICACION Y DARLO DE ALTA EN LA BASE DE DATOS
-            registrarUsuario(clienteBD);
-
-            // CERRAR PANTALLA
-            finish();
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO
             mostrarMensajes(getApplicationContext(),1,descripcion);
         }
-    }
-
-    // REGISTRAR USUARIO EN LA BASE DE DATOS
-    private void registrarUsuario(Map<String, Object> clienteBD) {
-
-        // RUTA EN LA QUE SE VA A GUARDAR LA IMAGEN CON EL DNI DEL CLIENTE
-        StorageReference imagenRef = referenciaImagenes.child("imagenes/" + clienteBD.get("dni"));
-
-        UploadTask uploadTask = imagenRef.putFile(imagenUri);
-
-        // AÑADIR LA IMAGEN AL ALMACENAMIENTO DE IMAGENES
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        // URL DE DESCARGA DEL ARCHIVO SUBIDO
-                        String urlDescarga = uri.toString();
-
-                        // GUARDAR LA URL DE DESCARGA EN EL TRABAJADOR
-                        clienteBD.put("imagen", urlDescarga);
-
-                        // CREAR AL USUARIO EN AUTENTICACION
-                        autenticacion.createUserWithEmailAndPassword(clienteBD.get("correo").toString(), clienteBD.get("contraseña").toString())
-                                .addOnCompleteListener(ModificacionCliente.this, task -> {
-                                    if (task.isSuccessful()) {
-
-                                        // SE OBTIENE EL USUARIO AL SER EL REGISTRO EXITOSO
-                                        FirebaseUser firebaseUser = autenticacion.getCurrentUser();
-
-                                        if (firebaseUser != null) {
-
-                                            // CREAR EL USUARIO EN LA BASE DE DATOS
-                                            String userId = firebaseUser.getUid(); // ID DEL USUARIO
-                                            db.collection("usuarios").document(userId)
-                                                    .set(clienteBD)
-                                                    .addOnSuccessListener(aVoid -> {
-
-                                                        if(intent.getAction().equals("NUEVO")) {
-                                                            // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
-                                                            mostrarMensajes(getApplicationContext(),0,"Cliente dado de alta");
-                                                        } else {
-                                                            // SE QUIERE EDITAR AL CLIENTE
-                                                            // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DE LA MODIFICACION
-                                                            mostrarMensajes(getApplicationContext(),0,"Cliente dado de alta");
-                                                        }
-
-                                                        // CERRAR PANTALLA
-                                                        finish();
-                                                    })
-                                                    .addOnFailureListener(e -> {
-                                                        // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL ALTA
-                                                        mostrarMensajes(getApplicationContext(),1,"Error al dar el alta");
-                                                    });
-                                        }
-                                    } else {
-                                        // EL REGISTRO FALLA Y SE INFORMA AL USUARIO
-                                        mostrarMensajes(getApplicationContext(),1,"Error al dar el alta");
-                                    }
-                                });
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL GUARDADO DE LA IMAGEN
-                mostrarMensajes(getApplicationContext(),1,"Error al guardar la imagen");
-            }
-        });
-
     }
 
     // COMPROBAR QUE LA DIRECCION SE PUEDE ENCONTRAR EN GOOGLE MAPS
@@ -344,33 +261,6 @@ public class ModificacionCliente extends AppCompatActivity {
         // VERIFICAR SI EL NUMERO COINCIDE CON EL PATRON
         Matcher matcher = pattern.matcher(telefono);
         return matcher.matches();
-    }
-
-    // COMPROBAR QUE EL DNI ES CORRECTO
-    private boolean validarDni(String dni) {
-        // VERIFICAR QUE EL DNI TIENE LONGITUD 9
-        if (dni == null || dni.length() != 9) {
-            return false;
-        }
-
-        // EXTRAER EL NUMERO Y LA LETRA DEL DNI
-        String numero = dni.substring(0, 8);
-        String letra = dni.substring(8).toUpperCase();
-
-        // VERIFICAR QUE EL NUMERO DEL DNI ES UN NUMERO
-        try {
-            Integer.parseInt(numero);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        // CALCULAR LA LETRA CORRESPONDIENTE AL DNI
-        String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-        int indice = Integer.parseInt(numero) % 23;
-        char letraCalculada = letras.charAt(indice);
-
-        // COMPROBAR SI LA LETRA CALCULADA COINCIDE CON LA LETRA DEL DNI
-        return letraCalculada == letra.charAt(0);
     }
 
     // CLICK PARA ABRIR LA GALERIA Y ELEGIR LA IMAGEN
@@ -438,5 +328,24 @@ public class ModificacionCliente extends AppCompatActivity {
             }
 
         }
+    }
+
+    private void obtenerAdministrador() {
+        db.collection("usuarios")
+                .whereEqualTo("rol", "administrador")
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // OBTENER EL USUARIO ADMINISTRADOR
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        administrador = documentSnapshot.toObject(Administrador.class);
+                    } else {
+                        mostrarMensajes(getApplicationContext(), 1, "No se encontraron administradores");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos de administrador");
+                });
     }
 }
