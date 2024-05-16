@@ -18,11 +18,14 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorTrabajadorSimple;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ListaTrabajadoresIncidencias extends AppCompatActivity {
@@ -44,17 +47,43 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
     }
 
     private void obtenerTrabajadoresConIncidencias() {
+        // CREAR UNA INSTANCIA DE CALENDAR PARA OBTENER LA FECHA ACTUAL
+        Calendar calendario = Calendar.getInstance();
+        calendario.set(Calendar.HOUR_OF_DAY,0);
+        calendario.set(Calendar.MINUTE,0);
+        calendario.set(Calendar.SECOND,0);
+        calendario.set(Calendar.MILLISECOND,0);
+
+        // CREAR UNA INSTANCIA DATE PARA GUARDAR EL INICIO DEL DIA
+        Date fechaInicio = calendario.getTime();
+
+        // GUARDAR EL FINAL DEL DIA
+        calendario.add(Calendar.DATE,1);
+        Date fechaFinal = calendario.getTime();
+
+        // CONSULTA PARA SABER QUE INSTANCIAS SE HAN CREADO EN EL DIA ACTUAL UTILIZANDO LAS FECHAS OBTENIDAS ANTERIORMENTE
         FirebaseFirestore.getInstance().collection("incidencias")
+                .whereGreaterThanOrEqualTo("fechaIncidencia", new Timestamp(fechaInicio))
+                .whereLessThan("fechaIncidencia", new Timestamp(fechaFinal))
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    // LISTA PARA GUARDAR LOS TRABAJADORES QUE HAYAN HECHO INCIDENCIAS
                     List<String> dniTrabajadores = new ArrayList<>();
+                    // GUARDAR EN LA LISTA EL DNI DE LOS TRABAJADORES
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                         String dniTrabajador = documentSnapshot.getString("dni");
                         if (dniTrabajador != null && !dniTrabajadores.contains(dniTrabajador)) {
                             dniTrabajadores.add(dniTrabajador);
                         }
                     }
-                    cargarTrabajadores(dniTrabajadores);
+                    // COMPROBAR SI LA LISTA ESTA LLENA PARA CARGAR EL RECYCLERVIEW
+                    if(!dniTrabajadores.isEmpty()) {
+                        cargarTrabajadores(dniTrabajadores);
+                    } else {
+                        // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
+                        mostrarMensajes(getApplicationContext(),0,"Todavía no hay incidencias");
+                        finish();
+                    }
                 })
                 .addOnFailureListener(e -> {
                     mostrarMensajes(getApplicationContext(),1,"Error al cargar incidencias");
