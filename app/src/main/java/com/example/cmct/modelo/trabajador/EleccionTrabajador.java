@@ -55,6 +55,7 @@ public class EleccionTrabajador extends AppCompatActivity {
         obtenerUbicacion();
     }
 
+    // OBTENER LA LANGITUD Y LATITUD DEL TRABAJADOR PARA PODER FICHAR
     private void obtenerUbicacion() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             localizacion.getLastLocation().addOnSuccessListener(this, location -> {
@@ -81,6 +82,7 @@ public class EleccionTrabajador extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // OBTENER AL TRABAJADOR AUTENTICADO
     private void obtenerTrabajador() {
         // OBTENER LA ID DEL USUARIO TRABAJADOR QUE ESTA AUTENTICADO
         String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();

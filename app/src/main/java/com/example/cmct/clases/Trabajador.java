@@ -29,11 +29,12 @@ public class Trabajador extends Usuario implements Serializable {
     }
 
     // METODO PARA REGISTRAR INCIDENCIAS DEL TRABAJADOR
-    public void crearIncidencia(Activity actividad, String dniTrabajador, String tipoIncidencia, String descripcion, Timestamp fechaIncidencia) {
-        db.collection("incidencias").add(new Incidencia(dniTrabajador,tipoIncidencia,descripcion, fechaIncidencia));
+    public void crearIncidencia(Activity actividad, String tipoIncidencia, String descripcion, Timestamp fechaIncidencia) {
+        db.collection("incidencias").add(new Incidencia(this.getDni(),tipoIncidencia,descripcion, fechaIncidencia));
         mostrarMensajes(actividad,actividad.getApplicationContext(),0,"Incidencia registrada con éxito");
     }
 
+    // METODO PARA FICHAR
     public void fichar(Activity actividad, double latitud, double longitud) {
         // CREAR UN OBJETO FICHAJE PARA GUARDARLO
         Fichaje fichaje = new Fichaje(this.getDni(),Timestamp.now(),new GeoPoint(latitud,longitud));

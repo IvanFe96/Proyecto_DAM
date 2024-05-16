@@ -68,7 +68,7 @@ public class CrearIncidencias extends AppCompatActivity {
             Timestamp fechaIncidencia = Timestamp.now();
 
             // CREAR LA INCIDENCIA
-            trabajador.crearIncidencia(this, trabajador.getDni(), (String) tipoIncidencia.getSelectedItem(),descripcion.getText().toString(), fechaIncidencia);
+            trabajador.crearIncidencia(this, (String) tipoIncidencia.getSelectedItem(),descripcion.getText().toString(), fechaIncidencia);
             finish();
         }
     }
