@@ -50,7 +50,7 @@
         <activity android:name=".modelo.cliente.Valorar" />
         <activity android:name=".modelo.cliente.RegistrarNecesidades" />
         <activity android:name=".modelo.trabajador.EleccionTrabajador" />
-        <activity android:name=".modelo.trabajador.Incidencia" />
+        <activity android:name=".modelo.trabajador.CrearIncidencias" />
         <activity android:name=".modelo.trabajador.ListaClientesHorario" />
         <activity android:name=".modelo.trabajador.DatosCliente" />
     </application>

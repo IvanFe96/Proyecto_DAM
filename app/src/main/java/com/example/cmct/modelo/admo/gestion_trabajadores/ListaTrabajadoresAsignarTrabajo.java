@@ -25,7 +25,7 @@ public class ListaTrabajadoresAsignarTrabajo extends AppCompatActivity {
         }
 
         this.lista = findViewById(R.id.recyclerListaTrabajadoresAsignarTrabajo);
-        adaptadorTrabajadorSimple = new AdaptadorTrabajadorSimple(lista);
+        //adaptadorTrabajadorSimple = new AdaptadorTrabajadorSimple(lista);
 
         // PASAMOS AL ADAPTADOR EL INTENTO DEL QUE PROCEDE
         Intent intent = getIntent();

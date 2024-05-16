@@ -31,7 +31,7 @@ public class EleccionTrabajador extends AppCompatActivity {
 
     // CLICK BOTON PARA INICIAR PANTALLA DE CREAR UNA INCIDENCIA
     public void clickBotonIncidencia(View view) {
-        Intent intent = new Intent(this, Incidencia.class);
+        Intent intent = new Intent(this, CrearIncidencias.class);
         startActivity(intent);
     }
 

@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -135,6 +136,7 @@ public class Administrador extends Usuario implements Serializable {
                                         usuarioAEliminar.delete().addOnCompleteListener(deleteTask -> {
                                             if(deleteTask.isSuccessful()) {
                                                 eliminarImagenTrabajadorDeStorage(snapshot, actividad);
+                                                eliminarIncidenciasTrabajador(snapshot,actividad);
                                                 bajaTrabajadorEnFirestore(usuarioAEliminar, actividad);
                                             } else {
                                                 mostrarMensajes(actividad,1,"Error al eliminar al trabajador");
@@ -204,6 +206,43 @@ public class Administrador extends Usuario implements Serializable {
                         }
                     }
                 });
+    }
+
+    private void eliminarIncidenciasTrabajador(DocumentSnapshot snapshot, Activity actividad) {
+        // OBTENER LOS DATOS DEL TRABAJADOR PARA UTILIZARLOS EN LA CONSULTA SIGUIENTE
+        Trabajador trabajador = snapshot.toObject(Trabajador.class);
+
+        // REAUTENTICAR AL ADMINISTRADOR
+        autenticacion.signInWithEmailAndPassword(this.getCorreo(), this.getContrasenia())
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // ACCEDER A LA COLECCION DE INCIDENCIAS
+                            db.collection("incidencias")
+                                    .whereEqualTo("dni",trabajador.getDni())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                // RECORRER TODAS LAS INCIDENCIAS QUE TENGA ESE TRABAJADOR PARA ELIMINARLAS
+                                                for (DocumentSnapshot document : task.getResult()) {
+                                                    db.collection("incidencias").document(document.getId()).delete()
+                                                            .addOnSuccessListener(aVoid ->{})
+                                                            .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al eliminar una incidencia"));
+                                                }
+                                            } else {
+                                                mostrarMensajes(actividad, 1, "Error al obtener las incidencias para eliminar.");
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // ERROR AL REAUTENTICAR AL ADMINISTRADOR
+                            mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                        }
+                    }
+                    });
     }
 
     public void editarTrabajador(Trabajador trabajador, String correoTrabajador, Uri imagenUri, Activity actividad) {

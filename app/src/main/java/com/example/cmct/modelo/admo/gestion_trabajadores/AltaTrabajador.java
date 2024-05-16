@@ -45,15 +45,13 @@ public class AltaTrabajador extends AppCompatActivity {
     boolean fotoRellenada = false;
     Trabajador trabajador;
 
-    // OBTENER LAS INSTANCIAS DE AUTENTICACION Y LA BASE DE DATOS DE FIREBASE
+    // OBTENER LA INSTANCIA DE LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth autenticacion = FirebaseAuth.getInstance();
 
     Administrador administrador;
 
     // OBTENER LA INSTANCIA DE ALMACENAMIENTO DE IMAGENES Y LA REFERENCIA
     FirebaseStorage almacenamientoImagenes = FirebaseStorage.getInstance();
-    StorageReference referenciaImagenes = almacenamientoImagenes.getReference();
 
     // URI DE LA IMAGEN DEL TRABAJADOR
     Uri imagenUri;
