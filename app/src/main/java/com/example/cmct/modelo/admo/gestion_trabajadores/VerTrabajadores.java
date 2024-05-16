@@ -44,7 +44,6 @@ public class VerTrabajadores extends AppCompatActivity {
         // OBTENER EL ADMINISTRADOR
         obtenerAdministrador();
 
-        // CONFIGURAR LA LISTA CON LOS DATOS DE LA BASE DE DATOS
         recyclerTrabajadores = findViewById(R.id.recyclerTrabajadores);
 
         // CONSULTA PARA OBTENER LOS USUARIOS QUE SEAN TRABAJADORES
@@ -56,6 +55,7 @@ public class VerTrabajadores extends AppCompatActivity {
         FirestoreRecyclerOptions<Trabajador> lista = new FirestoreRecyclerOptions.Builder<Trabajador>()
                 .setQuery(sentencia, Trabajador.class).build();
 
+        // CONFIGURAR LA LISTA CON LOS DATOS DE LA BASE DE DATOS
         adaptadorVerTrabajadores = new AdaptadorVerTrabajadores(lista);
 
         recyclerTrabajadores.setHasFixedSize(true);

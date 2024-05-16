@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".modelo.admo.EleccionGestion" />
-        <activity android:name=".modelo.admo.gestion_clientes.AltaModificacionCliente" />
+        <activity android:name=".modelo.admo.gestion_clientes.AltaCliente" />
         <activity android:name=".modelo.admo.gestion_clientes.VerClientes" />
         <activity android:name=".modelo.admo.gestion_trabajadores.GestionTrabajadores" />
         <activity android:name=".modelo.admo.gestion_trabajadores.VerTrabajadores" />

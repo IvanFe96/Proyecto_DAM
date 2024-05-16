@@ -142,6 +142,7 @@ public class Administrador extends Usuario implements Serializable {
                                                 eliminarImagenTrabajadorDeStorage(snapshot, actividad);
                                                 eliminarIncidenciasTrabajador(snapshot,actividad);
                                                 bajaTrabajadorEnFirestore(usuarioAEliminar, actividad);
+                                                eliminarFichajesTrabajador(snapshot,actividad);
                                             } else {
                                                 mostrarMensajes(actividad,1,"Error al eliminar al trabajador");
                                             }
@@ -389,6 +390,79 @@ public class Administrador extends Usuario implements Serializable {
                 });
 
         return "";
+    }
+
+    // DAR DE ALTA UN CLIENTE EN AUTENTICACION
+    public void altaClienteAutenticacion(Cliente cliente, Activity actividad, Uri imagenUri) {
+        // CREAR AL USUARIO EN AUTENTICACION
+        autenticacion.createUserWithEmailAndPassword(cliente.getCorreo(), cliente.getContrasenia())
+                .addOnCompleteListener(actividad, task -> {
+                    if (task.isSuccessful()) {
+
+                        // SE OBTIENE EL USUARIO AL SER EL REGISTRO EXITOSO
+                        FirebaseUser firebaseUser = task.getResult().getUser();
+
+                        // CERRAR SESION CON EL USUARIO CREADO
+                        autenticacion.signOut();
+
+                        if (firebaseUser != null) {
+
+                            // REAUTENTICAR AL ADMINISTRADOR CON EL TOKEN GUARDADO ANTERIORMENTE
+                            autenticacion.signInWithEmailAndPassword(this.getCorreo(), this.getContrasenia())
+                                    .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                // CREAR EL USUARIO O ACTUALIZARLO EN LA BASE DE DATOS
+                                                String idUsuario = firebaseUser.getUid(); // ID DEL USUARIO
+                                                subirImagenCliente(idUsuario, imagenUri, cliente, actividad);
+                                            } else {
+                                                // ERROR AL REAUTENTICAR AL ADMINISTRADOR
+                                                mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                                            }
+                                        }
+                                    });
+                        }
+                    } else {
+                        // EL REGISTRO FALLA Y SE INFORMA AL USUARIO
+                        mostrarMensajes(actividad,1,"El correo ya existe");
+                    }
+                });
+    }
+
+    // SUBIR LA IMAGEN DEL CLIENTE AL ALMACENAMIENTO DE IMAGENES
+    private void subirImagenCliente(String idUsuario, Uri imagenUri, Cliente cliente, Activity actividad) {
+        StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + cliente.getDni());
+        imagenRef.putFile(imagenUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    imagenRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        // URL DE LA IMAGEN SUBIDA
+                        String imagenUrl = uri.toString();
+                        cliente.setImagen(imagenUrl);
+                        // REGISTRAR AL USUARIO EN LA BASE DE DATOS
+                        registrarClienteEnFirestore(idUsuario, cliente, actividad);
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
+                });
+    }
+
+    // DAR DE ALTA A UN CLIENTE EN LA BASE DE DATOS
+    private void registrarClienteEnFirestore(String idUsuario, Cliente cliente, Activity actividad) {
+        db.collection("usuarios").document(idUsuario)
+                .set(cliente)
+                .addOnSuccessListener(aVoid -> {
+                    // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
+                    mostrarMensajes(actividad, 0, "Cliente dado de alta");
+
+                    // CERRAR PANTALLA
+                    actividad.finish();
+                })
+                .addOnFailureListener(e -> {
+                    // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL ALTA
+                    mostrarMensajes(actividad,1,"Error al dar el alta");
+                });
     }
 
     // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
