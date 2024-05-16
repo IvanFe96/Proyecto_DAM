@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".modelo.admo.gestion_clientes.AltaModificacionCliente"
+    tools:context=".modelo.admo.gestion_clientes.AltaCliente"
     android:background="@drawable/estilo_fondo"
     android:orientation="vertical">
 
