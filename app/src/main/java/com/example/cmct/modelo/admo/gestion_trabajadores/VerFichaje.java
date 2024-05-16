@@ -75,8 +75,6 @@ public class VerFichaje extends AppCompatActivity {
         Date fechaInicio = obtenerFechaInicio(today);
         Date fechaFin = obtenerFechaFin(today);
 
-        Log.d("Fichajes", "Buscando fichajes desde: " + fechaInicio + " hasta: " + fechaFin + " para DNI: " + trabajador.getDni());
-
         // VER QUE FICHAJES HA HECHO EL TRABAJADOR
         FirebaseFirestore.getInstance().collection("fichajes")
                 .whereEqualTo("dni",trabajador.getDni())
@@ -85,7 +83,6 @@ public class VerFichaje extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
-                        Log.d("Fichajes", "Fichajes encontrados: " + queryDocumentSnapshots.size());
                         // RECORRER TODOS LOS REGISTROS ENCONTRADOS
                         for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                             // OBTENER LOS DATOS DEL FICHAJE
@@ -112,6 +109,7 @@ public class VerFichaje extends AppCompatActivity {
 
     }
 
+    // RELLENAR LOS CAMPOS DE TEXTO CON LA HORA A LA QUE HA FICHADO EL TRABAJADOR
     private void rellenarHoras() {
         for (int i = 0; i < fichajes.size(); i++) {
             Date fecha = fichajes.get(i).getFechaFichaje().toDate(); // CONVERTIR A FECHA EL OBJETO
@@ -119,8 +117,8 @@ public class VerFichaje extends AppCompatActivity {
             horasFichajes[i].setText(formatoFecha.format(fecha)); // ESTABLECER LA FECHA EN EL CAMPO CORRESPONDIENTE
         }
 
-
-        for (int i = fichajes.size()+1; i < 6; i++) {
+        // LOS CAMPOS DE TEXTO QUE NO HAYAN SIDO RELLENADOS SIGNIFICA QUE NO HA FICHADO TODAVIA EL TRABAJADOR
+        for (int i = fichajes.size(); i < 6; i++) {
             horasFichajes[i].setText("Sin fichar");
             mapas[i].setEnabled(false);
         }
@@ -194,7 +192,7 @@ public class VerFichaje extends AppCompatActivity {
             mostrarDialogoMapa(numMapa);
         } else {
             // MOSTRAR MENSAJE INDICANDO QUE NO HAY FICHAJE REGISTRADO
-            mostrarMensajes(this,1, "No hay fichaje registrado");
+            mostrarMensajes(getApplicationContext(),1, "No hay fichaje registrado");
         }
     }
 

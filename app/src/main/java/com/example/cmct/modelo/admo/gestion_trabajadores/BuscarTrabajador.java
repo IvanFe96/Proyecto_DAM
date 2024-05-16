@@ -49,7 +49,7 @@ public class BuscarTrabajador extends AppCompatActivity {
             } else if (intentPadre.getAction().equals("FICHAJE")) {
 
                 Intent intent = new Intent(v.getContext(), VerFichaje.class);
-                intent.putExtra("dni", buscadorTrabajador.getText().toString());
+                intent.putExtra("dni", buscadorTrabajador.getText().toString().toUpperCase());
                 v.getContext().startActivity(intent);
 
             }
