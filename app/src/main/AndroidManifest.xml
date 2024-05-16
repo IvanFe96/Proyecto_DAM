@@ -43,7 +43,7 @@
         <activity android:name=".modelo.admo.gestion_trabajadores.BuscarTrabajador" />
         <activity android:name=".modelo.admo.gestion_trabajadores.Valoraciones" />
         <activity android:name=".modelo.admo.gestion_trabajadores.ListaTrabajadoresIncidencias" />
-        <activity android:name=".modelo.admo.gestion_trabajadores.Fichaje" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.VerFichaje" />
         <activity android:name=".modelo.admo.gestion_trabajadores.AltaTrabajador" />
         <activity android:name=".modelo.admo.gestion_trabajadores.ModificacionTrabajador" />
         <activity android:name=".modelo.cliente.EleccionCliente" />

@@ -41,6 +41,7 @@ public class Administrador extends Usuario implements Serializable {
         super(imagen, nombre, apellido1, apellido2, telefono, dni, correo, contrasenia, rol);
     }
 
+    // DAR DE ALTA UN TRABAJADOR EN AUTENTICACION
     public void altaTrabajadorAutenticacion(Trabajador trabajador, Activity actividad, Uri imagenUri) {
         // CREAR AL USUARIO EN AUTENTICACION
         autenticacion.createUserWithEmailAndPassword(trabajador.getCorreo(), trabajador.getContrasenia())
@@ -78,6 +79,7 @@ public class Administrador extends Usuario implements Serializable {
                 });
     }
 
+    // SUBIR LA IMAGEN DEL TRABAJADOR AL ALMACENAMIENTO DE IMAGENES
     private void subirImagenTrabajador(String idUsuario, Uri imagenUri, Trabajador trabajador, Activity actividad) {
         StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + trabajador.getDni());
         imagenRef.putFile(imagenUri)
@@ -94,6 +96,7 @@ public class Administrador extends Usuario implements Serializable {
                 });
     }
 
+    // DAR DE ALTA A UN TRABAJADOR EN LA BASE DE DATOS
     private void registrarTrabajadorEnFirestore(String idUsuario, String imagenUrl, Trabajador trabajador, Activity actividad) {
         // CREAR UN DOCUMENTO TRABAJADOR
         Map<String, Object> trabajadorBD = new HashMap<>();
@@ -122,6 +125,7 @@ public class Administrador extends Usuario implements Serializable {
                 });
     }
 
+    // ELIMINAR AL TRABAJADOR DE AUTENTICACION
     public void bajaTrabajadorAutenticacion(DocumentSnapshot snapshot, Activity actividad) {
         db.collection("usuarios").document(snapshot.getId()).
                 get().
@@ -149,6 +153,7 @@ public class Administrador extends Usuario implements Serializable {
 
     }
 
+    // ELIMINAR LA IMAGEN DEL TRABAJADOR DEL ALMACENAMIENTO DE IMAGENES
     public void eliminarImagenTrabajadorDeStorage(DocumentSnapshot snapshot, Activity actividad) {
         Trabajador trabajador = snapshot.toObject(Trabajador.class);
         if (trabajador.getDni() != null && !trabajador.getDni().isEmpty()) {
@@ -167,6 +172,7 @@ public class Administrador extends Usuario implements Serializable {
         }
     }
 
+    // ELIMINAR AL TRABAJADOR EN LA BASE DE DATOS
     private void bajaTrabajadorEnFirestore(FirebaseUser usuarioAEliminar, Activity actividad) {
         // REAUTENTICAR AL ADMINISTRADOR
         autenticacion.signInWithEmailAndPassword(this.getCorreo(), this.getContrasenia())
@@ -208,6 +214,7 @@ public class Administrador extends Usuario implements Serializable {
                 });
     }
 
+    // ELIMINAR LAS INCIDENCIAS QUE TENGA EL TRABAJADOR
     private void eliminarIncidenciasTrabajador(DocumentSnapshot snapshot, Activity actividad) {
         // OBTENER LOS DATOS DEL TRABAJADOR PARA UTILIZARLOS EN LA CONSULTA SIGUIENTE
         Trabajador trabajador = snapshot.toObject(Trabajador.class);
@@ -245,6 +252,45 @@ public class Administrador extends Usuario implements Serializable {
                     });
     }
 
+    // ELIMINAR LOS FICHAJES QUE TENGA EL TRABAJADOR
+    private void eliminarFichajesTrabajador(DocumentSnapshot snapshot, Activity actividad) {
+        // OBTENER LOS DATOS DEL TRABAJADOR PARA UTILIZARLOS EN LA CONSULTA SIGUIENTE
+        Trabajador trabajador = snapshot.toObject(Trabajador.class);
+
+        // REAUTENTICAR AL ADMINISTRADOR
+        autenticacion.signInWithEmailAndPassword(this.getCorreo(), this.getContrasenia())
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // ACCEDER A LA COLECCION DE INCIDENCIAS
+                            db.collection("fichajes")
+                                    .whereEqualTo("dni",trabajador.getDni())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                // RECORRER TODAS LAS INCIDENCIAS QUE TENGA ESE TRABAJADOR PARA ELIMINARLAS
+                                                for (DocumentSnapshot document : task.getResult()) {
+                                                    db.collection("incidencias").document(document.getId()).delete()
+                                                            .addOnSuccessListener(aVoid ->{})
+                                                            .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al eliminar una incidencia"));
+                                                }
+                                            } else {
+                                                mostrarMensajes(actividad, 1, "Error al obtener las incidencias para eliminar.");
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // ERROR AL REAUTENTICAR AL ADMINISTRADOR
+                            mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                        }
+                    }
+                });
+    }
+
+    // EDITAR LOS DATOS DEL TRABAJADOR
     public void editarTrabajador(Trabajador trabajador, String correoTrabajador, Uri imagenUri, Activity actividad) {
 
         // ACTUALIZAR LOS DATOS
@@ -314,6 +360,7 @@ public class Administrador extends Usuario implements Serializable {
 
     }
 
+    // ACTUALIZAR LOS DATOS DEL TRABAJADOR EN LA BASE DE DATOS
     private void actualizarTrabajadorFirestore(String idUsuario, Map<String,Object> datosActualizados, Activity actividad) {
         db.collection("usuarios").document(idUsuario)
                 .update(datosActualizados)
@@ -327,6 +374,7 @@ public class Administrador extends Usuario implements Serializable {
                 .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al actualizar datos: " + e.getMessage()));
     }
 
+    // ACTUALIZAR LA IMAGEN DEL TRABAJADOR
     private String actualizarImagenTrabajador(Uri imagenUri,Trabajador trabajador, Activity actividad, Callback<String> callback) {
         StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + trabajador.getDni());
         imagenRef.putFile(imagenUri)

@@ -10,17 +10,15 @@ import android.widget.Toast;
 
 import com.example.cmct.R;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Trabajador extends Usuario implements Serializable {
 
     // OBTENER LAS INSTANCIAS DE AUTENTICACION Y LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth autenticacion = FirebaseAuth.getInstance();
 
     public Trabajador() {
         super();
@@ -31,9 +29,25 @@ public class Trabajador extends Usuario implements Serializable {
     }
 
     // METODO PARA REGISTRAR INCIDENCIAS DEL TRABAJADOR
-    public void crearIncidencia(Activity actividad, String dniTrabajador, String tipoIncidencia, String descripcion, Timestamp fechaIncidencia) {
-        db.collection("incidencias").add(new Incidencia(dniTrabajador,tipoIncidencia,descripcion, fechaIncidencia));
+    public void crearIncidencia(Activity actividad, String tipoIncidencia, String descripcion, Timestamp fechaIncidencia) {
+        db.collection("incidencias").add(new Incidencia(this.getDni(),tipoIncidencia,descripcion, fechaIncidencia));
         mostrarMensajes(actividad,actividad.getApplicationContext(),0,"Incidencia registrada con éxito");
+    }
+
+    // METODO PARA FICHAR
+    public void fichar(Activity actividad, double latitud, double longitud) {
+        // CREAR UN OBJETO FICHAJE PARA GUARDARLO
+        Fichaje fichaje = new Fichaje(this.getDni(),Timestamp.now(),new GeoPoint(latitud,longitud));
+
+        // GUARDAR LOS DATOS EN LA COLECCION FICHAJES
+        db.collection("fichajes").add(fichaje)
+                .addOnSuccessListener(documentReference -> {
+                    mostrarMensajes(actividad, actividad.getApplicationContext(),0,"Has fichado con éxito");
+                })
+                .addOnFailureListener(e -> {
+                    mostrarMensajes(actividad, actividad.getApplicationContext(),1,"Error al fichar");
+                });
+
     }
 
     // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
