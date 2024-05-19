@@ -1,5 +1,16 @@
 package com.example.cmct.clases;
 
+import android.app.Activity;
+import android.content.Context;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.cmct.R;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -11,6 +22,9 @@ public class Cliente extends Usuario implements Serializable {
     private String horaSalidaTrabajador;
     private HashMap<String, String> necesidades;
     private String trabajadorAsignado;
+
+    // OBTENER LA INSTANCIA DE LA BASE DE DATOS DE FIREBASE
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Cliente() {
         super();
@@ -74,6 +88,58 @@ public class Cliente extends Usuario implements Serializable {
 
     public void setTrabajadorAsignado(String trabajadorAsignado) {
         this.trabajadorAsignado = trabajadorAsignado;
+    }
+
+    public void registrarNecesidades(Activity actividad) {
+        db.collection("usuarios")
+                .whereEqualTo("dni",this.getDni())
+                .get()
+                .addOnCompleteListener(task -> {
+                    String idCliente = task.getResult().getDocuments().get(0).getId();
+                    db.collection("usuarios")
+                            .document(idCliente)
+                            .update("necesidades",this.necesidades)
+                            .addOnSuccessListener(task1 -> {
+                               mostrarMensajes(actividad,0,"Necesidades registrada con éxito");
+                               actividad.finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                mostrarMensajes(actividad,1,"Error al registrar las necesidades");
+                            });
+                }).addOnFailureListener(e -> {
+                    mostrarMensajes(actividad,1,"Error al encontrar al cliente");
+                });
+    }
+
+    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
+    private void mostrarMensajes(Activity activiad, int tipo, String mensaje) {
+        // MENSAJE DE QUE ES CORRECTO
+        if(tipo == 0) {
+            LayoutInflater inflater = activiad.getLayoutInflater();
+            View layout = inflater.inflate(R.layout.toast_personalizado, null);
+
+            TextView text = (TextView) layout.findViewById(R.id.toast_text);
+            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
+
+            Toast toast = new Toast(activiad.getApplicationContext());
+            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+        } else {
+            // MENSAJE DE ERRORES
+            LayoutInflater inflater = activiad.getLayoutInflater();
+            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
+
+            TextView text = (TextView) layout.findViewById(R.id.toast_text);
+            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
+
+            Toast toast = new Toast(activiad.getApplicationContext());
+            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+        }
     }
 
     // SE USA PARA SABER SI HAY CLIENTES IGUALES
