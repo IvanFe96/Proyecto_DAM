@@ -47,7 +47,7 @@ public class ModificacionTrabajador extends AppCompatActivity {
 
     Trabajador trabajador;
 
-    // OBTENER LAS INSTANCIAS DE AUTENTICACION Y LA BASE DE DATOS DE FIREBASE
+    // OBTENER LA INSTANCIA DE LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Administrador administrador;

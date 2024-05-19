@@ -24,7 +24,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Administrador extends Usuario implements Serializable {
@@ -684,6 +686,48 @@ public class Administrador extends Usuario implements Serializable {
             toast.setView(layout);
             toast.show();
         }
+    }
+
+    // AGREGAR TRABAJADOR A LOS CLIENTES
+    public void asignarTrabajadores(Trabajador trabajador, List<Cliente> clientesAAsignar, Activity actividad) {
+        // GUARDAR PARA CADA CLIENTE LOS DATOS CORRESPONDIENTES A LA HORA Y EL TRABAJADOR QUE ACUDE A SUS DOMICILIOS
+        for (int i = 0; i < clientesAAsignar.size(); i++) {
+            Cliente cliente = clientesAAsignar.get(i);
+            // MAPA PARA ACTUALIZAR LOS CAMPOS DE HORA Y TRABAJADOR
+            Map<String, Object> camposAActualizar = new HashMap<>();
+            camposAActualizar.put("horaEntradaTrabajador",cliente.getHoraEntradaTrabajador());
+            camposAActualizar.put("horaSalidaTrabajador",cliente.getHoraSalidaTrabajador());
+            camposAActualizar.put("trabajadorAsignado",trabajador.getDni());
+
+            // ENCONTRAR AL CLIENTE EN LA BASE DE DATOS
+            db.collection("usuarios")
+                    .whereEqualTo("rol", "cliente")
+                    .whereEqualTo("dni", cliente.getDni())
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        String idCliente = queryDocumentSnapshots.getDocuments().get(0).getId();
+                        // ACTUALIZAR LOS CAMPOS DEL CLIENTE
+                        actualizarCliente(idCliente,camposAActualizar);
+                    })
+                    .addOnFailureListener(e -> {
+                        mostrarMensajes(actividad, 1, "Error al cargar clientes sin trabajador asignado");
+                    });
+
+            // COMPROBAR QUE ES EL ULTIMO CLIENTE PARA MOSTRAR UN MENSAJE
+            if (i == clientesAAsignar.size()-1) {
+                mostrarMensajes(actividad,0,"Trabajo asignado con éxito");
+                actividad.finish();
+            }
+        }
+
+    }
+
+    // METODO PARA ACTUALIZAR EL TRABAJADOR Y LAS HORAS DEL CLIENTE
+    private void actualizarCliente(String idCliente, Map<String, Object> camposAActualizar) {
+        //  ESTABLECER HORA Y TRABAJADOR AL CLIENTE
+        db.collection("usuarios")
+                .document(idCliente)
+                .update(camposAActualizar);
     }
 
     // INTERFAZ PARA DEVOLVER DATOS

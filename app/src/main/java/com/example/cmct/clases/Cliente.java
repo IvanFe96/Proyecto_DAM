@@ -75,4 +75,25 @@ public class Cliente extends Usuario implements Serializable {
     public void setTrabajadorAsignado(String trabajadorAsignado) {
         this.trabajadorAsignado = trabajadorAsignado;
     }
+
+    // SE USA PARA SABER SI HAY CLIENTES IGUALES
+    // ? : (es una forma mas corta de hacer una condicion else if)
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return this.getDni() != null ? this.getDni().equals(cliente.getDni()) : cliente.getDni() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getDni() != null ? this.getDni().hashCode() : 0;
+    }
+
+    // SE USA PARA MOSTRAR EL NOMBRE EN LOS DESPLEGABLES DE ASIGNAR TRABAJO
+    @Override
+    public String toString() {
+        return this.getNombre();
+    }
 }
