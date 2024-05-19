@@ -95,7 +95,7 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         // LO CUAL INDICA QUE LOS TRABAJADORES QUE ESTEN EN LA LISTA TIENEN INCIDENCIAS
         Query sentencia = FirebaseFirestore.getInstance().collection("usuarios")
                 .whereEqualTo("rol", "trabajador")
-                .whereIn("dni", dniTrabajadores) // Asegúrate de que "id" es el campo correcto en tu colección de usuarios
+                .whereIn("dni", dniTrabajadores)
                 .orderBy("nombre", Query.Direction.ASCENDING);
 
         // OBTENER LOS TRABAJADORES QUE TIENEN INCIDENCIAS

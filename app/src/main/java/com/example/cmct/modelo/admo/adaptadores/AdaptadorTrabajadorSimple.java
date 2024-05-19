@@ -53,7 +53,6 @@ public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajad
 
     @Override
     public void onBindViewHolder(@NonNull DatosHolder holder, int position, @NonNull Trabajador modelo) {
-        Log.d("Adaptador", "Trabajador:"+modelo.getDni());
         // AÑADIR LOS DATOS AL ITEM DEL RECYCLER
         // CARGAR LA IMAGEN DESDE FIREBASE STORAGE CON PICASSO
         if (modelo.getImagen() != null && !modelo.getImagen().isEmpty()) {
@@ -95,7 +94,7 @@ public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajad
                 // VAMOS A LA SIGUIENTE PANTALLA PARA ASIGNAR NUEVO TRABAJO AL TRABAJADOR
                 Intent intent = new Intent(v.getContext(), AsignarTrabajo.class);
                 intent.setAction("NUEVO");
-                //intent.putExtra("nombre", lista[getAdapterPosition()]);
+                intent.putExtra("trabajador", getSnapshots().getSnapshot(getAdapterPosition()).toObject(Trabajador.class).getDni());
                 v.getContext().startActivity(intent);
             } else if (intentpadre.getAction().equals("INCIDENCIAS")) {
                 // DECLARAR UNA LISTA PARA GUARDAR LOS DATOS DE LAS INCIDENCIAS
@@ -108,7 +107,6 @@ public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajad
                         .addOnSuccessListener(queryDocumentSnapshots -> {
                             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                             for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
-                                Log.d("PRUEBAAAAAAAAA", "HAS ENTRADO CABRON");
                                 // OBTENER LOS DATOS QUE SE VAN A MOSTRAR EN EL DIALOGO
                                 incidencias.add(new Incidencia(document.getString("dni"), document.getString("tipo"), document.getString("descripcion"), (Timestamp) document.get("fechaIncidencia")));
 
@@ -127,7 +125,6 @@ public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajad
                             popupMenu.show();
                         })
                         .addOnFailureListener(e -> {
-                            Log.d("PRUEBAAAAAAAAA", "NOO HAS ENTRADO CABRON");
                             mostrarMensajes(actividadPadre,1,"Error al cargar las incidencias");
                         });
             }
