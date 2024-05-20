@@ -6,14 +6,16 @@ import java.io.Serializable;
 
 public class Valoracion implements Serializable {
     private String dni;
+    String nombreTrabajador;
     private float calificacion;
     private Timestamp fechaValoracion;
 
     public Valoracion() {
     }
 
-    public Valoracion(String dni, float calificacion, Timestamp fechaValoracion) {
+    public Valoracion(String dni, String nombreTrabajador, float calificacion, Timestamp fechaValoracion) {
         this.dni = dni;
+        this.nombreTrabajador = nombreTrabajador;
         this.calificacion = calificacion;
         this.fechaValoracion = fechaValoracion;
     }
@@ -24,6 +26,14 @@ public class Valoracion implements Serializable {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public String getNombreTrabajador() {
+        return nombreTrabajador;
+    }
+
+    public void setNombreTrabajador(String nombreTrabajador) {
+        this.nombreTrabajador = nombreTrabajador;
     }
 
     public float getCalificacion() {

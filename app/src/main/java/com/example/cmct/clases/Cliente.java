@@ -114,9 +114,9 @@ public class Cliente extends Usuario implements Serializable {
     }
 
     // METODO PARA VALORAR AL TRABAJADOR ASIGNADO
-    public void valorarTrabajador(Activity actividad, float valoracion, Timestamp fechaValoracion) {
+    public void valorarTrabajador(Activity actividad, String nombreTrabajador, float valoracion, Timestamp fechaValoracion) {
         // CREAR UN OBJETO VALORACION PARA INTRODUCIR SUS DATOS EN LA BASE DE DATOS
-        Valoracion objetoValoracion = new Valoracion(this.getTrabajadorAsignado(),valoracion,fechaValoracion);
+        Valoracion objetoValoracion = new Valoracion(this.getTrabajadorAsignado(),nombreTrabajador, valoracion,fechaValoracion);
 
         db.collection("valoraciones")
                 .document()

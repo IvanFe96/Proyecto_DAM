@@ -42,7 +42,7 @@
         <activity android:name=".modelo.admo.gestion_trabajadores.ListaTrabajadoresAsignarTrabajo" />
         <activity android:name=".modelo.admo.gestion_trabajadores.AsignarTrabajo" />
         <activity android:name=".modelo.admo.gestion_trabajadores.BuscarTrabajador" />
-        <activity android:name=".modelo.admo.gestion_trabajadores.Valoraciones" />
+        <activity android:name=".modelo.admo.gestion_trabajadores.VerValoraciones" />
         <activity android:name=".modelo.admo.gestion_trabajadores.ListaTrabajadoresIncidencias" />
         <activity android:name=".modelo.admo.gestion_trabajadores.VerFichaje" />
         <activity android:name=".modelo.admo.gestion_trabajadores.AltaTrabajador" />

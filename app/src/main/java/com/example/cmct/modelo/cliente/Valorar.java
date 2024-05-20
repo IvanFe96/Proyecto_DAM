@@ -32,6 +32,7 @@ public class Valorar extends AppCompatActivity {
     ImageView imagenTrabajador;
 
     Cliente cliente;
+    Trabajador trabajadorAsignado;
 
     // OBTENER LA INSTANCIA DE LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -51,7 +52,7 @@ public class Valorar extends AppCompatActivity {
     // CLICK DEL BOTON ACEPTAR PARA GUARDAR LA VALORACION DEL CLIENTE EN LA BASE DE DATOS
     public void clickBotonAceptar(View view) {
         // VALORAR AL TRABAJADOR
-        cliente.valorarTrabajador(this, valoracion.getRating(), Timestamp.now());
+        cliente.valorarTrabajador(this, trabajadorAsignado.getNombre()+" "+trabajadorAsignado.getApellido1()+" "+trabajadorAsignado.getApellido2(),valoracion.getRating(), Timestamp.now());
     }
 
     // OBTENER EL CLIENTE REGISTRADO
@@ -84,6 +85,7 @@ public class Valorar extends AppCompatActivity {
                 });
     }
 
+    // OBTENER LA IMAGEN DEL TRABAJADOR ASIGNADO
     private void obtenerImagenTrabajadorAsignado() {
         // OBTENER LOS DATOS DEL CLIENTE
         db.collection("usuarios")
@@ -91,10 +93,10 @@ public class Valorar extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
-                        Trabajador trabajador = queryDocumentSnapshots.getDocuments().get(0).toObject(Trabajador.class);
+                        trabajadorAsignado = queryDocumentSnapshots.getDocuments().get(0).toObject(Trabajador.class);
                         // ESTABLECER LA IMAGEN DEL TRABAJADOR
                         Picasso.get()
-                                .load(trabajador.getImagen())
+                                .load(trabajadorAsignado.getImagen())
                                 .networkPolicy(NetworkPolicy.NO_CACHE)
                                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                                 .placeholder(R.drawable.ic_launcher_foreground) // IMAGEN DE CARGA

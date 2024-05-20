@@ -40,10 +40,10 @@ public class GestionTrabajadores extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // CLICK DEL BOTON "Valoraciones"
+    // CLICK DEL BOTON "VerValoraciones"
     public void clickBotonValoraciones(View view) {
         //Iniciar la nueva pantalla para ver las valoraciones de los clientes
-        intent = new Intent(this, Valoraciones.class);
+        intent = new Intent(this, VerValoraciones.class);
         startActivity(intent);
     }
 
