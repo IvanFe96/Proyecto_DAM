@@ -69,14 +69,14 @@ public class Administrador extends Usuario implements Serializable {
                                                 subirImagenTrabajador(idUsuario, imagenUri, trabajador, actividad);
                                             } else {
                                                 // ERROR AL REAUTENTICAR AL ADMINISTRADOR
-                                                mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                                                Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
                                             }
                                         }
                                     });
                         }
                     } else {
                         // EL REGISTRO FALLA Y SE INFORMA AL USUARIO
-                        mostrarMensajes(actividad,1,"El correo ya existe");
+                        Utilidades.mostrarMensajes(actividad,1,"El correo ya existe");
                     }
                 });
     }
@@ -94,7 +94,7 @@ public class Administrador extends Usuario implements Serializable {
                     });
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
+                    Utilidades.mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
                 });
     }
 
@@ -116,14 +116,14 @@ public class Administrador extends Usuario implements Serializable {
                 .set(trabajadorBD)
                 .addOnSuccessListener(aVoid -> {
                     // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
-                    mostrarMensajes(actividad, 0, "Trabajador dado de alta");
+                    Utilidades.mostrarMensajes(actividad, 0, "Trabajador dado de alta");
 
                     // CERRAR PANTALLA
                     actividad.finish();
                 })
                 .addOnFailureListener(e -> {
                     // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL ALTA
-                    mostrarMensajes(actividad,1,"Error al dar el alta");
+                    Utilidades.mostrarMensajes(actividad,1,"Error al dar el alta");
                 });
     }
 
@@ -146,7 +146,7 @@ public class Administrador extends Usuario implements Serializable {
                                                 bajaTrabajadorEnFirestore(usuarioAEliminar, actividad);
                                                 eliminarFichajesTrabajador(snapshot,actividad);
                                             } else {
-                                                mostrarMensajes(actividad,1,"Error al eliminar al trabajador");
+                                                Utilidades.mostrarMensajes(actividad,1,"Error al eliminar al trabajador");
                                             }
                                         });
                                     }
@@ -168,10 +168,10 @@ public class Administrador extends Usuario implements Serializable {
 
             }).addOnFailureListener(e -> {
                 // MOSTRAR ERROR SI LA ELIMINACION FALLA
-                mostrarMensajes(actividad, 1, "Error al eliminar imagen: " + e.getMessage());
+                Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar imagen: " + e.getMessage());
             });
         } else {
-            mostrarMensajes(actividad, 1, "No se encontró un DNI válido para eliminar la imagen.");
+            Utilidades.mostrarMensajes(actividad, 1, "No se encontró un DNI válido para eliminar la imagen.");
         }
     }
 
@@ -194,24 +194,24 @@ public class Administrador extends Usuario implements Serializable {
                                         db.collection("usuarios").document(usuarioAEliminar.getUid())
                                                 .delete()
                                                 .addOnSuccessListener(documentSnapshot -> {
-                                                    mostrarMensajes(actividad, 0, "Trabajador eliminado con éxito");
+                                                    Utilidades.mostrarMensajes(actividad, 0, "Trabajador eliminado con éxito");
                                                     actividad.recreate();
                                                 })
                                                 .addOnFailureListener(e -> {
-                                                    mostrarMensajes(actividad, 1, "Error al eliminar trabajador");
+                                                    Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar trabajador");
                                                 });
                                     } else {
                                         //  ERROR POR FALTA DE PERMISOS O EL USUARIO NO EXISTE
-                                        mostrarMensajes(actividad,1,"No existe usuario o no tienes permisos suficientes");
+                                        Utilidades.mostrarMensajes(actividad,1,"No existe usuario o no tienes permisos suficientes");
                                     }
                                 } else {
                                     // ERROR AL ELIMINAR AL USUARIO
-                                    mostrarMensajes(actividad,1,"Error al eliminar al usuario");
+                                    Utilidades.mostrarMensajes(actividad,1,"Error al eliminar al usuario");
                                 }
                             });
                         } else {
                             // ERROR AL REAUTENTICAR AL ADMINISTRADOR
-                            mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                            Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
                         }
                     }
                 });
@@ -240,16 +240,16 @@ public class Administrador extends Usuario implements Serializable {
                                                 for (DocumentSnapshot document : task.getResult()) {
                                                     db.collection("incidencias").document(document.getId()).delete()
                                                             .addOnSuccessListener(aVoid ->{})
-                                                            .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al eliminar una incidencia"));
+                                                            .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar una incidencia"));
                                                 }
                                             } else {
-                                                mostrarMensajes(actividad, 1, "Error al obtener las incidencias para eliminar.");
+                                                Utilidades.mostrarMensajes(actividad, 1, "Error al obtener las incidencias para eliminar.");
                                             }
                                         }
                                     });
                         } else {
                             // ERROR AL REAUTENTICAR AL ADMINISTRADOR
-                            mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                            Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
                         }
                     }
                     });
@@ -278,16 +278,16 @@ public class Administrador extends Usuario implements Serializable {
                                                 for (DocumentSnapshot document : task.getResult()) {
                                                     db.collection("incidencias").document(document.getId()).delete()
                                                             .addOnSuccessListener(aVoid ->{})
-                                                            .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al eliminar una incidencia"));
+                                                            .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar una incidencia"));
                                                 }
                                             } else {
-                                                mostrarMensajes(actividad, 1, "Error al obtener las incidencias para eliminar.");
+                                                Utilidades.mostrarMensajes(actividad, 1, "Error al obtener las incidencias para eliminar.");
                                             }
                                         }
                                     });
                         } else {
                             // ERROR AL REAUTENTICAR AL ADMINISTRADOR
-                            mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                            Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
                         }
                     }
                 });
@@ -314,7 +314,7 @@ public class Administrador extends Usuario implements Serializable {
 
                 @Override
                 public void onFailure(Exception e) {
-                    mostrarMensajes(actividad, 1, "Error al actualizar la imagen en Firestore: " + e.getMessage());
+                    Utilidades.mostrarMensajes(actividad, 1, "Error al actualizar la imagen en Firestore: " + e.getMessage());
                 }
             });
         }
@@ -342,12 +342,12 @@ public class Administrador extends Usuario implements Serializable {
                                                                     actualizarTrabajadorFirestore(usuario.getUid(), datosActualizados, actividad);
                                                                 } else {
                                                                     // ERROR AL REAUTENTICAR AL ADMINISTRADOR
-                                                                    mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                                                                    Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
                                                                 }
                                                             }
                                                         });
                                             } else {
-                                                mostrarMensajes(actividad, 1, "Error al actualizar el correo electrónico: " + task1.getException().getMessage());
+                                                Utilidades.mostrarMensajes(actividad, 1, "Error al actualizar el correo electrónico: " + task1.getException().getMessage());
                                             }
                                         });
                             } else {
@@ -356,7 +356,7 @@ public class Administrador extends Usuario implements Serializable {
 
                         } else {
                             // ERROR AL REAUTENTICAR AL TRABAJADOR
-                            mostrarMensajes(actividad,1,"Error al reautenticar al trabajador");
+                            Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al trabajador");
                         }
                     }
                 });
@@ -369,12 +369,12 @@ public class Administrador extends Usuario implements Serializable {
                 .update(datosActualizados)
                 .addOnSuccessListener(aVoid -> {
                     // MOSTRAR MENSAJE DE EXITO
-                    mostrarMensajes(actividad, 0, "Datos actualizados con éxito.");
+                    Utilidades.mostrarMensajes(actividad, 0, "Datos actualizados con éxito.");
 
                     // CERRAR PANTALLA
                     actividad.finish();
                 })
-                .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al actualizar datos: " + e.getMessage()));
+                .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al actualizar datos: " + e.getMessage()));
     }
 
     // ACTUALIZAR LA IMAGEN DEL TRABAJADOR
@@ -387,7 +387,7 @@ public class Administrador extends Usuario implements Serializable {
                     });
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
+                    Utilidades.mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
                     callback.onFailure(e);
                 });
 
@@ -420,14 +420,14 @@ public class Administrador extends Usuario implements Serializable {
                                                 subirImagenCliente(idUsuario, imagenUri, cliente, actividad);
                                             } else {
                                                 // ERROR AL REAUTENTICAR AL ADMINISTRADOR
-                                                mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                                                Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
                                             }
                                         }
                                     });
                         }
                     } else {
                         // EL REGISTRO FALLA Y SE INFORMA AL USUARIO
-                        mostrarMensajes(actividad,1,"El correo ya existe");
+                        Utilidades.mostrarMensajes(actividad,1,"El correo ya existe");
                     }
                 });
     }
@@ -446,7 +446,7 @@ public class Administrador extends Usuario implements Serializable {
                     });
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
+                    Utilidades.mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
                 });
     }
 
@@ -456,14 +456,14 @@ public class Administrador extends Usuario implements Serializable {
                 .set(cliente)
                 .addOnSuccessListener(aVoid -> {
                     // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
-                    mostrarMensajes(actividad, 0, "Cliente dado de alta");
+                    Utilidades.mostrarMensajes(actividad, 0, "Cliente dado de alta");
 
                     // CERRAR PANTALLA
                     actividad.finish();
                 })
                 .addOnFailureListener(e -> {
                     // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DEL ALTA
-                    mostrarMensajes(actividad,1,"Error al dar el alta");
+                    Utilidades.mostrarMensajes(actividad,1,"Error al dar el alta");
                 });
     }
 
@@ -484,7 +484,7 @@ public class Administrador extends Usuario implements Serializable {
                                                 eliminarImagenClienteDeStorage(snapshot, actividad);
                                                 bajaClienteEnFirestore(usuarioAEliminar, actividad);
                                             } else {
-                                                mostrarMensajes(actividad,1,"Error al eliminar al cliente");
+                                                Utilidades.mostrarMensajes(actividad,1,"Error al eliminar al cliente");
                                             }
                                         });
                                     }
@@ -506,10 +506,10 @@ public class Administrador extends Usuario implements Serializable {
 
             }).addOnFailureListener(e -> {
                 // MOSTRAR ERROR SI LA ELIMINACION FALLA
-                mostrarMensajes(actividad, 1, "Error al eliminar imagen: " + e.getMessage());
+                Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar imagen: " + e.getMessage());
             });
         } else {
-            mostrarMensajes(actividad, 1, "No se encontró un DNI válido para eliminar la imagen.");
+            Utilidades.mostrarMensajes(actividad, 1, "No se encontró un DNI válido para eliminar la imagen.");
         }
     }
 
@@ -532,24 +532,24 @@ public class Administrador extends Usuario implements Serializable {
                                         db.collection("usuarios").document(usuarioAEliminar.getUid())
                                                 .delete()
                                                 .addOnSuccessListener(documentSnapshot -> {
-                                                    mostrarMensajes(actividad, 0, "Cliente eliminado con éxito");
+                                                    Utilidades.mostrarMensajes(actividad, 0, "Cliente eliminado con éxito");
                                                     actividad.recreate();
                                                 })
                                                 .addOnFailureListener(e -> {
-                                                    mostrarMensajes(actividad, 1, "Error al eliminar cliente");
+                                                    Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar cliente");
                                                 });
                                     } else {
                                         //  ERROR POR FALTA DE PERMISOS O EL USUARIO NO EXISTE
-                                        mostrarMensajes(actividad,1,"No existe usuario o no tienes permisos suficientes");
+                                        Utilidades.mostrarMensajes(actividad,1,"No existe usuario o no tienes permisos suficientes");
                                     }
                                 } else {
                                     // ERROR AL ELIMINAR AL USUARIO
-                                    mostrarMensajes(actividad,1,"Error al eliminar al usuario");
+                                    Utilidades.mostrarMensajes(actividad,1,"Error al eliminar al usuario");
                                 }
                             });
                         } else {
                             // ERROR AL REAUTENTICAR AL ADMINISTRADOR
-                            mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                            Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
                         }
                     }
                 });
@@ -577,7 +577,7 @@ public class Administrador extends Usuario implements Serializable {
 
                 @Override
                 public void onFailure(Exception e) {
-                    mostrarMensajes(actividad, 1, "Error al actualizar la imagen en Firestore: " + e.getMessage());
+                    Utilidades.mostrarMensajes(actividad, 1, "Error al actualizar la imagen en Firestore: " + e.getMessage());
                 }
             });
         }
@@ -605,12 +605,12 @@ public class Administrador extends Usuario implements Serializable {
                                                                     actualizarClienteFirestore(usuario.getUid(), datosActualizados, actividad);
                                                                 } else {
                                                                     // ERROR AL REAUTENTICAR AL ADMINISTRADOR
-                                                                    mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                                                                    Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
                                                                 }
                                                             }
                                                         });
                                             } else {
-                                                mostrarMensajes(actividad, 1, "Error al actualizar el correo electrónico: " + task1.getException().getMessage());
+                                                Utilidades. mostrarMensajes(actividad, 1, "Error al actualizar el correo electrónico: " + task1.getException().getMessage());
                                             }
                                         });
                             } else {
@@ -619,7 +619,7 @@ public class Administrador extends Usuario implements Serializable {
 
                         } else {
                             // ERROR AL REAUTENTICAR AL TRABAJADOR
-                            mostrarMensajes(actividad,1,"Error al reautenticar al cliente");
+                            Utilidades. mostrarMensajes(actividad,1,"Error al reautenticar al cliente");
                         }
                     }
                 });
@@ -636,7 +636,7 @@ public class Administrador extends Usuario implements Serializable {
                     });
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
+                    Utilidades.mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
                     callback.onFailure(e);
                 });
 
@@ -649,43 +649,12 @@ public class Administrador extends Usuario implements Serializable {
                 .update(datosActualizados)
                 .addOnSuccessListener(aVoid -> {
                     // MOSTRAR MENSAJE DE EXITO
-                    mostrarMensajes(actividad, 0, "Datos actualizados con éxito.");
+                    Utilidades.mostrarMensajes(actividad, 0, "Datos actualizados con éxito.");
 
                     // CERRAR PANTALLA
                     actividad.finish();
                 })
-                .addOnFailureListener(e -> mostrarMensajes(actividad, 1, "Error al actualizar datos: " + e.getMessage()));
-    }
-
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Activity actividad, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = actividad.getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(actividad.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = actividad.getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(actividad.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
+                .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al actualizar datos: " + e.getMessage()));
     }
 
     // AGREGAR TRABAJADOR A LOS CLIENTES
@@ -710,12 +679,12 @@ public class Administrador extends Usuario implements Serializable {
                         actualizarCliente(idCliente,camposAActualizar);
                     })
                     .addOnFailureListener(e -> {
-                        mostrarMensajes(actividad, 1, "Error al cargar clientes sin trabajador asignado");
+                        Utilidades.mostrarMensajes(actividad, 1, "Error al cargar clientes sin trabajador asignado");
                     });
 
             // COMPROBAR QUE ES EL ULTIMO CLIENTE PARA MOSTRAR UN MENSAJE
             if (i == clientesAAsignar.size()-1) {
-                mostrarMensajes(actividad,0,"Trabajo asignado con éxito");
+                Utilidades.mostrarMensajes(actividad,0,"Trabajo asignado con éxito");
                 actividad.finish();
             }
         }

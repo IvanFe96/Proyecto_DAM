@@ -21,6 +21,7 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.clases.Trabajador;
+import com.example.cmct.clases.Utilidades;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import okhttp3.internal.Util;
 
 public class AsignarTrabajo extends AppCompatActivity {
 
@@ -110,7 +113,7 @@ public class AsignarTrabajo extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        mostrarMensajes(getApplicationContext(),1,"Error al cargar el trabajador");
+                        Utilidades.mostrarMensajes(AsignarTrabajo.this,1,"Error al cargar el trabajador");
                     }
                 });
 
@@ -157,7 +160,7 @@ public class AsignarTrabajo extends AppCompatActivity {
 
                     // COMPROBAR SI NO HAY CLIENTES PARA MOSTRAR UN MENSAJE INDICANDOLO
                     if (clientes.isEmpty()) {
-                        mostrarMensajes(this,0,"No hay clientes para asignar");
+                        Utilidades.mostrarMensajes(this,2,"No hay clientes para asignar");
                         finish();
                     } else {
                         // SI QUE HAY CLIENTES Y SE RELLENAN LOS SPINNERS
@@ -165,16 +168,16 @@ public class AsignarTrabajo extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(), 1, "Error al cargar clientes sin trabajador asignado");
+                    Utilidades.mostrarMensajes(this, 1, "Error al cargar clientes sin trabajador asignado");
                 });
     }
 
     // ACTUALIZAR LOS DESPLEGABLES CON LOS CLIENTES QUE SE HAN OBTENIDO
     private void actualizarDesplegables(ArrayList<Cliente> nombresClientes) {
-        ArrayAdapter<Cliente> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nombresClientes);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Cliente> adaptador = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nombresClientes);
+        adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         for (Spinner desplegable : desplegables) {
-            desplegable.setAdapter(adapter);
+            desplegable.setAdapter(adaptador);
         }
     }
 
@@ -228,7 +231,7 @@ public class AsignarTrabajo extends AppCompatActivity {
                 // DETERMINAR SI ES AM O PM
                 String amOPm = (hourOfDay < 12) ? "AM" : "PM";
 
-                // Aquí puedes hacer lo que quieras con la hora seleccionada
+                // ESTABLECER LA HORA EN EL CAMPO DE TEXTO QUE SE HA SELECCIONADO
                 String selectedTime = String.format(Locale.getDefault(), "%02d:%02d ", hourOfDay, minute, amOPm);
                 textView.setText(selectedTime);
             }
@@ -248,43 +251,12 @@ public class AsignarTrabajo extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         administrador = documentSnapshot.toObject(Administrador.class);
                     } else {
-                        mostrarMensajes(getApplicationContext(), 1, "No se encontraron administradores");
+                        Utilidades.mostrarMensajes(this, 1, "No se encontraron administradores");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos de administrador");
+                    Utilidades.mostrarMensajes(this,1,"Error al buscar datos de administrador");
                 });
-    }
-
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
     }
 
     // CLASE PARA GUARDAR TEMPORALMENTE LA HORA DE ENTRADA Y DE SALIDA DEL TRABAJADOR
