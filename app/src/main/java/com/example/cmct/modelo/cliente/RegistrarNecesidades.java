@@ -111,6 +111,7 @@ public class RegistrarNecesidades extends AppCompatActivity {
         ventana.show();
     }
 
+    // OBTENER EL CLIENTE REGISTRADO
     private void obtenerCliente() {
         // OBTENER LA ID DEL USUARIO CLIENTE QUE ESTA AUTENTICADO
         String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();

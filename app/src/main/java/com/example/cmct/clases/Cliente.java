@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmct.R;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
@@ -90,6 +91,7 @@ public class Cliente extends Usuario implements Serializable {
         this.trabajadorAsignado = trabajadorAsignado;
     }
 
+    // METODO PARA REGISTRAR LAS NECESIDADES EN LA BASE DE DATOS
     public void registrarNecesidades(Activity actividad) {
         db.collection("usuarios")
                 .whereEqualTo("dni",this.getDni())
@@ -108,6 +110,27 @@ public class Cliente extends Usuario implements Serializable {
                             });
                 }).addOnFailureListener(e -> {
                     mostrarMensajes(actividad,1,"Error al encontrar al cliente");
+                });
+    }
+
+    // METODO PARA VALORAR AL TRABAJADOR ASIGNADO
+    public void valorarTrabajador(Activity actividad, float valoracion, Timestamp fechaValoracion) {
+        // CREAR UN OBJETO VALORACION PARA INTRODUCIR SUS DATOS EN LA BASE DE DATOS
+        Valoracion objetoValoracion = new Valoracion(this.getTrabajadorAsignado(),valoracion,fechaValoracion);
+
+        db.collection("valoraciones")
+                .document()
+                .set(objetoValoracion)
+                .addOnSuccessListener(aVoid -> {
+                    // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DE LA VALORACION
+                    mostrarMensajes(actividad, 0, "Valoración realizada con éxito");
+
+                    // CERRAR PANTALLA
+                    actividad.finish();
+                })
+                .addOnFailureListener(e -> {
+                    // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DE LA VALORACION
+                    mostrarMensajes(actividad,1,"Error al valorar al trabajador");
                 });
     }
 
