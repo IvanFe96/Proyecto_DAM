@@ -72,14 +72,15 @@ public class EleccionTrabajador extends AppCompatActivity {
 
     // CLICK BOTON PARA INICIAR PANTALLA DE CREAR UNA INCIDENCIA
     public void clickBotonIncidencia(View view) {
-        Intent intent = new Intent(this, CrearIncidencias.class);
-        startActivity(intent);
+        Intent intento = new Intent(this, CrearIncidencias.class);
+        startActivity(intento);
     }
 
     // CLICK BOTON PARA INICIAR PANTALLA DE HORARIO
     public void clickBotonHorario(View view) {
-        Intent intent = new Intent(this, ListaClientesHorario.class);
-        startActivity(intent);
+        Intent intento = new Intent(this, ListaClientesHorario.class);
+        intento.putExtra("dniTrabajador", trabajador.getDni());
+        startActivity(intento);
     }
 
     // OBTENER AL TRABAJADOR AUTENTICADO
