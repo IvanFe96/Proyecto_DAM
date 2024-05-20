@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +29,11 @@ import java.util.Map;
 public class Login extends AppCompatActivity {
 
     Button btnIniciarSesion;
+    ImageView imagenOjo;
 
     EditText correo, contrasenia;
+
+    boolean contraseniaVisible = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,7 @@ public class Login extends AppCompatActivity {
         correo = findViewById(R.id.mail);
         contrasenia = findViewById(R.id.password);
         btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
+        imagenOjo = findViewById(R.id.imagenOcultarMostrarContra);
     }
 
     // CLICK DEL BOTON INICIAR SESION
@@ -77,6 +82,22 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    // CLICK EN LA IMAGEN DEL OJO PARA MOSTRAR U OCULTAR LA CONTRASEÑA
+    public void clickMostrarOcultarContrasenia(View view) {
+        // COMPROBAR SI LA CONTRASEÑA ES VISIBLE O NO
+        if (!contraseniaVisible) {
+            // MOSTRAR LA CONTRASEÑA
+            contrasenia.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
+            contraseniaVisible = true;
+            imagenOjo.setImageResource(R.drawable.ver_contrasenia);
+
+        } else {
+            // OCULTAR LA CONTRASEÑA
+            contrasenia.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            contraseniaVisible = false;
+            imagenOjo.setImageResource(R.drawable.esconder_contrasenia);
+        }
+    }
     private void conocerTipoUsuario(FirebaseUser usuario) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

@@ -104,18 +104,6 @@ public class AsignarTrabajo extends AppCompatActivity {
                             // RELLENAR LOS DESPLEGABLES CON LOS CLIENTES QUE NO HAN SIDO ASIGNADOS
                             cargarClientesSinTrabajadorAsignado();
 
-                        } else if (intent.getAction().equals("EDITAR")) {
-                            // LA ACTIVIDAD ES INICIADA DESDE EL BOTON EDITAR Y SE PROCEDE A RELLENAR
-                            // LOS DESPLEGABLES Y LOS HORARIOS CON LOS DATOS QUE YA TIENE EL TRABAJADOR
-
-                            // CREAR UN ADAPTADOR PARA PONER LOS DATOS DE PRUEBA EN LOS SPINNERS
-                            /*ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, items);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                            // ESTABLECER A LOS DESPLEGABLES LOS DATOS DE PRUEBA DEL ADAPTADOR
-                            for (Spinner spinner : desplegables) {
-                                spinner.setAdapter(adapter);
-                            }*/
                         }
                     }
                 })
@@ -177,6 +165,7 @@ public class AsignarTrabajo extends AppCompatActivity {
                     mostrarMensajes(getApplicationContext(), 1, "Error al cargar clientes sin trabajador asignado");
                 });
     }
+
 
     // ACTUALIZAR LOS DESPLEGABLES CON LOS CLIENTES QUE SE HAN OBTENIDO
     private void actualizarDesplegables(ArrayList<Cliente> nombresClientes) {

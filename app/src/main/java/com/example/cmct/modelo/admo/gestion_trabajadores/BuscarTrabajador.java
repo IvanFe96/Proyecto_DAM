@@ -38,15 +38,8 @@ public class BuscarTrabajador extends AppCompatActivity {
             Intent intentPadre = getIntent();
 
             // COMPROBAR LA PROCEDENCIA DEL INTENT PARA SABER SI HAY QUE
-            // EDITAR EL TRABAJO ASIGNADO O VER LAS HORAS DE FICHAJE DEL TRABAJADOR
-            if(intentPadre.getAction().equals("EDITARTRABAJO")) {
-
-                Intent intent = new Intent(v.getContext(), AsignarTrabajo.class);
-                intent.putExtra("nombre", "Trabajador2");
-                intent.setAction("EDITAR");
-                v.getContext().startActivity(intent);
-
-            } else if (intentPadre.getAction().equals("FICHAJE")) {
+            // VER LAS HORAS DE FICHAJE DEL TRABAJADOR
+             if (intentPadre.getAction().equals("FICHAJE")) {
 
                 Intent intent = new Intent(v.getContext(), VerFichaje.class);
                 intent.putExtra("dni", buscadorTrabajador.getText().toString().toUpperCase());
