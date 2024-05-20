@@ -14,12 +14,52 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmct.R;
+import com.example.cmct.clases.Trabajador;
+import com.example.cmct.clases.Valoracion;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-public class AdaptadorValoracion extends RecyclerView.Adapter<AdaptadorValoracion.DatosHolder>{
-    Cursor c;
-    //Adaptador(Cursor c) {this.c = c;}
-    String[][] lista;
-    public AdaptadorValoracion(String[][] lista) {this.lista = lista;}
+import java.util.List;
+
+/*public class AdaptadorValoracion extends FirestoreRecyclerAdapter<Valoracion, AdaptadorValoracion.DatosHolder> {
+    public AdaptadorValoracion(FirestoreRecyclerOptions<Valoracion> options) {super(options);}
+
+    @NonNull
+    @Override
+    public DatosHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflador = LayoutInflater.from(parent.getContext());
+        View v = inflador.inflate(R.layout.ver_calificacion_trabajador_layout, parent, false);
+        return new DatosHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull DatosHolder holder, int position, @NonNull Valoracion modelo) {
+        // AÑADIR TODA LA INFORMACION A CADA ITEM
+        holder.nombre.setText(modelo.getNombreTrabajador());
+        holder.calificacion.setRating(modelo.getCalificacion());
+    }
+
+    //CLASE CON EL CONTENEDOR.
+    public class DatosHolder extends RecyclerView.ViewHolder {
+        TextView nombre;
+        RatingBar calificacion;
+        public DatosHolder(@NonNull View itemView) {
+            super(itemView);
+
+            nombre = itemView.findViewById(R.id.tvNombreApellidosValoracion);
+            calificacion = itemView.findViewById(R.id.ratingBarValoracion);
+
+        }
+
+    }
+}*/
+
+public class AdaptadorValoracion extends RecyclerView.Adapter<AdaptadorValoracion.DatosHolder> {
+    private List<Valoracion> listaValoraciones;
+
+    public AdaptadorValoracion(List<Valoracion> listaValoraciones) {
+        this.listaValoraciones = listaValoraciones;
+    }
 
     @NonNull
     @Override
@@ -31,58 +71,32 @@ public class AdaptadorValoracion extends RecyclerView.Adapter<AdaptadorValoracio
 
     @Override
     public void onBindViewHolder(@NonNull DatosHolder holder, int position) {
-        //if (!c.moveToPosition(position)) {return;}
-
-        /*Bitmap imagen = c.get;
-        String nombre = c.getString(c.getColumnIndex("nombre"));
-        float calificacion*/
-
-        String nombre = lista[position][0];
-        float nota = Float.parseFloat(lista[position][1]);
-
-        // Añadir informacion al Item del recycler.
-        holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
-        holder.nombre.setText(nombre);
-        holder.calificacion.setRating(nota);
+        Valoracion modelo = listaValoraciones.get(position);
+        holder.nombre.setText(modelo.getNombreTrabajador());
+        holder.calificacion.setRating(modelo.getCalificacion());
     }
+
+    public void actualizarLista(List<Valoracion> nuevasValoraciones) {
+        listaValoraciones.clear();
+        listaValoraciones.addAll(nuevasValoraciones);
+        notifyDataSetChanged();  // NOTIFICAR AL ADAPTADOR EL CAMBIO DE DAOS
+    }
+
 
     @Override
     public int getItemCount() {
-        //return c.getCount();
-        return lista.length;
+        return listaValoraciones.size();
     }
 
-    public void swapCursor(Cursor newCursor) {
-        if (c != null) {
-            c.close();
-        }
-        c = newCursor;
-        notifyDataSetChanged();
-    }
-
-    //CLASE CON EL CONTENEDOR.
-    public class DatosHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public class DatosHolder extends RecyclerView.ViewHolder {
         TextView nombre;
-        ImageView imagen;
         RatingBar calificacion;
+
         public DatosHolder(@NonNull View itemView) {
             super(itemView);
-
-            imagen = itemView.findViewById(R.id.imageViewValoracion);
             nombre = itemView.findViewById(R.id.tvNombreApellidosValoracion);
             calificacion = itemView.findViewById(R.id.ratingBarValoracion);
-
-            //ESTABLECER MENU CONTEXTUAL AL ITEM DEL RECYCLERVIEW
-            itemView.setOnCreateContextMenuListener(this);
-
-        }
-
-        //MENU CONTEXTUAL PARA RECYCLER
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-            menu.add(getAdapterPosition(), 100, 0, "TOMAR DECISION");
-
         }
     }
 }
+

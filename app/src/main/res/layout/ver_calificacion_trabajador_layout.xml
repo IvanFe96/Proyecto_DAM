@@ -5,15 +5,11 @@
     style="@style/EstiloListas"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/imageViewValoracion"
-        android:layout_width="100dp"
-        android:layout_height="120dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -21,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="5dp"
+            android:gravity="center"
             style="@style/EstiloTextView"
             android:text="Nombre y Apellidos"
             android:textSize="24dp"
