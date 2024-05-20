@@ -120,8 +120,10 @@ public class AsignarTrabajo extends AppCompatActivity {
     // CLICK EN BOTON ACEPTAR PARA QUE REGISTRE EN LA BASE DE DATOS LOS DATOS RECOGIDOS
     // EN LOS DESPLEGABLES Y EN LOS HORARIOS
     public void clickBotonAceptarAsignarTrabajo(View v) {
+        // LISTA PARA GUARDAR LOS CLIENTES Y SU HORARIO
         Map<Cliente, HorarioCliente> clientesSeleccionados = new HashMap<>();
 
+        // RECORRER LOS DESPLEGABLES
         for (int i = 0; i < desplegables.length; i++) {
             Cliente cliente = (Cliente) desplegables[i].getSelectedItem(); // OBTENER EL CLIENTE SELECCIONADO
             String horaInicio = horarios[2 * i].getText().toString();  // OBTENER LA HORA DE INICIO
@@ -135,7 +137,7 @@ public class AsignarTrabajo extends AppCompatActivity {
             }
         }
 
-        // Ahora que tienes todos los datos, puedes mostrar el diálogo de confirmación o procesar los datos como necesites.
+        // MOSTRAR DIALOGO DE CONFIRMACION PARA PROCESAR LOS DATOS
         mostrarDialogoDeConfirmacion(clientesSeleccionados);
     }
 
@@ -166,7 +168,6 @@ public class AsignarTrabajo extends AppCompatActivity {
                     mostrarMensajes(getApplicationContext(), 1, "Error al cargar clientes sin trabajador asignado");
                 });
     }
-
 
     // ACTUALIZAR LOS DESPLEGABLES CON LOS CLIENTES QUE SE HAN OBTENIDO
     private void actualizarDesplegables(ArrayList<Cliente> nombresClientes) {
@@ -234,6 +235,8 @@ public class AsignarTrabajo extends AppCompatActivity {
         }, 12, 0, false);
         timePickerDialog.show();
     }
+
+    // OBTENER EL ADMINISTRADOR QUE ESTA REGISTRADO
     private void obtenerAdministrador() {
         db.collection("usuarios")
                 .whereEqualTo("rol", "administrador")
@@ -252,7 +255,6 @@ public class AsignarTrabajo extends AppCompatActivity {
                     mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos de administrador");
                 });
     }
-
 
     // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
     private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
@@ -284,6 +286,8 @@ public class AsignarTrabajo extends AppCompatActivity {
             toast.show();
         }
     }
+
+    // CLASE PARA GUARDAR TEMPORALMENTE LA HORA DE ENTRADA Y DE SALIDA DEL TRABAJADOR
     private class HorarioCliente {
         private String horaInicio;
         private String horaFin;
