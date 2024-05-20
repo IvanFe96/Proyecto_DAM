@@ -139,11 +139,12 @@ public class AsignarTrabajo extends AppCompatActivity {
         mostrarDialogoDeConfirmacion(clientesSeleccionados);
     }
 
-    // OBTENER LOS CLIENTES QUE NO TIENEN A NINGUN TRABAJADOR ASIGNADO
+    // OBTENER LOS CLIENTES QUE NO TIENEN A NINGUN TRABAJADOR ASIGNADO Y QUE TIENEN NECESIDADES
     private void cargarClientesSinTrabajadorAsignado() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("usuarios")
                 .whereEqualTo("rol", "cliente")
+                .whereNotEqualTo("necesidades",null)
                 .whereEqualTo("trabajadorAsignado", null)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -171,8 +172,8 @@ public class AsignarTrabajo extends AppCompatActivity {
     private void actualizarDesplegables(ArrayList<Cliente> nombresClientes) {
         ArrayAdapter<Cliente> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nombresClientes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        for (Spinner spinner : desplegables) {
-            spinner.setAdapter(adapter);
+        for (Spinner desplegable : desplegables) {
+            desplegable.setAdapter(adapter);
         }
     }
 
