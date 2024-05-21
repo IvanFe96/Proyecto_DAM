@@ -2,16 +2,9 @@ package com.example.cmct.clases;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.cmct.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,7 +17,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -306,7 +298,7 @@ public class Administrador extends Usuario implements Serializable {
         // COMPROBAR SI SE HA CAMBIADO LA IMAGEN
         if(imagenUri != null) {
             // LA IMAGEN ES DIFERENTE A LA DE ANTES
-            actualizarImagenTrabajador(imagenUri, trabajador, actividad, new Callback<String>() {
+            actualizarImagenTrabajador(imagenUri, trabajador, actividad, new DevolverDatos<String>() {
                 @Override
                 public void onSuccess(String imagenUrl) {
                     datosActualizados.put("imagen",imagenUrl); // INCLUIR LA NUEVA IMAGEN
@@ -378,17 +370,17 @@ public class Administrador extends Usuario implements Serializable {
     }
 
     // ACTUALIZAR LA IMAGEN DEL TRABAJADOR
-    private String actualizarImagenTrabajador(Uri imagenUri,Trabajador trabajador, Activity actividad, Callback<String> callback) {
+    private String actualizarImagenTrabajador(Uri imagenUri,Trabajador trabajador, Activity actividad, DevolverDatos<String> devolverDatos) {
         StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + trabajador.getDni());
         imagenRef.putFile(imagenUri)
                 .addOnSuccessListener(taskSnapshot -> {
                     imagenRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        callback.onSuccess(uri.toString());  // USAR CALLBACK PARA DEVOLVER LA URL
+                        devolverDatos.onSuccess(uri.toString());  // USAR CALLBACK PARA DEVOLVER LA URL
                     });
                 })
                 .addOnFailureListener(e -> {
                     Utilidades.mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
-                    callback.onFailure(e);
+                    devolverDatos.onFailure(e);
                 });
 
         return "";
@@ -569,7 +561,7 @@ public class Administrador extends Usuario implements Serializable {
         // COMPROBAR SI SE HA CAMBIADO LA IMAGEN
         if(imagenUri != null) {
             // LA IMAGEN ES DIFERENTE A LA DE ANTES
-            actualizarImagenCliente(imagenUri, cliente, actividad, new Callback<String>() {
+            actualizarImagenCliente(imagenUri, cliente, actividad, new DevolverDatos<String>() {
                 @Override
                 public void onSuccess(String imagenUrl) {
                     datosActualizados.put("imagen",imagenUrl); // INCLUIR LA NUEVA IMAGEN
@@ -627,17 +619,17 @@ public class Administrador extends Usuario implements Serializable {
     }
 
     // ACTUALIZAR LA IMAGEN DEL CLIENTE
-    private String actualizarImagenCliente(Uri imagenUri,Cliente cliente, Activity actividad, Callback<String> callback) {
+    private String actualizarImagenCliente(Uri imagenUri,Cliente cliente, Activity actividad, DevolverDatos<String> devolverDatos) {
         StorageReference imagenRef = FirebaseStorage.getInstance().getReference().child("imagenes/" + cliente.getDni());
         imagenRef.putFile(imagenUri)
                 .addOnSuccessListener(taskSnapshot -> {
                     imagenRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        callback.onSuccess(uri.toString());  // USAR CALLBACK PARA DEVOLVER LA URL
+                        devolverDatos.onSuccess(uri.toString());  // USAR CALLBACK PARA DEVOLVER LA URL
                     });
                 })
                 .addOnFailureListener(e -> {
                     Utilidades.mostrarMensajes(actividad, 1, "Error al subir imagen: " + e.getMessage());
-                    callback.onFailure(e);
+                    devolverDatos.onFailure(e);
                 });
 
         return "";
@@ -700,7 +692,7 @@ public class Administrador extends Usuario implements Serializable {
     }
 
     // INTERFAZ PARA DEVOLVER DATOS
-    private interface Callback<T> {
+    private interface DevolverDatos<T> {
         void onSuccess(T result);
         void onFailure(Exception e);
     }

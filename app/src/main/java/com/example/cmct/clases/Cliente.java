@@ -102,14 +102,14 @@ public class Cliente extends Usuario implements Serializable {
                             .document(idCliente)
                             .update("necesidades",this.necesidades)
                             .addOnSuccessListener(task1 -> {
-                               mostrarMensajes(actividad,0,"Necesidades registrada con éxito");
+                                Utilidades.mostrarMensajes(actividad,0,"Necesidades registradas con éxito");
                                actividad.finish();
                             })
                             .addOnFailureListener(e -> {
-                                mostrarMensajes(actividad,1,"Error al registrar las necesidades");
+                                Utilidades.mostrarMensajes(actividad,1,"Error al registrar las necesidades");
                             });
                 }).addOnFailureListener(e -> {
-                    mostrarMensajes(actividad,1,"Error al encontrar al cliente");
+                    Utilidades.mostrarMensajes(actividad,1,"Error al encontrar al cliente");
                 });
     }
 
@@ -123,46 +123,15 @@ public class Cliente extends Usuario implements Serializable {
                 .set(objetoValoracion)
                 .addOnSuccessListener(aVoid -> {
                     // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DE LA VALORACION
-                    mostrarMensajes(actividad, 0, "Valoración realizada con éxito");
+                    Utilidades.mostrarMensajes(actividad, 0, "Valoración realizada con éxito");
 
                     // CERRAR PANTALLA
                     actividad.finish();
                 })
                 .addOnFailureListener(e -> {
                     // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE ERROR DE LA VALORACION
-                    mostrarMensajes(actividad,1,"Error al valorar al trabajador");
+                    Utilidades.mostrarMensajes(actividad,1,"Error al valorar al trabajador");
                 });
-    }
-
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Activity activiad, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = activiad.getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(activiad.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = activiad.getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(activiad.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
     }
 
     // SE USA PARA SABER SI HAY CLIENTES IGUALES

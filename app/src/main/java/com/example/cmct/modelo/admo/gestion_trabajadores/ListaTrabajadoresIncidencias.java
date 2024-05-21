@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmct.R;
 import com.example.cmct.clases.Trabajador;
+import com.example.cmct.clases.Utilidades;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorTrabajadorSimple;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
@@ -81,12 +82,12 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
                         cargarTrabajadores(dniTrabajadores);
                     } else {
                         // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
-                        mostrarMensajes(getApplicationContext(),0,"Todavía no hay incidencias");
+                        Utilidades.mostrarMensajes(this,2,"Todavía no hay incidencias");
                         finish();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(),1,"Error al cargar incidencias");
+                    Utilidades.mostrarMensajes(this,1,"Error al cargar incidencias");
                 });
     }
 
@@ -122,34 +123,4 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         }
     }
 
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
-    }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
+import com.example.cmct.clases.Utilidades;
 
 public class BuscarTrabajador extends AppCompatActivity {
 
@@ -28,10 +29,10 @@ public class BuscarTrabajador extends AppCompatActivity {
 
         // COMPROBAR QUE EL CAMPO DE BUSCADOR NO ESTE VACIO
         if(buscadorTrabajador.getText().toString().isEmpty()) {
-            mostrarMensajes(1,"Introduce el DNI del trabajador");
+            Utilidades.mostrarMensajes(this,1,"Introduce el DNI del trabajador");
         } else if (!validarDni(buscadorTrabajador.getText().toString())) {
             // EL DNI INTRODUCIDO NO ES VALIDO
-            mostrarMensajes(1,"El DNI no es válido");
+            Utilidades.mostrarMensajes(this,1,"El DNI no es válido");
         } else {
             // TODO ESTA CORRECTO PARA BUSCAR AL TRABAJADOR
             // OBTENER EL INTENTO DEL QUE PROCEDE
@@ -76,34 +77,4 @@ public class BuscarTrabajador extends AppCompatActivity {
         return letraCalculada == letra.charAt(0);
     }
 
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
-    }
 }

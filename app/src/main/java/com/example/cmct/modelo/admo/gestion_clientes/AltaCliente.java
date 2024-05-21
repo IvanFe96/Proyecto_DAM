@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cmct.R;
 import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Cliente;
+import com.example.cmct.clases.Utilidades;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -90,28 +91,6 @@ public class AltaCliente extends AppCompatActivity {
         // ESTABLECER EL ADAPTADOR AL DESPLEGABLE
         localidades.setAdapter(adapter);
 
-        // COMPROBAR SI EL USUARIO QUIERE EDITAR A UN CLIENTE
-        intent = getIntent();
-        if(intent.getAction().equals("EDITAR")) {
-            // OBTENER EL CLIENTE QUE SE HA SELECCIONADO EN LA ANTERIOR PANTALLA
-            cliente = (Cliente) intent.getSerializableExtra("cliente");
-
-            // RELLENAR LOS CAMPOS CON LOS DATOS DEL CLIENTE QUE SE QUIERE MODIFICAR
-            //foto = ;
-            nombre.setText(cliente.getNombre());
-            apellido1.setText(cliente.getApellido1());
-            apellido2.setText(cliente.getApellido2());
-            correo.setText(cliente.getCorreo());
-            telefono.setText(cliente.getTelefono());
-            dni.setText(cliente.getDni());
-            direccion.setText(cliente.getDireccion());
-
-            // OBTENER EL ÍNDICE DE LA CIUDAD DEL CLIENTE EN LA LISTA DE OPCIONES
-            int index = opcionesCiudad.indexOf(cliente.getLocalidad());
-
-            // ESTABLECER LA CIUDAD DEL CLIENTE COMO LA SELECCIÓN ACTUAL DEL SPINNER
-            localidades.setSelection(index);
-        }
     }
 
     // CLICK EN EL BOTON DE GUARDAR PARA DAR DE ALTA EN LA BASE DE DATOS AL CLIENTE
@@ -193,7 +172,7 @@ public class AltaCliente extends AppCompatActivity {
 
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO
-            mostrarMensajes(getApplicationContext(),1,descripcion);
+            Utilidades.mostrarMensajes(this,1,descripcion);
         }
     }
 
@@ -209,13 +188,13 @@ public class AltaCliente extends AppCompatActivity {
                             QuerySnapshot querySnapshot = task.getResult();
                             if (querySnapshot != null && !querySnapshot.isEmpty()) {
                                 // DNI EXISTE SE MUESTRA POR PANTALLA
-                                mostrarMensajes(getApplicationContext(), 1, "El DNI ya está registrado en la base de datos");
+                                Utilidades.mostrarMensajes(AltaCliente.this, 1, "El DNI ya está registrado en la base de datos");
                             } else {
                                 // DNI NO EXISTE, REGISTRAR AL USUARIO
                                 administrador.altaClienteAutenticacion(cliente, AltaCliente.this, imagenUri);
                             }
                         } else {
-                            mostrarMensajes(getApplicationContext(), 1, "Error al verificar el DNI");
+                            Utilidades.mostrarMensajes(AltaCliente.this, 1, "Error al verificar el DNI");
                         }
                     }
                 });
@@ -309,37 +288,6 @@ public class AltaCliente extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGEN);
     }
 
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -380,11 +328,11 @@ public class AltaCliente extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         administrador = documentSnapshot.toObject(Administrador.class);
                     } else {
-                        mostrarMensajes(getApplicationContext(), 1, "No se encontraron administradores");
+                        Utilidades.mostrarMensajes(this, 1, "No se encontraron administradores");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos de administrador");
+                    Utilidades.mostrarMensajes(this, 1, "Error al buscar datos de administrador");
                 });
     }
 }

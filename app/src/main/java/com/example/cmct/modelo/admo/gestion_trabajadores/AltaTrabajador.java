@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.example.cmct.clases.Utilidades;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -142,7 +143,7 @@ public class AltaTrabajador extends AppCompatActivity {
 
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO
-            mostrarMensajes(getApplicationContext(),1, descripcion);
+            Utilidades.mostrarMensajes(this,1, descripcion);
         }
     }
 
@@ -166,13 +167,13 @@ public class AltaTrabajador extends AppCompatActivity {
                             QuerySnapshot querySnapshot = task.getResult();
                             if (querySnapshot != null && !querySnapshot.isEmpty()) {
                                 // DNI EXISTE SE MUESTRA POR PANTALLA
-                                mostrarMensajes(getApplicationContext(), 1, "El DNI ya está registrado en la base de datos");
+                                Utilidades.mostrarMensajes(AltaTrabajador.this, 1, "El DNI ya está registrado en la base de datos");
                             } else {
                                 // DNI NO EXISTE, REGISTRAR AL USUARIO
                                 administrador.altaTrabajadorAutenticacion(trabajador, AltaTrabajador.this, imagenUri);
                             }
                         } else {
-                            mostrarMensajes(getApplicationContext(), 1, "Error al verificar el DNI");
+                            Utilidades.mostrarMensajes(AltaTrabajador.this, 1, "Error al verificar el DNI");
                         }
                     }
                 });
@@ -230,37 +231,6 @@ public class AltaTrabajador extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGEN);
     }
 
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -301,11 +271,11 @@ public class AltaTrabajador extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         administrador = documentSnapshot.toObject(Administrador.class);
                     } else {
-                        mostrarMensajes(getApplicationContext(), 1, "No se encontraron administradores");
+                        Utilidades.mostrarMensajes(this, 1, "No se encontraron administradores");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos de administrador");
+                    Utilidades.mostrarMensajes(this, 1, "Error al buscar datos de administrador");
                 });
     }
 

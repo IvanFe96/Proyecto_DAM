@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
 import com.example.cmct.clases.Trabajador;
+import com.example.cmct.clases.Utilidades;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,7 +63,7 @@ public class CrearIncidencias extends AppCompatActivity {
     public void clickBotonGuardarIncidencia(View view) {
         // COMPROBAR QUE HAYAN ESCRITO UNA DESCRIPCION
         if(descripcion.getText().toString().isEmpty()) {
-            mostrarMensajes(getApplicationContext(),1,"Debes dar una descripción");
+            Utilidades.mostrarMensajes(this,1,"Debes dar una descripción");
         } else {
             // OBTENER LA FECHA EN LA QUE SE VA A CREAR LA INCIDENCIA
             Timestamp fechaIncidencia = Timestamp.now();
@@ -70,37 +71,6 @@ public class CrearIncidencias extends AppCompatActivity {
             // CREAR LA INCIDENCIA
             trabajador.crearIncidencia(this, (String) tipoIncidencia.getSelectedItem(),descripcion.getText().toString(), fechaIncidencia);
             finish();
-        }
-    }
-
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
         }
     }
 
@@ -117,11 +87,11 @@ public class CrearIncidencias extends AppCompatActivity {
                         // OBTENER EL OBJETO TRABAJADOR
                         trabajador = queryDocumentSnapshots.toObject(Trabajador.class);
                     } else {
-                        mostrarMensajes(getApplicationContext(), 1, "No se ha encontrado al trabajador");
+                        Utilidades.mostrarMensajes(this, 1, "No se ha encontrado al trabajador");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos del trabajador");
+                    Utilidades.mostrarMensajes(this, 1, "Error al buscar datos del trabajador");
                 });
     }
 }

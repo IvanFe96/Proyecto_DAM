@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
+import com.example.cmct.clases.Utilidades;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -64,7 +65,7 @@ public class DatosCliente extends AppCompatActivity implements OnMapReadyCallbac
                     cliente = queryDocumentSnapshots.getDocuments().get(0).toObject(Cliente.class);
                     rellenarDatosCliente();
                 })
-                .addOnFailureListener(e -> mostrarMensajes(getApplicationContext(),1,"Error al obtener los datos del cliente"));
+                .addOnFailureListener(e -> Utilidades.mostrarMensajes(this,1,"Error al obtener los datos del cliente"));
     }
 
     // RELLENAR EL TextView datosCliente CON LOS DATOS DEL CLIENTE
@@ -137,36 +138,6 @@ public class DatosCliente extends AppCompatActivity implements OnMapReadyCallbac
 
         mostrarCasaCliente(googleMap, cliente.getDireccion()+","+cliente.getLocalidad());
 
-    }
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
     }
 
 }

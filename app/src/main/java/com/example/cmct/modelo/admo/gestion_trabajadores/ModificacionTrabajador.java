@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cmct.R;
 import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Trabajador;
+import com.example.cmct.clases.Utilidades;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -106,11 +107,11 @@ public class ModificacionTrabajador extends AppCompatActivity {
                         telefono.setText(trabajador.getTelefono());
 
                     } else {
-                        Toast.makeText(this, "El trabajador es null", Toast.LENGTH_SHORT).show();
+                        Utilidades.mostrarMensajes(this,1,"El trbajador está vacío");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(),1,"Error al recuperar los datos");
+                    Utilidades.mostrarMensajes(this,1,"Error al recuperar los datos");
                 });
     }
 
@@ -173,7 +174,7 @@ public class ModificacionTrabajador extends AppCompatActivity {
 
         } else {
             // ALGUN CAMPO NO CONTIENE LO ESPERADO Y SE MUESTRA UN MENSAJE INDICANDOLO
-            mostrarMensajes(getApplicationContext(),1, descripcion);
+            Utilidades.mostrarMensajes(this,1, descripcion);
         }
     }
 
@@ -237,37 +238,6 @@ public class ModificacionTrabajador extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGEN);
     }
 
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -308,11 +278,11 @@ public class ModificacionTrabajador extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         administrador = documentSnapshot.toObject(Administrador.class);
                     } else {
-                        mostrarMensajes(getApplicationContext(), 1, "No se encontraron administradores");
+                        Utilidades.mostrarMensajes(this, 1, "No se encontraron administradores");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos de administrador");
+                    Utilidades.mostrarMensajes(this, 1, "Error al buscar datos de administrador");
                 });
     }
 

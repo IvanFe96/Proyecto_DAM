@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.clases.Trabajador;
+import com.example.cmct.clases.Utilidades;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -70,18 +71,18 @@ public class Valorar extends AppCompatActivity {
                         cliente = queryDocumentSnapshots.toObject(Cliente.class);
                         // COMPROBAR SI EL CLIENTE NO TIENE TRABAJADOR ASIGNADO PARA CERRAR LA PANTALLA Y MOSTRAR UN MENSAJE
                         if(!tieneTrabajadorAsignado()) {
-                            mostrarMensajes(getApplicationContext(),0,"Todavía no tienes asignado un trabajador");
+                            Utilidades.mostrarMensajes(this,2,"Todavía no tienes asignado un trabajador");
                             finish();
                         } else {
                             // EL CLIENTE TIENE UN TRABAJADOR ASIGNADO Y SE BUSCA SU IMAGEN
                             obtenerImagenTrabajadorAsignado();
                         }
                     } else {
-                        mostrarMensajes(getApplicationContext(), 1, "No se ha encontrado al cliente");
+                        Utilidades.mostrarMensajes(this, 1, "No se ha encontrado al cliente");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos del cliente");
+                    Utilidades.mostrarMensajes(this, 1, "Error al buscar datos del cliente");
                 });
     }
 
@@ -105,11 +106,11 @@ public class Valorar extends AppCompatActivity {
                                 .into(imagenTrabajador);
 
                     } else {
-                        mostrarMensajes(getApplicationContext(), 1, "No se ha encontrado al cliente");
+                        Utilidades.mostrarMensajes(this, 1, "No se ha encontrado al cliente");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    mostrarMensajes(getApplicationContext(), 1, "Error al buscar datos del cliente");
+                    Utilidades.mostrarMensajes(this, 1, "Error al buscar datos del cliente");
                 });
     }
 
@@ -118,34 +119,4 @@ public class Valorar extends AppCompatActivity {
         return cliente.getTrabajadorAsignado() != null;
     }
 
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
-    }
 }

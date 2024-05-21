@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cmct.clases.Utilidades;
 import com.example.cmct.modelo.admo.EleccionGestion;
 import com.example.cmct.modelo.cliente.EleccionCliente;
 import com.example.cmct.modelo.trabajador.EleccionTrabajador;
@@ -53,7 +54,7 @@ public class Login extends AppCompatActivity {
 
             // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE
             // DE QUE TIENEN QUE ESTAR TODOS LOS CAMPOS RELLENADOS
-            mostrarMensajes(getApplicationContext(),1, "Todos los campos deben estar rellenados");
+            Utilidades.mostrarMensajes(this,1, "Todos los campos deben estar rellenados");
 
         } else {
             // INTENTAR LOGEARSE
@@ -75,7 +76,7 @@ public class Login extends AppCompatActivity {
 
                             // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE
                             // DE QUE EL CORREO O LA CONTRASEÑA SON INCORRECTOS
-                            mostrarMensajes(getApplicationContext(),1, "Correo o contraseña incorrectos");
+                            Utilidades.mostrarMensajes(this,1, "Correo o contraseña incorrectos");
 
                         }
                     });
@@ -120,7 +121,7 @@ public class Login extends AppCompatActivity {
 
                         // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE
                         // DE QUE NO SE PUEDEN OBTENER LOS DATOS
-                        mostrarMensajes(getApplicationContext(),1, "No se han podido obtener los datos del usuario porque no existe en la base de datos");
+                        Utilidades.mostrarMensajes(this,1, "No se han podido obtener los datos del usuario porque no existe en la base de datos");
 
                     }
                 })
@@ -128,7 +129,7 @@ public class Login extends AppCompatActivity {
 
                     // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE
                     // DE QUE HA FALLADO EL TIPO DE USUARIO
-                    mostrarMensajes(getApplicationContext(),1, "Error al cargar el tipo de usuario");
+                    Utilidades.mostrarMensajes(this,1, "Error al cargar el tipo de usuario");
 
                 });
     }
@@ -167,20 +168,20 @@ public class Login extends AppCompatActivity {
                                         .addOnSuccessListener(aVoid1 -> {
 
                                             // SE HA ACTUALIZADO LA CONTRASEÑA CORRECTAMENTE
-                                            mostrarMensajes(getApplicationContext(),0,"Contraseña actualizada");
+                                            Utilidades.mostrarMensajes(this,0,"Contraseña actualizada.\nIntroduce tu nueva contraseña");
                                             // CERRAR EL DIALOGO
                                             dialogo.dismiss();
 
-                                        }).addOnFailureListener(e -> mostrarMensajes(getApplicationContext(), 1,"Error al actualizar la contraseña"));
+                                        }).addOnFailureListener(e -> Utilidades.mostrarMensajes(this, 1,"Error al actualizar la contraseña"));
 
                             })
-                            .addOnFailureListener(e -> mostrarMensajes(getApplicationContext(), 1, "Error al actualizar la contraseña"));
+                            .addOnFailureListener(e -> Utilidades.mostrarMensajes(this, 1, "Error al actualizar la contraseña"));
                 } else {
                     // MOSTRAR ERROR
-                    mostrarMensajes(getApplicationContext(),1,"Las contraseñas no coinciden");
+                    Utilidades.mostrarMensajes(this,1,"Las contraseñas no coinciden");
                 }
             } else {
-                mostrarMensajes(getApplicationContext(), 1, "La contraseña no es válida");
+                Utilidades.mostrarMensajes(this, 1, "La contraseña no es válida");
             }
         });
 
@@ -196,61 +197,30 @@ public class Login extends AppCompatActivity {
     private void seleccionNavegacion(String tipoUsuario, String nombreUsuario) {
         if ("trabajador".equals(tipoUsuario)) {
 
-            mostrarMensajes(getApplicationContext(), 0, "Bienvenido/a " + nombreUsuario);
+            Utilidades.mostrarMensajes(this, 0, "Bienvenido/a " + nombreUsuario);
             //LANZA UNA ACTIVIDAD PARA TRABAJADORES
             startActivity(new Intent(this, EleccionTrabajador.class));
 
         } else if ("cliente".equals(tipoUsuario)) {
 
-            mostrarMensajes(getApplicationContext(), 0, "Bienvenido/a " + nombreUsuario);
+            Utilidades.mostrarMensajes(this, 0, "Bienvenido/a " + nombreUsuario);
             // LANZA UNA ACTIVIDAD PARA CLIENTES
             startActivity(new Intent(this, EleccionCliente.class));
 
         } else if ("administrador".equals(tipoUsuario)) {
 
-            mostrarMensajes(getApplicationContext(), 0, "Bienvenido/a " + nombreUsuario);
+            Utilidades.mostrarMensajes(this, 0, "Bienvenido/a " + nombreUsuario);
             // LANZA UNA ACTIVIDAD PARA ADMINISTRADORES
             startActivity(new Intent(this, EleccionGestion.class));
 
         } else {
 
             // MANEJAO DE OTROS CASOS
-            mostrarMensajes(getApplicationContext(),1, "Tipo de usuario desconocido");
+            Utilidades.mostrarMensajes(this,1, "Tipo de usuario desconocido");
 
         }
 
         finish();
-    }
-
-    // MOSTRAR TOAST PERSONALIZADOS DE ERRORES Y DE QUE TODO HA IDO CORRECTO
-    private void mostrarMensajes(Context contexto, int tipo, String mensaje) {
-        // MENSAJE DE QUE ES CORRECTO
-        if(tipo == 0) {
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } else {
-            // MENSAJE DE ERRORES
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast_personalizado_error, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.toast_text);
-            text.setText(mensaje); // CONFIGURAR EL MENSAJE DE ERROR PERSONALIZADO
-
-            Toast toast = new Toast(contexto.getApplicationContext());
-            toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 300);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        }
     }
 
 }
