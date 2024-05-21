@@ -74,8 +74,14 @@ public class VerTrabajadores extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // FILTRAR ELEMENTOS DE LA LISTA SEGUN EL TEXTO DEL BUSCADOR
-                actualizarSentencia(s.toString());
+                // COMPROBAR SI HAY TEXTO PARA PONER LA PRIMERA LETRA MAYUSCULA
+                if(s.length() != 0) {
+                    // FILTRAR ELEMENTOS DE LA LISTA SEGUN EL TEXTO DEL BUSCADOR
+                    actualizarSentencia(Utilidades.primeraLetraMayuscula(s.toString()));
+                } else {
+                    // FILTRAR ELEMENTOS DE LA LISTA SEGUN EL TEXTO DEL BUSCADOR
+                    actualizarSentencia(s.toString());
+                }
             }
 
             @Override

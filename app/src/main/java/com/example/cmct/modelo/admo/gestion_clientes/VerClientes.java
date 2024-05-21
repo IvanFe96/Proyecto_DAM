@@ -84,8 +84,14 @@ public class VerClientes extends AppCompatActivity {
             // CUANDO SE ESCRIBA EN EL BUSCADOR SE ACTUALIZARA LA LISTA CON EL FILTRO QUE SE ESCRIBA
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // FILTRAR ELEMENTOS DE LA LISTA
-                actualizarSentencia(s.toString());
+                // COMPROBAR SI HAY TEXTO PARA PONER LA PRIMERA LETRA MAYUSCULA
+                if(s.length() != 0) {
+                    // FILTRAR ELEMENTOS DE LA LISTA SEGUN EL TEXTO DEL BUSCADOR
+                    actualizarSentencia(Utilidades.primeraLetraMayuscula(s.toString()));
+                } else {
+                    // FILTRAR ELEMENTOS DE LA LISTA SEGUN EL TEXTO DEL BUSCADOR
+                    actualizarSentencia(s.toString());
+                }
             }
 
             @Override
@@ -107,8 +113,14 @@ public class VerClientes extends AppCompatActivity {
         buscadorCiudades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // FILTRAR ELEMENTOS DE LA LISTA
-                actualizarSentencia(buscadorNombre.getText().toString());
+                // COMPROBAR SI HAY TEXTO PARA PONER LA PRIMERA LETRA MAYUSCULA
+                if(buscadorNombre.getText().toString().length() != 0) {
+                    // FILTRAR ELEMENTOS DE LA LISTA SEGUN EL TEXTO DEL BUSCADOR
+                    actualizarSentencia(Utilidades.primeraLetraMayuscula(buscadorNombre.getText().toString().toString()));
+                } else {
+                    // FILTRAR ELEMENTOS DE LA LISTA SEGUN EL TEXTO DEL BUSCADOR
+                    actualizarSentencia(buscadorNombre.getText().toString().toString());
+                }
             }
 
             @Override

@@ -194,13 +194,13 @@ public class ModificacionCliente extends AppCompatActivity {
             String correoCliente = cliente.getCorreo();
 
             // OBTENER TODOS LOS CAMPOS PARA EL CLIENTE
-            cliente.setNombre(nombre.getText().toString().trim());
-            cliente.setApellido1(apellido1.getText().toString().trim());
-            cliente.setApellido2(apellido2.getText().toString().trim());
+            cliente.setNombre(Utilidades.primeraLetraMayuscula(nombre.getText().toString().trim()));
+            cliente.setApellido1(Utilidades.primeraLetraMayuscula(apellido1.getText().toString().trim()));
+            cliente.setApellido2(Utilidades.primeraLetraMayuscula(apellido2.getText().toString().trim()));
             cliente.setCorreo(correo.getText().toString().trim());
             cliente.setTelefono(telefono.getText().toString().trim());
             cliente.setLocalidad(localidades.getSelectedItem().toString());
-            cliente.setDireccion(direccion.getText().toString());
+            cliente.setDireccion(Utilidades.primeraLetraMayuscula(direccion.getText().toString()));
 
             administrador.editarCliente(cliente,correoCliente,imagenUri,this);
 

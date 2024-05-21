@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.example.cmct.R;
 
 public class Utilidades {
+
+    // MOSTRAR TOAST PERSONALIZADOS
     public static void mostrarMensajes(Activity actividad, int tipo, String mensaje) {
         if(tipo == 2) {
             // MENSAJE INFORMATIVO
@@ -51,5 +53,15 @@ public class Utilidades {
             toast.setView(layout);
             toast.show();
         }
+    }
+
+    // DEVOLVER EL TEXTO PASADO CON LA PRIMERA LETRA MAYUSCULA
+    public static String primeraLetraMayuscula(String texto) {
+        String textoConPrimeraLetraMayuscula = "";
+
+        textoConPrimeraLetraMayuscula = String.valueOf(texto.charAt(0)).toUpperCase();
+        textoConPrimeraLetraMayuscula += texto.substring(1,texto.length());
+
+        return  textoConPrimeraLetraMayuscula;
     }
 }

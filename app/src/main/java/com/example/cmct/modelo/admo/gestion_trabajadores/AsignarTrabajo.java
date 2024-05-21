@@ -4,6 +4,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,8 +150,9 @@ public class AsignarTrabajo extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("usuarios")
                 .whereEqualTo("rol", "cliente")
-                .whereNotEqualTo("necesidades",null)
                 .whereEqualTo("trabajadorAsignado", null)
+                .whereNotEqualTo("necesidades",null)
+                .orderBy("nombre")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     ArrayList<Cliente> clientes = new ArrayList<>();

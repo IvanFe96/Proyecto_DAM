@@ -130,9 +130,9 @@ public class AltaTrabajador extends AppCompatActivity {
         // COMPROBAR QUE LA DESCRIPCION ESTA VACIA PARA DAR DE ALTA AL TRABAJADOR EN LA BASE DE DATOS
         if(descripcion.isEmpty()) {
             // OBTENER TODOS LOS CAMPOS PARA EL TRABAJADOR
-            trabajador.setNombre(nombre.getText().toString().trim());
-            trabajador.setApellido1(apellido1.getText().toString().trim());
-            trabajador.setApellido2(apellido2.getText().toString().trim());
+            trabajador.setNombre(Utilidades.primeraLetraMayuscula(nombre.getText().toString().trim()));
+            trabajador.setApellido1(Utilidades.primeraLetraMayuscula(apellido1.getText().toString().trim()));
+            trabajador.setApellido2(Utilidades.primeraLetraMayuscula(apellido2.getText().toString().trim()));
             trabajador.setCorreo(correo.getText().toString().trim());
             trabajador.setTelefono(telefono.getText().toString().trim());
             trabajador.setDni(dni.getText().toString().toUpperCase().trim());

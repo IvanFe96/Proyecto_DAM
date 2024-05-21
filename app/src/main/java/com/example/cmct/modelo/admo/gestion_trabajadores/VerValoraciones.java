@@ -54,11 +54,12 @@ public class VerValoraciones extends AppCompatActivity {
                     for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
                         String dni = snapshot.getString("dni");
                         float valoracion = snapshot.getDouble("calificacion").floatValue();
-                        // COMPROBAR SI EL TRABAJADOR YA ESTA EN LA LISTA PARA AÑADIR OTRA VALORACION MAS
+                        // COMPROBAR SI EL TRABAJADOR NO ESTA EN LA LISTA PARA INICIALIZAR UNA NUEVA LISTA
                         if (!valoracionesPorTrabajador.containsKey(dni)) {
                             // AÑADIR UN NUEVO TRABAJADOR
                             valoracionesPorTrabajador.put(dni, new ArrayList<>());
                         }
+                        // AÑADIR LA VALORACION A LA LISTA DE VALORACIONES DE ESE TRABAJADOR
                         valoracionesPorTrabajador.get(dni).add(valoracion);
 
                         // BUSCAR EL NOMBRE DEL TRABAJADOR PARA DESPUES PONERLO EN LA LISTA

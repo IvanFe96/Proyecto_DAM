@@ -197,19 +197,19 @@ public class Login extends AppCompatActivity {
     private void seleccionNavegacion(String tipoUsuario, String nombreUsuario) {
         if ("trabajador".equals(tipoUsuario)) {
 
-            Utilidades.mostrarMensajes(this, 0, "Bienvenido/a " + nombreUsuario);
+            Utilidades.mostrarMensajes(this, 2, "Bienvenido/a " + nombreUsuario);
             //LANZA UNA ACTIVIDAD PARA TRABAJADORES
             startActivity(new Intent(this, EleccionTrabajador.class));
 
         } else if ("cliente".equals(tipoUsuario)) {
 
-            Utilidades.mostrarMensajes(this, 0, "Bienvenido/a " + nombreUsuario);
+            Utilidades.mostrarMensajes(this, 2, "Bienvenido/a " + nombreUsuario);
             // LANZA UNA ACTIVIDAD PARA CLIENTES
             startActivity(new Intent(this, EleccionCliente.class));
 
         } else if ("administrador".equals(tipoUsuario)) {
 
-            Utilidades.mostrarMensajes(this, 0, "Bienvenido/a " + nombreUsuario);
+            Utilidades.mostrarMensajes(this, 2, "Bienvenido/a " + nombreUsuario);
             // LANZA UNA ACTIVIDAD PARA ADMINISTRADORES
             startActivity(new Intent(this, EleccionGestion.class));
 
