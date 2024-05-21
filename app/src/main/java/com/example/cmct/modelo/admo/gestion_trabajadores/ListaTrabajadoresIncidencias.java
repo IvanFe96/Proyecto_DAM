@@ -1,17 +1,12 @@
 package com.example.cmct.modelo.admo.gestion_trabajadores;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,11 +45,9 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         tvFecha = findViewById(R.id.tvMostrarFecha);
 
         // OBTENER LA FECHA DEL DIA ACTUAL
-        Calendar c = Calendar.getInstance();
-        int anioActual = c.get(Calendar.YEAR);
-        int mesActual = c.get(Calendar.MONTH);
-        int diaActual = c.get(Calendar.DAY_OF_MONTH);
-        tvFecha.setText(anioActual+"/"+mesActual+"/"+diaActual);
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String fechaActual = formatoFecha.format(new Date());
+        tvFecha.setText(fechaActual);
 
         this.recyclerTrabajadores = findViewById(R.id.recyclerListaTrabajadoresIncidencias);
         this.recyclerTrabajadores.setLayoutManager(new LinearLayoutManager(this));
@@ -68,11 +61,11 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
 
     private void obtenerTrabajadoresConIncidencias() {
         Calendar calendario = Calendar.getInstance();
-        SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         // OBTENER LA FECHA QUE ESTA PUESTA EN EL TEXTO
         try {
-            Date fechaActual = formatearFecha.parse(tvFecha.toString());
+            Date fechaActual = formatearFecha.parse(tvFecha.getText().toString());
             calendario.setTime(fechaActual);
         } catch (ParseException e) {
             // SI HAY UN ERROR AL PARSEAR LA FECHA SE UTILIZA LA FECHA ACTUAL
@@ -106,6 +99,7 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
                         cargarTrabajadores(dniTrabajadores);
                     } else {
                         // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
+                        cargarListaVacia();
                         Utilidades.mostrarMensajes(this,2,"No hay incidencias que mostrar");
                     }
                 })
@@ -118,11 +112,11 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
     public void SeleccionarFecha(View view) {
 
         Calendar calendario = Calendar.getInstance();
-        SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formatearFecha = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         // OBTENER LA FECHA QUE ESTA PUESTA EN EL TEXTO
         try {
-            Date date = formatearFecha.parse(tvFecha.toString());
+            Date date = formatearFecha.parse(tvFecha.getText().toString());
             calendario.setTime(date);
         } catch (ParseException e) {
             // SI HAY UN ERROR AL PARSEAR LA FECHA SE UTILIZA LA FECHA ACTUAL
@@ -133,7 +127,10 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int anio, int mesAnio, int diaMes) {
-                        String fechaSeleccionada = String.format(Locale.getDefault(), "%d-%02d-%02d", anio, mesAnio + 1, diaMes);
+                        calendario.set(Calendar.YEAR, anio);
+                        calendario.set(Calendar.MONTH, mesAnio);
+                        calendario.set(Calendar.DAY_OF_MONTH, diaMes);
+                        String fechaSeleccionada = formatearFecha.format(calendario.getTime());
                         tvFecha.setText(fechaSeleccionada);
                         // ACTUALIZAR LA LISTA
                         obtenerTrabajadoresConIncidencias();
@@ -141,7 +138,7 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
                 }, calendario.get(Calendar.YEAR), calendario.get(Calendar.MONTH), calendario.get(Calendar.DAY_OF_MONTH));
 
         // NO PERMITIR QUE EL USUARIO PUEDA SELECCIONAR UNA FECHA QUE AUN NO HA LLEGADO
-        datePickerDialog.getDatePicker().setMaxDate(calendario.getTimeInMillis());
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
         // MOSTRAR EL DIALOGO
         datePickerDialog.show();
@@ -170,6 +167,17 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         adaptadorTrabajadorSimple.startListening();
     }
 
+    private void cargarListaVacia() {
+        Query sentencia = FirebaseFirestore.getInstance().collection("usuarios")
+                .whereEqualTo("rol", "trabajador")
+                .whereEqualTo("dni", "NO_EXISTE");
+
+        FirestoreRecyclerOptions<Trabajador> options = new FirestoreRecyclerOptions.Builder<Trabajador>()
+                .setQuery(sentencia, Trabajador.class).build();
+
+        adaptadorTrabajadorSimple.updateOptions(options);
+        adaptadorTrabajadorSimple.startListening();
+    }
     // GESTION DE RECURSOS
     @Override
     protected void onResume() {

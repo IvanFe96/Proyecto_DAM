@@ -71,6 +71,12 @@ public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajad
 
     }
 
+    // ACTUALIZAR LOS DATOS DE LA LISTA
+    public void updateOptions(FirestoreRecyclerOptions<Trabajador> newOptions) {
+        super.updateOptions(newOptions);
+        this.notifyDataSetChanged();
+    }
+
 
     //CLASE CON EL CONTENEDOR.
     public class DatosHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
