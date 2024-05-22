@@ -83,7 +83,6 @@ public class VerFichaje extends AppCompatActivity {
                 .whereLessThanOrEqualTo("fechaFichaje", new Timestamp(fechaFin))
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
                         // RECORRER TODOS LOS REGISTROS ENCONTRADOS
                         for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                             // OBTENER LOS DATOS DEL FICHAJE
@@ -99,10 +98,6 @@ public class VerFichaje extends AppCompatActivity {
                             // LA LISTA NO ESTA VACIA Y SE PROCEDE A RELLENAR CON LOS DATOS OBTENIDOS
                             rellenarHoras();
                         }
-
-                    } else {
-                        Utilidades.mostrarMensajes(this, 0, "No se encontraron fichajes para hoy.");
-                    }
                 })
                 .addOnFailureListener(e -> {
 

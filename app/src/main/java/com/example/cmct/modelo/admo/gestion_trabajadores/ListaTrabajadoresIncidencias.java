@@ -52,10 +52,17 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         this.recyclerTrabajadores = findViewById(R.id.recyclerListaTrabajadoresIncidencias);
         this.recyclerTrabajadores.setLayoutManager(new LinearLayoutManager(this));
 
+        // Inicializar con opciones vacías
+        FirestoreRecyclerOptions<Trabajador> listaVaciaParaInicializar = new FirestoreRecyclerOptions.Builder<Trabajador>()
+                .setQuery(FirebaseFirestore.getInstance().collection("usuarios").whereEqualTo("dni", "NO_EXISTE"), Trabajador.class)
+                .build();
+
+        adaptadorTrabajadorSimple = new AdaptadorTrabajadorSimple(listaVaciaParaInicializar);
+        recyclerTrabajadores.setAdapter(adaptadorTrabajadorSimple);
+        adaptadorTrabajadorSimple.startListening();
+
         // RELLENAR LA LISTA
         obtenerTrabajadoresConIncidencias();
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
 
     }
 
