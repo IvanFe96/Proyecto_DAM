@@ -170,6 +170,9 @@ public class ModificacionTrabajador extends AppCompatActivity {
             trabajador.setCorreo(correo.getText().toString().trim());
             trabajador.setTelefono(telefono.getText().toString().trim());
 
+            // MOSTRAR MENSAJE DE ESPERA
+            Utilidades.esperar(this);
+            // EDITAR TRABAJADOR
             administrador.editarTrabajador(trabajador,correoTrabajador,imagenUri,this);
 
         } else {

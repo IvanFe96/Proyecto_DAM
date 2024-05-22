@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cmct.R;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.clases.Utilidades;
+import com.example.cmct.modelo.admo.gestion_trabajadores.AltaTrabajador;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -67,6 +68,9 @@ public class CrearIncidencias extends AppCompatActivity {
         } else {
             // OBTENER LA FECHA EN LA QUE SE VA A CREAR LA INCIDENCIA
             Timestamp fechaIncidencia = Timestamp.now();
+
+            // MOSTRAR MENSAJE DE ESPERA
+            Utilidades.esperar(this);
 
             // CREAR LA INCIDENCIA
             trabajador.crearIncidencia(this, (String) tipoIncidencia.getSelectedItem(),descripcion.getText().toString(), fechaIncidencia);

@@ -17,6 +17,7 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.clases.Utilidades;
+import com.example.cmct.modelo.admo.gestion_trabajadores.AltaTrabajador;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -95,6 +96,8 @@ public class RegistrarNecesidades extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     cliente.setNecesidades(necesidadesCliente);
+                    // MOSTRAR MENSAJE DE ESPERA
+                    Utilidades.esperar(RegistrarNecesidades.this);
                     cliente.registrarNecesidades(RegistrarNecesidades.this);
                 }
             });

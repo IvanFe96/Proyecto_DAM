@@ -97,7 +97,7 @@ public class ListaTrabajadoresAsignarTrabajo extends AppCompatActivity {
                             cargarTrabajadores(trabajadoresNoAsignados);
                         } else {
                             // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
-                            Utilidades.mostrarMensajes(this,0,"Todos los trabajadores están asignados");
+                            Utilidades.mostrarMensajes(this,2,"Todos los trabajadores están asignados");
                             finish();
                         }
 

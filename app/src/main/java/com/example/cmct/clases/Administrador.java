@@ -83,7 +83,7 @@ public class Administrador extends Usuario implements Serializable {
                         String imagenUrl = uri.toString();
                         trabajador.setImagen(imagenUrl);
                         // REGISTRAR AL USUARIO EN LA BASE DE DATOS
-                        registrarTrabajadorEnFirestore(idUsuario, imagenUrl, trabajador, actividad);
+                        registrarTrabajadorEnFirestore(idUsuario, trabajador, actividad);
                     });
                 })
                 .addOnFailureListener(e -> {
@@ -92,7 +92,7 @@ public class Administrador extends Usuario implements Serializable {
     }
 
     // DAR DE ALTA A UN TRABAJADOR EN LA BASE DE DATOS
-    private void registrarTrabajadorEnFirestore(String idUsuario, String imagenUrl, Trabajador trabajador, Activity actividad) {
+    private void registrarTrabajadorEnFirestore(String idUsuario, Trabajador trabajador, Activity actividad) {
         db.collection("usuarios").document(idUsuario)
                 .set(trabajador)
                 .addOnSuccessListener(aVoid -> {
@@ -717,7 +717,7 @@ public class Administrador extends Usuario implements Serializable {
     }
 
     // AGREGAR TRABAJADOR A LOS CLIENTES
-    public void asignarTrabajadores(Trabajador trabajador, List<Cliente> clientesAAsignar, Activity actividad) {
+    public void asignarTrabajo(Trabajador trabajador, List<Cliente> clientesAAsignar, Activity actividad) {
         // GUARDAR PARA CADA CLIENTE LOS DATOS CORRESPONDIENTES A LA HORA Y EL TRABAJADOR QUE ACUDE A SUS DOMICILIOS
         for (int i = 0; i < clientesAAsignar.size(); i++) {
             Cliente cliente = clientesAAsignar.get(i);

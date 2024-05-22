@@ -27,6 +27,7 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.clases.Utilidades;
+import com.example.cmct.modelo.admo.gestion_trabajadores.AltaTrabajador;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -167,6 +168,8 @@ public class AltaCliente extends AppCompatActivity {
             cliente.setContrasenia("123456");
             cliente.setLocalidad(localidades.getSelectedItem().toString());
 
+            // MOSTRAR MENSAJE DE ESPERA
+            Utilidades.esperar(this);
             // VERIFICAR QUE EL DNI NO ESTA EN LA BASE DE DATOS PARA DAR DE ALTA AL CLIENTE
             verificarDniExistente(cliente);
 

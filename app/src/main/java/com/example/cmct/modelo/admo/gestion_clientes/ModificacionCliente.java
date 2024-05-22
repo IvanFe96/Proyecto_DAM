@@ -28,6 +28,7 @@ import com.example.cmct.clases.Administrador;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.clases.Utilidades;
+import com.example.cmct.modelo.admo.gestion_trabajadores.AltaTrabajador;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -202,6 +203,9 @@ public class ModificacionCliente extends AppCompatActivity {
             cliente.setLocalidad(localidades.getSelectedItem().toString());
             cliente.setDireccion(Utilidades.primeraLetraMayuscula(direccion.getText().toString()));
 
+            // MOSTRAR MENSAJE DE ESPERA
+            Utilidades.esperar(this);
+            // ACTUALIZAR CLIENTE
             administrador.editarCliente(cliente,correoCliente,imagenUri,this);
 
         } else {

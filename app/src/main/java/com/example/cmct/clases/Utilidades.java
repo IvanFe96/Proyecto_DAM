@@ -1,6 +1,7 @@
 package com.example.cmct.clases;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmct.R;
+import com.example.cmct.modelo.admo.gestion_trabajadores.AltaTrabajador;
 
 public class Utilidades {
 
@@ -63,5 +65,13 @@ public class Utilidades {
         textoConPrimeraLetraMayuscula += texto.substring(1,texto.length());
 
         return  textoConPrimeraLetraMayuscula;
+    }
+
+    public static void esperar(Activity actividad) {
+        // MOSTRAR UN DIALOGO DE ESPERA
+        ProgressDialog progressDialog = new ProgressDialog(actividad);
+        progressDialog.setMessage("Por favor espera...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
 }

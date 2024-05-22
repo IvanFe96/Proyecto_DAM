@@ -1,5 +1,6 @@
 package com.example.cmct.modelo.admo.gestion_trabajadores;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -170,6 +171,8 @@ public class AltaTrabajador extends AppCompatActivity {
                                 // DNI EXISTE SE MUESTRA POR PANTALLA
                                 Utilidades.mostrarMensajes(AltaTrabajador.this, 1, "El DNI ya está registrado en la base de datos");
                             } else {
+                                // MOSTRAR MENSAJE DE ESPERA
+                                Utilidades.esperar(AltaTrabajador.this);
                                 // DNI NO EXISTE, REGISTRAR AL USUARIO
                                 administrador.altaTrabajadorAutenticacion(trabajador, AltaTrabajador.this, imagenUri);
                             }

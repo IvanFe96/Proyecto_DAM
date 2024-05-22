@@ -17,6 +17,7 @@ import com.example.cmct.R;
 import com.example.cmct.clases.Cliente;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.clases.Utilidades;
+import com.example.cmct.modelo.admo.gestion_trabajadores.AltaTrabajador;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,6 +53,8 @@ public class Valorar extends AppCompatActivity {
 
     // CLICK DEL BOTON ACEPTAR PARA GUARDAR LA VALORACION DEL CLIENTE EN LA BASE DE DATOS
     public void clickBotonAceptar(View view) {
+        // MOSTRAR MENSAJE DE ESPERA
+        Utilidades.esperar(this);
         // VALORAR AL TRABAJADOR
         cliente.valorarTrabajador(this, trabajadorAsignado.getNombre()+" "+trabajadorAsignado.getApellido1()+" "+trabajadorAsignado.getApellido2(),valoracion.getRating(), Timestamp.now());
     }

@@ -1,18 +1,13 @@
 package com.example.cmct.modelo.admo.gestion_trabajadores;
 
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -35,8 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import okhttp3.internal.Util;
 
 public class AsignarTrabajo extends AppCompatActivity {
 
@@ -212,7 +205,10 @@ public class AsignarTrabajo extends AppCompatActivity {
 
         // OPCION SI PARA GUARDAR LOS DATOS EN LAS BASE DE DATOS
         builder.setPositiveButton("Sí", (dialog, which) -> {
-            administrador.asignarTrabajadores(trabajador,clientesAAsignar,this);
+            // MOSTRAR MENSAJE DE ESPERA
+            Utilidades.esperar(this);
+            // ASIGNAR TRABAJO
+            administrador.asignarTrabajo(trabajador,clientesAAsignar,this);
         });
 
         // OPCION NO PARA CERRAR EL DIALOGO

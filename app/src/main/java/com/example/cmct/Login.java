@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmct.clases.Utilidades;
 import com.example.cmct.modelo.admo.EleccionGestion;
+import com.example.cmct.modelo.admo.gestion_trabajadores.AltaTrabajador;
 import com.example.cmct.modelo.cliente.EleccionCliente;
 import com.example.cmct.modelo.trabajador.EleccionTrabajador;
 import com.google.firebase.auth.FirebaseAuth;
@@ -195,6 +196,9 @@ public class Login extends AppCompatActivity {
 
     // SELECCIONAR LA SIGUIENTE VENTANA A MOSTRAR SEGUN EL TIPO DE USUARIO QUE SEA
     private void seleccionNavegacion(String tipoUsuario, String nombreUsuario) {
+        // MOSTRAR MENSAJE DE ESPERA
+        Utilidades.esperar(this);
+
         if ("trabajador".equals(tipoUsuario)) {
 
             Utilidades.mostrarMensajes(this, 2, "Bienvenido/a " + nombreUsuario);
