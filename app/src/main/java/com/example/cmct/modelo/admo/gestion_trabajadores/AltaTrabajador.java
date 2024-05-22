@@ -136,6 +136,7 @@ public class AltaTrabajador extends AppCompatActivity {
             trabajador.setCorreo(correo.getText().toString().trim());
             trabajador.setTelefono(telefono.getText().toString().trim());
             trabajador.setDni(dni.getText().toString().toUpperCase().trim());
+            trabajador.setRol("trabajador");
             trabajador.setContrasenia("123456");
 
             // VERIFICAR QUE EL DNI NO ESTA EN LA BASE DE DATOS PARA DAR DE ALTA AL TRABAJADOR

@@ -81,6 +81,7 @@ public class Administrador extends Usuario implements Serializable {
                     imagenRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         // URL DE LA IMAGEN SUBIDA
                         String imagenUrl = uri.toString();
+                        trabajador.setImagen(imagenUrl);
                         // REGISTRAR AL USUARIO EN LA BASE DE DATOS
                         registrarTrabajadorEnFirestore(idUsuario, imagenUrl, trabajador, actividad);
                     });
@@ -92,20 +93,8 @@ public class Administrador extends Usuario implements Serializable {
 
     // DAR DE ALTA A UN TRABAJADOR EN LA BASE DE DATOS
     private void registrarTrabajadorEnFirestore(String idUsuario, String imagenUrl, Trabajador trabajador, Activity actividad) {
-        // CREAR UN DOCUMENTO TRABAJADOR
-        Map<String, Object> trabajadorBD = new HashMap<>();
-        trabajadorBD.put("nombre", trabajador.getNombre());
-        trabajadorBD.put("apellido1", trabajador.getApellido1());
-        trabajadorBD.put("apellido2", trabajador.getApellido2());
-        trabajadorBD.put("dni", trabajador.getDni().toUpperCase());
-        trabajadorBD.put("correo", trabajador.getCorreo());
-        trabajadorBD.put("telefono", trabajador.getTelefono());
-        trabajadorBD.put("contrasenia", trabajador.getContrasenia());
-        trabajadorBD.put("rol", "trabajador");
-        trabajadorBD.put("imagen", imagenUrl);
-
         db.collection("usuarios").document(idUsuario)
-                .set(trabajadorBD)
+                .set(trabajador)
                 .addOnSuccessListener(aVoid -> {
                     // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE DE CONFIRMACION DEL ALTA
                     Utilidades.mostrarMensajes(actividad, 0, "Trabajador dado de alta");
@@ -135,8 +124,10 @@ public class Administrador extends Usuario implements Serializable {
                                             if(deleteTask.isSuccessful()) {
                                                 eliminarImagenTrabajadorDeStorage(snapshot, actividad);
                                                 eliminarIncidenciasTrabajador(snapshot,actividad);
-                                                bajaTrabajadorEnFirestore(usuarioAEliminar, actividad);
                                                 eliminarFichajesTrabajador(snapshot,actividad);
+                                                desasignarTrabajador(snapshot,actividad);
+                                                eliminarValoracionesTrabajador(snapshot,actividad);
+                                                bajaTrabajadorEnFirestore(usuarioAEliminar, actividad);
                                             } else {
                                                 Utilidades.mostrarMensajes(actividad,1,"Error al eliminar al trabajador");
                                             }
@@ -258,7 +249,7 @@ public class Administrador extends Usuario implements Serializable {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // ACCEDER A LA COLECCION DE INCIDENCIAS
+                            // ACCEDER A LA COLECCION DE FICHAJES
                             db.collection("fichajes")
                                     .whereEqualTo("dni",trabajador.getDni())
                                     .get()
@@ -266,17 +257,92 @@ public class Administrador extends Usuario implements Serializable {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
-                                                // RECORRER TODAS LAS INCIDENCIAS QUE TENGA ESE TRABAJADOR PARA ELIMINARLAS
+                                                // RECORRER TODOS LOS FICHAJES QUE TENGA ESE TRABAJADOR PARA ELIMINARLOS
                                                 for (DocumentSnapshot document : task.getResult()) {
-                                                    db.collection("incidencias").document(document.getId()).delete()
+                                                    db.collection("fichajes").document(document.getId()).delete()
                                                             .addOnSuccessListener(aVoid ->{})
-                                                            .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar una incidencia"));
+                                                            .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar un fichaje"));
                                                 }
                                             } else {
-                                                Utilidades.mostrarMensajes(actividad, 1, "Error al obtener las incidencias para eliminar.");
+                                                Utilidades.mostrarMensajes(actividad, 1, "Error al obtener los fichajes para eliminar.");
                                             }
                                         }
                                     });
+                        } else {
+                            // ERROR AL REAUTENTICAR AL ADMINISTRADOR
+                            Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                        }
+                    }
+                });
+    }
+
+    // ELIMINAR AL TRABAJADOR DE LOS CLIENTES QUE TIENE
+    private void desasignarTrabajador(DocumentSnapshot snapshot, Activity actividad) {
+        // OBTENER LOS DATOS DEL TRABAJADOR PARA UTILIZARLOS EN LA CONSULTA SIGUIENTE
+        Trabajador trabajador = snapshot.toObject(Trabajador.class);
+
+        // REAUTENTICAR AL ADMINISTRADOR
+        autenticacion.signInWithEmailAndPassword(this.getCorreo(), this.getContrasenia())
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // BUSCAR LOS CLIENTES PARA LOS QUE TRABAJA EL TRABAJADOR
+                            db.collection("usuarios")
+                                    .whereEqualTo("rol","cliente")
+                                    .whereEqualTo("trabajadorAsignado", trabajador.getDni())
+                                    .get()
+                                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                                        // RECORRER TODOS LOS CLIENTES
+                                        for(DocumentSnapshot cliente : queryDocumentSnapshots.getDocuments()) {
+                                            // MAPA PARA ACTUALIZAR EL CAMPO trabajadorAsignado del cliente para que sea null
+                                            Map<String,Object> trabajadorAsignado = new HashMap<>();
+                                            trabajadorAsignado.put("trabajadorAsignado", null);
+
+                                            // ACTUALIZAR SOLO EL CAMPO trabajadorAsignado
+                                            db.collection("usuarios").document(cliente.getId())
+                                                    .update(trabajadorAsignado)
+                                                    .addOnSuccessListener(aVoid -> {})
+                                                    .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al actualizar el trabajadorAsignado"));
+
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> {Utilidades.mostrarMensajes(actividad, 1, "Error al obtener los clientes para los que trabaja " + trabajador.getNombre());});
+                        } else {
+                            // ERROR AL REAUTENTICAR AL ADMINISTRADOR
+                            Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
+                        }
+                    }
+                });
+    }
+
+    // ELIMINAR LAS VALORACIONES QUE HAYA HECHAS DEL TRABAJADOR
+    private void eliminarValoracionesTrabajador(DocumentSnapshot snapshot,Activity actividad) {
+        // OBTENER LOS DATOS DEL TRABAJADOR PARA UTILIZARLOS EN LA CONSULTA SIGUIENTE
+        Trabajador trabajador = snapshot.toObject(Trabajador.class);
+
+        // REAUTENTICAR AL ADMINISTRADOR
+        autenticacion.signInWithEmailAndPassword(this.getCorreo(), this.getContrasenia())
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // BUSCAR LAS VALORACIONES DEL TRABAJADOR
+                            db.collection("valoraciones")
+                                    .whereEqualTo("dni", trabajador.getDni())
+                                    .get()
+                                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                                        // RECORRER TODAS LAS VALORACIONES
+                                        for(DocumentSnapshot cliente : queryDocumentSnapshots.getDocuments()) {
+                                            db.collection("valoraciones")
+                                                    .document(cliente.getId())
+                                                    .delete()
+                                                    .addOnSuccessListener(aVoid -> {})
+                                                    .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar la valoracion"));
+
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> {Utilidades.mostrarMensajes(actividad, 1, "Error al obtener las valoraciones del trabajador " + trabajador.getNombre());});
                         } else {
                             // ERROR AL REAUTENTICAR AL ADMINISTRADOR
                             Utilidades.mostrarMensajes(actividad,1,"Error al reautenticar al administrador");
@@ -432,6 +498,7 @@ public class Administrador extends Usuario implements Serializable {
                     imagenRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         // URL DE LA IMAGEN SUBIDA
                         String imagenUrl = uri.toString();
+                        // ESTABLECER LA URL EN EL CLIENTE
                         cliente.setImagen(imagenUrl);
                         // REGISTRAR AL USUARIO EN LA BASE DE DATOS
                         registrarClienteEnFirestore(idUsuario, cliente, actividad);

@@ -202,6 +202,9 @@ public class VerTrabajadores extends AppCompatActivity {
         }
     }
 
+    // ACTUALIZAR LA LISTA
+    public void actualizarLista() {onResume();};
+
     private void obtenerAdministrador() {
         FirebaseFirestore.getInstance().collection("usuarios")
                 .whereEqualTo("rol", "administrador")
