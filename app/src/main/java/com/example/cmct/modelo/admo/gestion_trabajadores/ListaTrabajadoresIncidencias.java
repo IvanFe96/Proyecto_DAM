@@ -8,6 +8,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,8 +20,11 @@ import com.example.cmct.modelo.admo.adaptadores.AdaptadorTrabajadorSimple;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,33 +90,41 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         calendario.add(Calendar.DATE,1);
         Date fechaFinal = calendario.getTime();
 
-        // CONSULTA PARA SABER QUE INSTANCIAS SE HAN CREADO EN EL DIA ACTUAL UTILIZANDO LAS FECHAS OBTENIDAS ANTERIORMENTE
-        FirebaseFirestore.getInstance().collection("incidencias")
+        // SENTENCIA PARA BUSCAR LAS INCIDENCIAS QUE HAY EN LA FECHA SELECCIONADA
+        Query sentencia = FirebaseFirestore.getInstance().collection("incidencias")
                 .whereGreaterThanOrEqualTo("fechaIncidencia", new Timestamp(fechaInicio))
-                .whereLessThan("fechaIncidencia", new Timestamp(fechaFinal))
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    // LISTA PARA GUARDAR LOS TRABAJADORES QUE HAYAN HECHO INCIDENCIAS
-                    List<String> dniTrabajadores = new ArrayList<>();
-                    // GUARDAR EN LA LISTA EL DNI DE LOS TRABAJADORES
-                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        String dniTrabajador = documentSnapshot.getString("dni");
-                        if (dniTrabajador != null && !dniTrabajadores.contains(dniTrabajador)) {
-                            dniTrabajadores.add(dniTrabajador);
-                        }
+                .whereLessThan("fechaIncidencia", new Timestamp(fechaFinal));
+
+        // ESTABLECEMOS UN LISTENER PARA QUE LA LISTA ESTE ESUCHANDO CONSTANTEMENTE CAMBIOS EN LA BASE DE DATOS
+        sentencia.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Utilidades.mostrarMensajes(ListaTrabajadoresIncidencias.this, 1, "Error al cargar incidencias");
+                    return;
+                }
+
+                // LISTA DE TRABAJADORES CON INCIDENCIAS
+                List<String> dniTrabajadores = new ArrayList<>();
+                for (DocumentSnapshot trabajador : queryDocumentSnapshots) {
+                    String dni = trabajador.getString("dni");
+                    if (dni != null && !dniTrabajadores.contains(dni)) {
+                        dniTrabajadores.add(dni);
                     }
-                    // COMPROBAR SI LA LISTA ESTA LLENA PARA CARGAR EL RECYCLERVIEW
-                    if(!dniTrabajadores.isEmpty()) {
-                        cargarTrabajadores(dniTrabajadores);
-                    } else {
-                        // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
-                        cargarListaVacia();
-                        Utilidades.mostrarMensajes(this,2,"No hay incidencias que mostrar");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Utilidades.mostrarMensajes(this,1,"Error al cargar incidencias");
-                });
+                }
+
+                // COMPROBAR QUE LA LISTA NO ESTE VACIA
+                if (!dniTrabajadores.isEmpty()) {
+                    // SE CARGA LA LISTA DE TRABAJADORES
+                    cargarTrabajadores(dniTrabajadores,fechaInicio,fechaFinal);
+                } else {
+                    // NO HAY TRABAJADORES ESE DIA, SE CARGA UNA LISTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
+                    cargarListaVacia();
+                    Utilidades.mostrarMensajes(ListaTrabajadoresIncidencias.this, 2, "No hay incidencias que mostrar");
+                }
+            }
+        });
+
     }
 
     // CLICK EN LA IMAGEN DE CALENDARIO PARA SELECCIONAR UNA FECHA Y MOSTRAR LAS INCIDENCIAS DE LA FECHA SELECCIONADA
@@ -151,7 +163,7 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void cargarTrabajadores(List<String> dniTrabajadores) {
+    private void cargarTrabajadores(List<String> dniTrabajadores, Date fechaInicio, Date fechaFinal) {
         // SENTENCIA PARA SABER LOS TRABAJADORES QUE HAY EN LA LISTA QUE HEMOS PASADO
         // LO CUAL INDICA QUE LOS TRABAJADORES QUE ESTEN EN LA LISTA TIENEN INCIDENCIAS
         Query sentencia = FirebaseFirestore.getInstance().collection("usuarios")
@@ -171,6 +183,8 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         Intent intent = getIntent();
         adaptadorTrabajadorSimple.obtenerIntent(intent);
         adaptadorTrabajadorSimple.obtenerActividad(this);
+        // PASAR LA FECHA PARA PODER FILTRAR LAS INCIDENCIA POR LA FECHA SELECCIONADA
+        adaptadorTrabajadorSimple.obtenerFecha(fechaInicio, fechaFinal);
         adaptadorTrabajadorSimple.startListening();
     }
 
@@ -185,12 +199,28 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
         adaptadorTrabajadorSimple.updateOptions(options);
         adaptadorTrabajadorSimple.startListening();
     }
+
     // GESTION DE RECURSOS
     @Override
     protected void onResume() {
         super.onResume();
         if (adaptadorTrabajadorSimple != null) {
             adaptadorTrabajadorSimple.notifyDataSetChanged();
+        }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (adaptadorTrabajadorSimple != null) {
+            adaptadorTrabajadorSimple.stopListening();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (adaptadorTrabajadorSimple != null) {
+            adaptadorTrabajadorSimple.startListening();
         }
     }
 

@@ -33,12 +33,16 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajador, AdaptadorTrabajadorSimple.DatosHolder> {
     Intent intentpadre;
     Activity actividadPadre;
+
+    Date fechaInicio;
+    Date fechaFinal;
 
     public AdaptadorTrabajadorSimple(FirestoreRecyclerOptions<Trabajador> options) {
         super(options);
@@ -110,6 +114,8 @@ public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajad
                 // OBTENER LAS INCIDENCIAS DEL TRABAJADOR AL QUE SE LE HA HECHO CLICK
                 FirebaseFirestore.getInstance().collection("incidencias")
                         .whereEqualTo("dni", getSnapshots().getSnapshot(getAdapterPosition()).get("dni"))
+                        .whereGreaterThanOrEqualTo("fechaIncidencia", new Timestamp(fechaInicio))
+                        .whereLessThan("fechaIncidencia", new Timestamp(fechaFinal))
                         .get()
                         .addOnSuccessListener(queryDocumentSnapshots -> {
                             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
@@ -146,6 +152,12 @@ public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajad
     // OBTENER LA ACTIVIDAD DE LA QUE PROCEDE
     public void obtenerActividad(Activity actividad) {
         this.actividadPadre = actividad;
+    }
+
+    // OBTENER LA FECHA SELECCIONADA PARA BUSCAR LAS INCIDENCIAS EN ESA FECHA
+    public void obtenerFecha(Date fechaInicio, Date fechaFinal) {
+        this.fechaInicio = fechaInicio;
+        this.fechaFinal = fechaFinal;
     }
 
 }
