@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import com.example.cmct.R;
 import com.example.cmct.clases.Trabajador;
 import com.example.cmct.clases.Utilidades;
+import com.example.cmct.modelo.admo.EleccionGestion;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
@@ -104,5 +106,24 @@ public class EleccionTrabajador extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Utilidades.mostrarMensajes(this, 1, "Error al buscar datos del trabajador");
                 });
+    }
+
+    // METODO PARA CUANDO EL USUARIO VAYA HACIA ATRAS SE CIERRE LA SESION DEL MISMO Y VAYA A LA PANTALLA DEL LOGIN
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Utilidades.mostrarMensajes(EleccionTrabajador.this,2,"Cerrando sesión...");
+
+        // RETRASAR LA EJECUCION PARA CERRAR DE MANERA CORRECTA LA SESION DEL USUARIO
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // CERRAR SESION CON EL USUARIO REGISTRADO
+                FirebaseAuth.getInstance().signOut();
+                // REDIRIGIR AL USUARIO A LA PANTALLA DE LOGIN
+                finish(); // CERRAR LA PANTALLA ACTUAL PARA EVITAR QUE EL USUARIO REGRESE
+            }
+        }, 3000); // RETRASO DE 3 SEGUNDOS
     }
 }

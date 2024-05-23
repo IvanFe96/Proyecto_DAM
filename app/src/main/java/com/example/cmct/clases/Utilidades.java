@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utilidades {
+    private static ProgressDialog progressDialog;
 
     // COMPROBAR QUE EL NOMBRE Y LOS APELLIDOS ES TEXTO Y NO HAY NUMEROS
     public static boolean validarNombreApellidos(String nombre, String apellido1, String apellido2) {
@@ -158,10 +159,16 @@ public class Utilidades {
 
     // DIALOGO DE ESPERA EN CASO DE QUE TARDE MUCHO FIREBASE EN DAR RESPUESTA
     public static void esperar(Activity actividad) {
-        ProgressDialog progressDialog = new ProgressDialog(actividad);
+        progressDialog = new ProgressDialog(actividad);
         progressDialog.setMessage("Por favor espera...");
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
 
+    // CERRAR EL DIALOGO DE ESPERA
+    public static void cerrarEspera() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 }

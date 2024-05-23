@@ -28,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.internal.Util;
+
 public class Login extends AppCompatActivity {
 
     Button btnIniciarSesion;
@@ -49,6 +51,8 @@ public class Login extends AppCompatActivity {
 
     // CLICK DEL BOTON INICIAR SESION
     public void clickBotonIniciarSesion(View view) {
+        // MOSTRAR MENSAJE DE ESPERA
+        Utilidades.esperar(this);
 
         // COMPROBAR SI LOS CAMPOS DE TEXTO ESTAN VACIOS
         if(correo.getText().toString().isEmpty() || contrasenia.getText().toString().isEmpty()) {
@@ -78,7 +82,8 @@ public class Login extends AppCompatActivity {
                             // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE
                             // DE QUE EL CORREO O LA CONTRASEÑA SON INCORRECTOS
                             Utilidades.mostrarMensajes(this,1, "Correo o contraseña incorrectos");
-
+                            // CERRAR EL DIALOGO DE ESPERA
+                            Utilidades.cerrarEspera();
                         }
                     });
         }
@@ -196,8 +201,8 @@ public class Login extends AppCompatActivity {
 
     // SELECCIONAR LA SIGUIENTE VENTANA A MOSTRAR SEGUN EL TIPO DE USUARIO QUE SEA
     private void seleccionNavegacion(String tipoUsuario, String nombreUsuario) {
-        // MOSTRAR MENSAJE DE ESPERA
-        Utilidades.esperar(this);
+        // CERRAR EL DIALOGO DE ESPERA
+        Utilidades.cerrarEspera();
 
         if ("trabajador".equals(tipoUsuario)) {
 
@@ -221,10 +226,26 @@ public class Login extends AppCompatActivity {
 
             // MANEJAO DE OTROS CASOS
             Utilidades.mostrarMensajes(this,1, "Tipo de usuario desconocido");
-
+            // CERRAR EL DIALOGO DE ESPERA
+            Utilidades.cerrarEspera();
         }
 
-        finish();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Limpiar los campos de texto cada vez que la actividad se reanuda
+        if (correo != null && contrasenia != null) {
+            correo.setText("");
+            contrasenia.setText("");
+        }
+
+        // Restablecer cualquier estado o configuración que pueda haberse modificado durante la sesión anterior
+        contraseniaVisible = false;  // Restablecer la visibilidad de la contraseña
+        imagenOjo.setImageResource(R.drawable.esconder_contrasenia);  // Restablecer el ícono del ojo
+
+        // Opcional: Si manejas sesiones o caches que deben limpiarse
+        FirebaseAuth.getInstance().signOut(); // Asegurar que la sesión está cerrada
+    }
 }
