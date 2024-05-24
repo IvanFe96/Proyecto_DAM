@@ -227,8 +227,6 @@ public class Administrador extends Usuario implements Serializable {
                                                             .addOnSuccessListener(aVoid ->{})
                                                             .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar una incidencia"));
                                                 }
-                                            } else {
-                                                Utilidades.mostrarMensajes(actividad, 1, "Error al obtener las incidencias para eliminar.");
                                             }
                                         }
                                     });
@@ -265,8 +263,6 @@ public class Administrador extends Usuario implements Serializable {
                                                             .addOnSuccessListener(aVoid ->{})
                                                             .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al eliminar un fichaje"));
                                                 }
-                                            } else {
-                                                Utilidades.mostrarMensajes(actividad, 1, "Error al obtener los fichajes para eliminar.");
                                             }
                                         }
                                     });

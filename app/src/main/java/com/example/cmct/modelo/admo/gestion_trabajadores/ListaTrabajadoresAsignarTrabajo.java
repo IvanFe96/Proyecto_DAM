@@ -54,30 +54,9 @@ public class ListaTrabajadoresAsignarTrabajo extends AppCompatActivity {
         // LISTA PARA GUARDAR LOS DNIS DE LOS TRABAJADORES QUE SI ESTAN ASIGNADOS
         List<String> trabajadoresAsignados = new ArrayList<String>();
 
-        FirebaseFirestore.getInstance().collection("usuarios")
-                .whereEqualTo("rol", "cliente")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (DocumentSnapshot document : task.getResult()) {
-                            // COMPROBAR QUE EL CLIENTE TIENE EL CAMPO DEL TRABAJADOR ASIGNADO
-                            // Y QUE ESTE NO ES NULO LO QUE INDICA QUE TIENE UN TRABAJADOR ASIGNADO
-                            if (document.contains("trabajadorAsignado") && document.getString("trabajadorAsignado") != null) {
-                                trabajadoresAsignados.add(document.getString("trabajadorAsignado"));
-                            }
-                        }
-                        // BUSCAR LOS TRABAJADORES QUE NO TIENEN CLIENTES ASIGNADOS
-                        buscarTrabajadoresNoAsignados(trabajadoresAsignados);
-                    } else {
-                        Utilidades.mostrarMensajes(this,1,"Error al obtener datos");
-                    }
-                });
-    }
-
-    private void buscarTrabajadoresNoAsignados(List<String> trabajadoresAsignados) {
-        // BUSCAR TODOS LOS TRABAJADORES PARA COMPARARLOS CON LA LISTA PASADA
+        // SENTENCIA PARA BUSCAR LOS CLIENTES
         Query sentencia = FirebaseFirestore.getInstance().collection("usuarios")
-                .whereEqualTo("rol", "trabajador");
+                .whereEqualTo("rol", "cliente");
 
         // ESTABLECEMOS UN LISTENER PARA QUE LA LISTA ESTE ESUCHANDO CONSTANTEMENTE CAMBIOS EN LA BASE DE DATOS
         sentencia.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -88,30 +67,54 @@ public class ListaTrabajadoresAsignarTrabajo extends AppCompatActivity {
                     return;
                 }
 
-                // LISTA PARA GUARDAR LOS TRABAJADORES QUE NO TIENEN ASIGNADO TRABAJO
-                List<String> trabajadoresNoAsignados = new ArrayList<>();
-
-                // RECORRER LOS TRABAJADORES OBTENIDOS
                 for (DocumentSnapshot document : queryDocumentSnapshots) {
-                    String dni = document.getString("dni");
-                    // COMPROBAR SI EL TRABAJADOR NO ESTA EN LA LISTA DE LOS TRABAJADORES QUE SI QUE TIENEN TRABAJO ASIGNADO
-                    if (!trabajadoresAsignados.contains(dni)) {
-                        // GUARDAR EL TRABAJADOR EN LA LISTA DE LOS NO ASIGNADOS
-                        trabajadoresNoAsignados.add(document.getString("dni"));
+                    // COMPROBAR QUE EL CLIENTE TIENE EL CAMPO DEL TRABAJADOR ASIGNADO
+                    // Y QUE ESTE NO ES NULO LO QUE INDICA QUE TIENE UN TRABAJADOR ASIGNADO
+                    if (document.contains("trabajadorAsignado") && document.getString("trabajadorAsignado") != null) {
+                        trabajadoresAsignados.add(document.getString("trabajadorAsignado"));
                     }
                 }
-
-                // COMPROBAR SI LA LISTA ESTA LLENA PARA CARGAR EL RECYCLERVIEW
-                if(!trabajadoresNoAsignados.isEmpty()) {
-                    // ACTUALIZAR EL ADAPTADOR CON LA LISTA DE TRABAJADORES NO ASIGNADOS
-                    cargarTrabajadores(trabajadoresNoAsignados);
-                } else {
-                    // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
-                    Utilidades.mostrarMensajes(ListaTrabajadoresAsignarTrabajo.this,2,"Todos los trabajadores están asignados");
-                    finish();
-                }
+                // BUSCAR LOS TRABAJADORES QUE NO TIENEN CLIENTES ASIGNADOS
+                buscarTrabajadoresNoAsignados(trabajadoresAsignados);
             }
         });
+
+    }
+
+    private void buscarTrabajadoresNoAsignados(List<String> trabajadoresAsignados) {
+        // BUSCAR TODOS LOS TRABAJADORES PARA COMPARARLOS CON LA LISTA PASADA
+        FirebaseFirestore.getInstance().collection("usuarios")
+                .whereEqualTo("rol", "trabajador")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // LISTA PARA GUARDAR LOS TRABAJADORES QUE NO TIENEN ASIGNADO TRABAJO
+                        List<String> trabajadoresNoAsignados = new ArrayList<>();
+
+                        // RECORRER LOS TRABAJADORES OBTENIDOS
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String dni = document.getString("dni");
+                            // COMPROBAR SI EL TRABAJADOR NO ESTA EN LA LISTA DE LOS TRABAJADORES QUE SI QUE TIENEN TRABAJO ASIGNADO
+                            if (!trabajadoresAsignados.contains(dni)) {
+                                // GUARDAR EL TRABAJADOR EN LA LISTA DE LOS NO ASIGNADOS
+                                trabajadoresNoAsignados.add(document.getString("dni"));
+                            }
+                        }
+
+                        // COMPROBAR SI LA LISTA ESTA LLENA PARA CARGAR EL RECYCLERVIEW
+                        if(!trabajadoresNoAsignados.isEmpty()) {
+                            // ACTUALIZAR EL ADAPTADOR CON LA LISTA DE TRABAJADORES NO ASIGNADOS
+                            cargarTrabajadores(trabajadoresNoAsignados);
+                        } else {
+                            // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
+                            Utilidades.mostrarMensajes(this,2,"Todos los trabajadores están asignados");
+                            finish();
+                        }
+
+                    } else {
+                        Utilidades.mostrarMensajes(this,1,"Error al obtener datos");
+                    }
+                });
     }
 
     // PASAR AL ADAPTADOR LA LISTA DE TRABAJADORES QUE NO TIENEN ASIGNADO TRABAJO PARA MOSTRARLOS EN LA LISTA
