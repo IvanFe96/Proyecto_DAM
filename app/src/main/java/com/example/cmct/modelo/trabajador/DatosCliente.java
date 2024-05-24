@@ -27,8 +27,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class DatosCliente extends AppCompatActivity implements OnMapReadyCallback{
     TextView nombreCliente, datosCliente;
@@ -80,7 +83,9 @@ public class DatosCliente extends AppCompatActivity implements OnMapReadyCallbac
         {
             datos.append("\n- "+ necesidad.getValue());
         }
-        datos.append("\n\nHORARIO: "+cliente.getHoraEntradaTrabajador()+"-"+cliente.getHoraSalidaTrabajador());
+        SimpleDateFormat formatoHoras = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        formatoHoras.setTimeZone(TimeZone.getDefault());
+        datos.append("\n\nHORARIO: "+formatoHoras.format(cliente.getHoraEntradaTrabajador().toDate())+"-"+formatoHoras.format(cliente.getHoraSalidaTrabajador().toDate()));
         datos.append("\n\nDOMICILIO: "+cliente.getDireccion()+", "+cliente.getLocalidad());
         datos.append("\n\nCORREO: "+cliente.getCorreo());
         datos.append("\n\nTELÉFONO: "+cliente.getTelefono());

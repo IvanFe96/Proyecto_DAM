@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,6 +18,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -296,14 +298,16 @@ public class Administrador extends Usuario implements Serializable {
                                         // RECORRER TODOS LOS CLIENTES
                                         for(DocumentSnapshot cliente : queryDocumentSnapshots.getDocuments()) {
                                             // MAPA PARA ACTUALIZAR EL CAMPO trabajadorAsignado del cliente para que sea null
-                                            Map<String,Object> trabajadorAsignado = new HashMap<>();
-                                            trabajadorAsignado.put("trabajadorAsignado", null);
+                                            Map<String,Object> modificaciones = new HashMap<>();
+                                            modificaciones.put("trabajadorAsignado", null);
+                                            modificaciones.put("horaEntradaTrabajador", null);
+                                            modificaciones.put("horaSalidaTrabajador",null);
 
                                             // ACTUALIZAR SOLO EL CAMPO trabajadorAsignado
                                             db.collection("usuarios").document(cliente.getId())
-                                                    .update(trabajadorAsignado)
+                                                    .update(modificaciones)
                                                     .addOnSuccessListener(aVoid -> {})
-                                                    .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al actualizar el trabajadorAsignado"));
+                                                    .addOnFailureListener(e -> Utilidades.mostrarMensajes(actividad, 1, "Error al actualizar los datos"));
 
                                         }
                                     })

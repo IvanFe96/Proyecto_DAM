@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,9 +19,13 @@ import com.example.cmct.clases.Trabajador;
 import com.example.cmct.clases.Utilidades;
 import com.example.cmct.modelo.admo.adaptadores.AdaptadorTrabajadorSimple;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,41 +75,43 @@ public class ListaTrabajadoresAsignarTrabajo extends AppCompatActivity {
     }
 
     private void buscarTrabajadoresNoAsignados(List<String> trabajadoresAsignados) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         // BUSCAR TODOS LOS TRABAJADORES PARA COMPARARLOS CON LA LISTA PASADA
-        db.collection("usuarios")
-                .whereEqualTo("rol", "trabajador")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // LISTA PARA GUARDAR LOS TRABAJADORES QUE NO TIENEN ASIGNADO TRABAJO
-                        List<String> trabajadoresNoAsignados = new ArrayList<>();
+        Query sentencia = FirebaseFirestore.getInstance().collection("usuarios")
+                .whereEqualTo("rol", "trabajador");
 
-                        // RECORRER LOS TRABAJADORES OBTENIDOS
-                        for (DocumentSnapshot document : task.getResult()) {
-                            String dni = document.getString("dni");
-                            // COMPROBAR SI EL TRABAJADOR NO ESTA EN LA LISTA DE LOS TRABAJADORES QUE SI QUE TIENEN TRABAJO ASIGNADO
-                            if (!trabajadoresAsignados.contains(dni)) {
-                                // GUARDAR EL TRABAJADOR EN LA LISTA DE LOS NO ASIGNADOS
-                                trabajadoresNoAsignados.add(document.getString("dni"));
-                            }
-                        }
+        // ESTABLECEMOS UN LISTENER PARA QUE LA LISTA ESTE ESUCHANDO CONSTANTEMENTE CAMBIOS EN LA BASE DE DATOS
+        sentencia.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Utilidades.mostrarMensajes(ListaTrabajadoresAsignarTrabajo.this, 1, "Error al cargar incidencias");
+                    return;
+                }
 
-                        // COMPROBAR SI LA LISTA ESTA LLENA PARA CARGAR EL RECYCLERVIEW
-                        if(!trabajadoresNoAsignados.isEmpty()) {
-                            // ACTUALIZAR EL ADAPTADOR CON LA LISTA DE TRABAJADORES NO ASIGNADOS
-                            cargarTrabajadores(trabajadoresNoAsignados);
-                        } else {
-                            // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
-                            Utilidades.mostrarMensajes(this,2,"Todos los trabajadores están asignados");
-                            finish();
-                        }
+                // LISTA PARA GUARDAR LOS TRABAJADORES QUE NO TIENEN ASIGNADO TRABAJO
+                List<String> trabajadoresNoAsignados = new ArrayList<>();
 
-                    } else {
-                        Utilidades.mostrarMensajes(this,1,"Error al obtener datos");
+                // RECORRER LOS TRABAJADORES OBTENIDOS
+                for (DocumentSnapshot document : queryDocumentSnapshots) {
+                    String dni = document.getString("dni");
+                    // COMPROBAR SI EL TRABAJADOR NO ESTA EN LA LISTA DE LOS TRABAJADORES QUE SI QUE TIENEN TRABAJO ASIGNADO
+                    if (!trabajadoresAsignados.contains(dni)) {
+                        // GUARDAR EL TRABAJADOR EN LA LISTA DE LOS NO ASIGNADOS
+                        trabajadoresNoAsignados.add(document.getString("dni"));
                     }
-                });
+                }
+
+                // COMPROBAR SI LA LISTA ESTA LLENA PARA CARGAR EL RECYCLERVIEW
+                if(!trabajadoresNoAsignados.isEmpty()) {
+                    // ACTUALIZAR EL ADAPTADOR CON LA LISTA DE TRABAJADORES NO ASIGNADOS
+                    cargarTrabajadores(trabajadoresNoAsignados);
+                } else {
+                    // LA LISTA ESTA VACIA Y SE MUESTRA UN MENSAJE INDICANDOLO
+                    Utilidades.mostrarMensajes(ListaTrabajadoresAsignarTrabajo.this,2,"Todos los trabajadores están asignados");
+                    finish();
+                }
+            }
+        });
     }
 
     // PASAR AL ADAPTADOR LA LISTA DE TRABAJADORES QUE NO TIENEN ASIGNADO TRABAJO PARA MOSTRARLOS EN LA LISTA

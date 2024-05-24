@@ -19,7 +19,10 @@ import com.example.cmct.modelo.trabajador.DatosCliente;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class AdaptadorClienteHorarios extends FirestoreRecyclerAdapter<Cliente, AdaptadorClienteHorarios.DatosHolder> {
 
@@ -40,11 +43,11 @@ public class AdaptadorClienteHorarios extends FirestoreRecyclerAdapter<Cliente, 
 
     @Override
     public void onBindViewHolder(@NonNull DatosHolder holder, int position, @NonNull Cliente modelo) {
-        Log.d("Adapter", "Binding: " + modelo.getNombre());
+        SimpleDateFormat formatoHoras = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        formatoHoras.setTimeZone(TimeZone.getDefault());
         // AÑADIR INFORMACION AL ITEM DEL RecyclerView
         holder.nombre.setText(modelo.getNombre()+" "+modelo.getApellido1()+" "+modelo.getApellido2());
-        holder.horario.setText(modelo.getHoraEntradaTrabajador()+"-"+modelo.getHoraSalidaTrabajador());
-
+        holder.horario.setText(formatoHoras.format(modelo.getHoraEntradaTrabajador().toDate())+"-"+formatoHoras.format(modelo.getHoraSalidaTrabajador().toDate()));
     }
 
     @Override

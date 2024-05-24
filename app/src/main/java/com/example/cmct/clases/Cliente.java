@@ -19,8 +19,8 @@ public class Cliente extends Usuario implements Serializable {
 
     private String localidad;
     private String direccion;
-    private String horaEntradaTrabajador;
-    private String horaSalidaTrabajador;
+    private Timestamp horaEntradaTrabajador;
+    private Timestamp horaSalidaTrabajador;
     private HashMap<String, String> necesidades;
     private String trabajadorAsignado;
 
@@ -32,7 +32,7 @@ public class Cliente extends Usuario implements Serializable {
     }
 
     public Cliente(String imagen, String nombre, String apellido1, String apellido2, String telefono, String dni, String correo, String contrasenia, String rol,
-                   String localidad, String direccion, String horaEntradaTrabajador, String horaSalidaTrabajador, HashMap<String, String> necesidades, String trabajadorAsignado) {
+                   String localidad, String direccion, Timestamp horaEntradaTrabajador, Timestamp horaSalidaTrabajador, HashMap<String, String> necesidades, String trabajadorAsignado) {
         super(imagen, nombre, apellido1, apellido2, telefono, dni, correo, contrasenia, rol);
 
         this.localidad = localidad;
@@ -59,19 +59,19 @@ public class Cliente extends Usuario implements Serializable {
         this.direccion = direccion;
     }
 
-    public String getHoraEntradaTrabajador() {
+    public Timestamp getHoraEntradaTrabajador() {
         return horaEntradaTrabajador;
     }
 
-    public void setHoraEntradaTrabajador(String horaEntradaTrabajador) {
+    public void setHoraEntradaTrabajador(Timestamp horaEntradaTrabajador) {
         this.horaEntradaTrabajador = horaEntradaTrabajador;
     }
 
-    public String getHoraSalidaTrabajador() {
+    public Timestamp getHoraSalidaTrabajador() {
         return horaSalidaTrabajador;
     }
 
-    public void setHoraSalidaTrabajador(String horaSalidaTrabajador) {
+    public void setHoraSalidaTrabajador(Timestamp horaSalidaTrabajador) {
         this.horaSalidaTrabajador = horaSalidaTrabajador;
     }
 

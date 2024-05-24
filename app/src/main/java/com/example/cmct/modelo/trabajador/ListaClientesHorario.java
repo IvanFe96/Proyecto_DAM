@@ -34,7 +34,8 @@ public class ListaClientesHorario extends AppCompatActivity {
         Query sentencia = db
                 .collection("usuarios")
                 .whereEqualTo("rol", "cliente")
-                .whereEqualTo("trabajadorAsignado", dniTrabajador);
+                .whereEqualTo("trabajadorAsignado", dniTrabajador)
+                .orderBy("horaEntradaTrabajador");
 
         FirestoreRecyclerOptions<Cliente> listaClientes = new FirestoreRecyclerOptions.Builder<Cliente>()
                 .setQuery(sentencia, Cliente.class)

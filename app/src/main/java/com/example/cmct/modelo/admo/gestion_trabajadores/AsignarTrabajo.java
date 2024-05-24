@@ -21,15 +21,20 @@ import com.example.cmct.clases.Utilidades;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class AsignarTrabajo extends AppCompatActivity {
 
@@ -184,9 +189,20 @@ public class AsignarTrabajo extends AppCompatActivity {
         // CREAR EL MENSAJE CON LOS DATOS DE LOS CLIENTES Y LAS HORAS
         StringBuilder mensaje = new StringBuilder();
         for (Map.Entry<Cliente, HorarioCliente> cliente : clientes.entrySet()) {
+            // FORMATO PARA ESTABLECER EL HORARIO DE ENTRADA Y SALIDA DEL TRABAJADOR
+            SimpleDateFormat formatoHoras = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            formatoHoras.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date horaEntrada = null;
+            Date horaSalida = null;
+            try {
+                horaEntrada = formatoHoras.parse(cliente.getValue().getHoraInicio());
+                horaSalida = formatoHoras.parse(cliente.getValue().getHoraFin());
+            } catch (ParseException e) {
+                Utilidades.mostrarMensajes(this,1,"Error al convertir a horas");
+            }
             // ESTABLECERLE AL CLIENTE LA HORA DE ENTRADA Y SALIDA
-            cliente.getKey().setHoraEntradaTrabajador(cliente.getValue().getHoraInicio());
-            cliente.getKey().setHoraSalidaTrabajador(cliente.getValue().getHoraFin());
+            cliente.getKey().setHoraEntradaTrabajador(new Timestamp(horaEntrada));
+            cliente.getKey().setHoraSalidaTrabajador(new Timestamp(horaSalida));
 
             // GUARDAR TODOS LOS DATOS YA CORRECTOS DEL CLIENTE
             clientesAAsignar.add(cliente.getKey());
@@ -194,7 +210,7 @@ public class AsignarTrabajo extends AppCompatActivity {
             // DATOS A MOSTRAR
             mensaje.append("Cliente: ").append(cliente.getKey().getNombre())
                     .append("\nDirección: ").append(cliente.getKey().getDireccion() + ", " + cliente.getKey().getLocalidad())
-                    .append("\nHorario: ").append(cliente.getKey().getHoraEntradaTrabajador() + "-" + cliente.getKey().getHoraSalidaTrabajador())
+                    .append("\nHorario: ").append(formatoHoras.format(cliente.getKey().getHoraEntradaTrabajador().toDate()) + "-" + formatoHoras.format(cliente.getKey().getHoraSalidaTrabajador().toDate()))
                     .append("\n\n");
         }
 
