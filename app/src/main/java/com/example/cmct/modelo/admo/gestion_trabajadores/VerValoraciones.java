@@ -66,24 +66,30 @@ public class VerValoraciones extends AppCompatActivity {
                         nombresPorDNI.put(dni, snapshot.getString("nombreTrabajador"));
                     }
 
-                    List<Valoracion> listaValoraciones = new ArrayList<>();
-                    // CALCULAR LA MEDIA DE TODAS LAS CALIFICACIONES DEL TRABAJADOR
-                    for (String dni : valoracionesPorTrabajador.keySet()) {
-                        List<Float> valoraciones = valoracionesPorTrabajador.get(dni);
-                        // SUMAR TODAS LAS CALIFICACIONES
-                        float suma = 0;
-                        for (Float calificacion : valoraciones) {
-                            suma += calificacion;
+                    // COMPROBAR SI ESTA VACIA LA LISTA PARA MOSTRAR UN MENSAJE INDICANDO QUE NO HAY VALORACIONES
+                    if(nombresPorDNI.isEmpty()) {
+                        Utilidades.mostrarMensajes(this,2,"No hay valoraciones que mostrar");
+                        finish();
+                    } else {
+                        List<Valoracion> listaValoraciones = new ArrayList<>();
+                        // CALCULAR LA MEDIA DE TODAS LAS CALIFICACIONES DEL TRABAJADOR
+                        for (String dni : valoracionesPorTrabajador.keySet()) {
+                            List<Float> valoraciones = valoracionesPorTrabajador.get(dni);
+                            // SUMAR TODAS LAS CALIFICACIONES
+                            float suma = 0;
+                            for (Float calificacion : valoraciones) {
+                                suma += calificacion;
+                            }
+                            // OBTENER LA MEDIA DE LAS CALIFICACIONES TOTALES DEL TRABAJADOR
+                            float media = suma / valoraciones.size();
+                            // COMPROBAR SI LA MEDIA ES MENOR DE TRES PARA MOSTRAR AL TRABAJADOR EN LA LISTA
+                            if (media < 3.0) {
+                                listaValoraciones.add(new Valoracion(nombresPorDNI.get(dni), nombresPorDNI.get(dni), media, null));
+                            }
                         }
-                        // OBTENER LA MEDIA DE LAS CALIFICACIONES TOTALES DEL TRABAJADOR
-                        float media = suma / valoraciones.size();
-                        // COMPROBAR SI LA MEDIA ES MENOR DE TRES PARA MOSTRAR AL TRABAJADOR EN LA LISTA
-                        if (media < 3.0) {
-                            listaValoraciones.add(new Valoracion(nombresPorDNI.get(dni), nombresPorDNI.get(dni), media, null));
-                        }
+                        // ACTUALIZAR LA LISTA CON LOS DATOS OBTENIDOS DE LA BASE DE DATOS
+                        adaptadorValoraciones.actualizarLista(listaValoraciones);
                     }
-                    // ACTUALIZAR LA LISTA CON LOS DATOS OBTENIDOS DE LA BASE DE DATOS
-                    adaptadorValoraciones.actualizarLista(listaValoraciones);
                 })
                 .addOnFailureListener(e -> {
                     Utilidades.mostrarMensajes(this,1,"Error al obtener las valoraciones");

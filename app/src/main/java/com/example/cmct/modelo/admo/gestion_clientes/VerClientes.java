@@ -288,4 +288,5 @@ public class VerClientes extends AppCompatActivity {
                     Utilidades.mostrarMensajes(this, 1, "Error al buscar datos de administrador");
                 });
     }
+
 }
