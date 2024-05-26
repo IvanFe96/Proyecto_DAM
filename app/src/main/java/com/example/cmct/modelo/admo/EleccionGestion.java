@@ -57,6 +57,6 @@ public class EleccionGestion extends AppCompatActivity {
                 // REDIRIGIR AL USUARIO A LA PANTALLA DE LOGIN
                 finish(); // CERRAR LA PANTALLA ACTUAL PARA EVITAR QUE EL USUARIO REGRESE
             }
-        }, 3000); // RETRASO DE 3 SEGUNDOS
+        }, 1500); // RETRASO
     }
 }

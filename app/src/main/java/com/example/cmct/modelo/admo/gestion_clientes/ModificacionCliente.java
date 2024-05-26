@@ -33,7 +33,7 @@ public class ModificacionCliente extends AppCompatActivity {
     private static final int REQUEST_IMAGEN = 100;
 
     Intent intent;
-    EditText nombre, apellido1, apellido2, correo, telefono, dni, direccion;
+    EditText nombre, apellido1, apellido2, correo, telefono, direccion;
     Spinner localidades;
     ImageView foto;
     boolean fotoRellenada = false;
