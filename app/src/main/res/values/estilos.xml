@@ -1,27 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="EstiloTextView">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#FFFFFF</item> <!-- Texto blanco para contraste -->
-        <item name="android:shadowColor">#000000</item> <!-- Sombra negra -->
-        <item name="android:shadowDx">1</item> <!-- Desplazamiento horizontal de la sombra -->
-        <item name="android:shadowDy">1</item> <!-- Desplazamiento vertical de la sombra -->
-        <item name="android:shadowRadius">3</item> <!-- Radio de la sombra para suavizar -->
-    </style>
-    <style name="EstiloListas">
+    <style name="EstiloListas2">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/estilo_background_recyclers</item>
+        <item name="android:background">@drawable/estilo_background_items_recyclers</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#333333</item> <!-- Color oscuro para el texto -->
         <item name="android:gravity">center_vertical|start</item>
         <item name="android:paddingLeft">16dp</item>
     </style>
-    <style name="EstiloDesplegables" parent="Widget.AppCompat.Spinner">
-        <item name="android:background">@drawable/estilo_background_desplegables</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="EstiloListas">
+        <item name="android:background">@drawable/estilo_background_items_recyclers</item>
+        <item name="android:textColor">#2C3E50</item> <!-- Color de texto oscuro para contraste -->
+        <item name="android:textSize">16sp</item>
         <item name="android:padding">8dp</item>
-        <item name="android:popupBackground">#FFFFFF</item> <!-- Fondo del menú desplegable -->
+    </style>
+
+    <style name="MinimalistaTextView" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#2C3E50</item>  <!-- Azul oscuro para buen contraste -->
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="EstiloBoton">
+        <item name="android:backgroundTint">#2c3e50</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:layout_marginEnd">32dp</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="MinimalistaSpinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/estilo_background_desplegables</item>
+        <item name="android:popupBackground">@drawable/estilo_background_desplegables</item>
+        <item name="android:textColor">#2C3E50</item> <!-- Color de texto oscuro para contraste -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">8dp</item>
     </style>
 </resources>

@@ -44,7 +44,7 @@ public class AdaptadorClienteHorarios extends FirestoreRecyclerAdapter<Cliente, 
     @Override
     public void onBindViewHolder(@NonNull DatosHolder holder, int position, @NonNull Cliente modelo) {
         SimpleDateFormat formatoHoras = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        formatoHoras.setTimeZone(TimeZone.getDefault());
+        formatoHoras.setTimeZone(TimeZone.getTimeZone("Europa/Madrid"));
         // AÑADIR INFORMACION AL ITEM DEL RecyclerView
         holder.nombre.setText(modelo.getNombre()+" "+modelo.getApellido1()+" "+modelo.getApellido2());
         holder.horario.setText(formatoHoras.format(modelo.getHoraEntradaTrabajador().toDate())+"-"+formatoHoras.format(modelo.getHoraSalidaTrabajador().toDate()));

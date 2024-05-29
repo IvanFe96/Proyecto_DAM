@@ -71,7 +71,7 @@ public class AdaptadorTrabajadorSimple extends FirestoreRecyclerAdapter<Trabajad
         } else {
             holder.imagen.setImageResource(R.drawable.ic_launcher_foreground); // IMAGEN PREDETERMINADA SI NO HAY URL (NO DEBERIA OCURRIR)
         }
-        holder.nombre.setText(modelo.getNombre());
+        holder.nombre.setText(modelo.getNombre()+" "+modelo.getApellido1()+" "+modelo.getApellido2());
 
     }
 

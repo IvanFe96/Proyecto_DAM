@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center"
-                style="@style/EstiloTextView"
+                android:gravity="center"
+                style="@style/MinimalistaTextView"
                 android:text="Nombre y Apellidos"
                 android:textSize="30sp"
                 android:textStyle="bold"/>
@@ -91,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="Necesidades:\n - Comida\n - Ayuda doméstica\nDNI: 123456789A\nTeléfono: 123456789\nLocalidad: Los Albaricoques 23"
                             android:textSize="30sp"/>
 

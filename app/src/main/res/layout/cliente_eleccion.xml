@@ -36,11 +36,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="150dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#781E4B"
                     android:onClick="clickBotonRegistrarNecesidades"
                     android:text="Registrar Necesidades"
                     android:textSize="24sp"
-                    app:cornerRadius="5dp"/>
+                    app:cornerRadius="5dp"
+                    style="@style/EstiloBoton"/>
 
                 <Button
                     android:id="@+id/btnValorarEleccion"
@@ -48,11 +48,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="60dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#781E4B"
                     android:onClick="clickBotonValorar"
                     android:text="Valorar"
                     android:textSize="24sp"
-                    app:cornerRadius="5dp"/>
+                    app:cornerRadius="5dp"
+                    style="@style/EstiloBoton"/>
 
             </LinearLayout>
         </LinearLayout>

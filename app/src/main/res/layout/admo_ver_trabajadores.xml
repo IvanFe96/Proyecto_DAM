@@ -62,7 +62,7 @@
         android:text="+"
         android:textSize="20sp"
         app:cornerRadius="3dp"
-        android:backgroundTint="#781E4B"
-        android:onClick="clickBotonAltaTrabajador"/>
+        android:onClick="clickBotonAltaTrabajador"
+        style="@style/EstiloBoton"/>
 
 </RelativeLayout>

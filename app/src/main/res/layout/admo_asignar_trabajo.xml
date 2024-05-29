@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center"
-                style="@style/EstiloTextView"
+                android:gravity="center"
+                style="@style/MinimalistaTextView"
                 android:text="Nombre y Apellidos"
                 android:textSize="30sp"
                 android:textStyle="bold"/>
@@ -61,7 +62,7 @@
                             android:id="@+id/spinner1AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/EstiloDesplegables"/>
+                            style="@style/MinimalistaSpinner"/>
 
                         <TextView
                             android:id="@+id/textClock1AsignarTrabajo"
@@ -69,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="8:00"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -78,7 +79,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="-"
                             android:textSize="30sp"/>
 
@@ -88,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="8:55"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -105,7 +106,7 @@
                             android:id="@+id/spinner2AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/EstiloDesplegables"/>
+                            style="@style/MinimalistaSpinner"/>
 
                         <TextView
                             android:id="@+id/textClock3AsignarTrabajo"
@@ -113,7 +114,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="9:05"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -122,7 +123,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="-"
                             android:textSize="30sp"/>
 
@@ -132,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="10:00"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -149,7 +150,7 @@
                             android:id="@+id/spinner3AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/EstiloDesplegables"/>
+                            style="@style/MinimalistaSpinner"/>
 
                         <TextView
                             android:id="@+id/textClock5AsignarTrabajo"
@@ -157,7 +158,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="10:10"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -166,7 +167,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="-"
                             android:textSize="30sp"/>
 
@@ -176,7 +177,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="11:05"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -192,7 +193,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="DESCANSO"
                             android:textSize="30sp"
                             android:textStyle="bold|italic"/>
@@ -210,7 +211,7 @@
                             android:id="@+id/spinner4AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/EstiloDesplegables"/>
+                            style="@style/MinimalistaSpinner"/>
 
                         <TextView
                             android:id="@+id/textClock7AsignarTrabajo"
@@ -218,7 +219,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="11:45"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -227,7 +228,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="-"
                             android:textSize="30sp"/>
 
@@ -237,7 +238,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="12:40"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -254,7 +255,7 @@
                             android:id="@+id/spinner5AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/EstiloDesplegables"/>
+                            style="@style/MinimalistaSpinner"/>
 
                         <TextView
                             android:id="@+id/textClock9AsignarTrabajo"
@@ -262,7 +263,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="12:50"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -271,7 +272,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="-"
                             android:textSize="30sp"/>
 
@@ -281,7 +282,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="13:45"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -298,7 +299,7 @@
                             android:id="@+id/spinner6AsignarTrabajo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/EstiloDesplegables"/>
+                            style="@style/MinimalistaSpinner"/>
 
                         <TextView
                             android:id="@+id/textClock11AsignarTrabajo"
@@ -306,7 +307,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="13:55"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -315,7 +316,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="-"
                             android:textSize="30sp"/>
 
@@ -325,7 +326,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:textSize="20sp"
-                            style="@style/EstiloTextView"
+                            style="@style/MinimalistaTextView"
                             android:text="14:50"
                             android:onClick="mostrarTimePickerDialog"/>
 
@@ -338,11 +339,11 @@
                         android:layout_marginTop="40dp"
                         android:layout_marginBottom="20dp"
                         android:layout_gravity="center"
-                        android:backgroundTint="#781E4B"
                         android:onClick="clickBotonAceptarAsignarTrabajo"
                         android:text="Aceptar"
                         android:textSize="30sp"
-                        app:cornerRadius="5dp"/>
+                        app:cornerRadius="5dp"
+                        style="@style/EstiloBoton"/>
 
                 </LinearLayout>
             </ScrollView>

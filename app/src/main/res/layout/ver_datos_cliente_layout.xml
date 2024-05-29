@@ -23,7 +23,7 @@
             android:id="@+id/tvVerClientesNombreApellidos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="Nombre"
             android:textSize="24dp"
             android:textStyle="bold" />
@@ -32,7 +32,7 @@
             android:id="@+id/tvVerClientesTelefono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="Telefono"
             android:textSize="20sp" />
 
@@ -40,7 +40,7 @@
             android:id="@+id/tvVerClientesCorreo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="Correo"
             android:textSize="20sp" />
 
@@ -48,7 +48,7 @@
             android:id="@+id/tvVerClientesDireccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="Direccion"
             android:textSize="20sp" />
 

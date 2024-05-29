@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
     style="@style/EstiloListas"
     android:gravity="center">
 
@@ -9,7 +9,7 @@
         android:id="@+id/tvNombreApellidosCliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/EstiloTextView"
+        style="@style/MinimalistaTextView"
         android:text="Nombre y Apellidos"
         android:textStyle="bold"
         android:textSize="24sp"
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        style="@style/EstiloTextView"
+        style="@style/MinimalistaTextView"
         android:text="8:00 - 8:55"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"

@@ -1,12 +1,8 @@
 package com.example.cmct.modelo.trabajador;
 
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,17 +37,18 @@ public class DatosCliente extends AppCompatActivity implements OnMapReadyCallbac
     // OBTENER LA INSTANCIA DE LA BASE DE DATOS DE FIREBASE
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Cliente cliente;
+    GoogleMap mapa;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trabajador_horario_cliente);
-
-        // OBTENER LOS DATOS DEL CLIENTE
-        obtenerCliente();
 
         // INICIALIZAR EL MAPA
         casaCliente = findViewById(R.id.mapViewCliente);
         casaCliente.onCreate(savedInstanceState);
         casaCliente.getMapAsync(this);
+
+        // OBTENER LOS DATOS DEL CLIENTE
+        obtenerCliente();
 
         nombreCliente = findViewById(R.id.tvNombreApellidosClienteHorario);
         datosCliente = findViewById(R.id.tvDatosCliente);
@@ -66,6 +63,7 @@ public class DatosCliente extends AppCompatActivity implements OnMapReadyCallbac
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     cliente = queryDocumentSnapshots.getDocuments().get(0).toObject(Cliente.class);
+                    mostrarCasaCliente(mapa, cliente.getDireccion()+","+cliente.getLocalidad());
                     rellenarDatosCliente();
                 })
                 .addOnFailureListener(e -> Utilidades.mostrarMensajes(this,1,"Error al obtener los datos del cliente"));
@@ -84,7 +82,7 @@ public class DatosCliente extends AppCompatActivity implements OnMapReadyCallbac
             datos.append("\n- "+ necesidad.getValue());
         }
         SimpleDateFormat formatoHoras = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        formatoHoras.setTimeZone(TimeZone.getDefault());
+        formatoHoras.setTimeZone(TimeZone.getTimeZone("Europa/Madrid"));
         datos.append("\n\nHORARIO: "+formatoHoras.format(cliente.getHoraEntradaTrabajador().toDate())+"-"+formatoHoras.format(cliente.getHoraSalidaTrabajador().toDate()));
         datos.append("\n\nDOMICILIO: "+cliente.getDireccion()+", "+cliente.getLocalidad());
         datos.append("\n\nCORREO: "+cliente.getCorreo());
@@ -140,9 +138,7 @@ public class DatosCliente extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-
-        mostrarCasaCliente(googleMap, cliente.getDireccion()+","+cliente.getLocalidad());
-
+        mapa = googleMap;
     }
 
 }

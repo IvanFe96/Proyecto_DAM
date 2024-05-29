@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="5dp"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="Nombre y Apellidos"
             android:textSize="24dp"
             android:textStyle="bold"/>
@@ -30,7 +30,7 @@
             android:id="@+id/tvVerTrabajadoresDni"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="DNI"
             android:textSize="20sp" />
 
@@ -38,7 +38,7 @@
             android:id="@+id/tvVerTrabajadoresTelefono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="Telefono"
             android:textSize="20sp" />
 
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="5dp"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="Correo"
             android:textSize="20sp" />
 

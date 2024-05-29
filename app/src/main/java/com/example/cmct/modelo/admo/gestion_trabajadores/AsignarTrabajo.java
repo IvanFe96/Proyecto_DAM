@@ -191,7 +191,7 @@ public class AsignarTrabajo extends AppCompatActivity {
         for (Map.Entry<Cliente, HorarioCliente> cliente : clientes.entrySet()) {
             // FORMATO PARA ESTABLECER EL HORARIO DE ENTRADA Y SALIDA DEL TRABAJADOR
             SimpleDateFormat formatoHoras = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            formatoHoras.setTimeZone(TimeZone.getTimeZone("UTC"));
+            formatoHoras.setTimeZone(TimeZone.getTimeZone("Europa/Madrid"));
             Date horaEntrada = null;
             Date horaSalida = null;
             try {

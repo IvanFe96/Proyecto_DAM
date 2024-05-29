@@ -51,11 +51,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#781E4B"
                     android:onClick="clickBotonAceptar"
                     android:text="Aceptar"
                     android:textSize="24sp"
-                    app:cornerRadius="5dp"/>
+                    app:cornerRadius="5dp"
+                    style="@style/EstiloBoton"/>
 
             </LinearLayout>
 

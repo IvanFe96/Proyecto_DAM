@@ -41,9 +41,9 @@
         android:layout_height="wrap_content"
         android:text="Cambiar Contraseña"
         android:layout_gravity="center"
-        android:backgroundTint="#781E4B"
         android:onClick="clickBotonCambioContrasenia"
         android:textSize="24sp"
-        app:cornerRadius="5dp"/>
+        app:cornerRadius="5dp"
+        style="@style/EstiloBoton"/>
 
 </LinearLayout>

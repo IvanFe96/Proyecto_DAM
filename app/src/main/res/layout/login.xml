@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="30dp"
-                style="@style/EstiloTextView"
+                style="@style/MinimalistaTextView"
                 android:text="Correo"
                 android:textSize="20sp" />
 
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
-                    style="@style/EstiloTextView"
+                    style="@style/MinimalistaTextView"
                     android:text="Contraseña"
                     android:textSize="20sp" />
                 <View
@@ -98,11 +98,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="60dp"
-                android:backgroundTint="#781E4B"
                 android:onClick="clickBotonIniciarSesion"
                 android:text="Iniciar Sesión"
                 android:textSize="24sp"
-                app:cornerRadius="5dp" />
+                app:cornerRadius="5dp"
+                style="@style/EstiloBoton"/>
 
         </LinearLayout>
 

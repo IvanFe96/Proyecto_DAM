@@ -100,7 +100,6 @@ public class ListaTrabajadoresIncidencias extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Utilidades.mostrarMensajes(ListaTrabajadoresIncidencias.this, 1, "Error al cargar incidencias");
                     return;
                 }
 

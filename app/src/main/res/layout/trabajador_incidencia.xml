@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
-                    style="@style/EstiloDesplegables"/>
+                    style="@style/MinimalistaSpinner"/>
 
                 <EditText
                     android:id="@+id/editTextMultilineDescripcionIncidencia"
@@ -55,11 +55,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#781E4B"
                     android:onClick="clickBotonGuardarIncidencia"
                     android:text="Guardar"
                     android:textSize="24sp"
-                    app:cornerRadius="5dp"/>
+                    app:cornerRadius="5dp"
+                    style="@style/EstiloBoton"/>
 
             </LinearLayout>
 

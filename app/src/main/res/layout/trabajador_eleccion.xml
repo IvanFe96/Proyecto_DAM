@@ -36,11 +36,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="100dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#781E4B"
                     android:onClick="clickBotonFichar"
                     android:text="Fichar"
                     android:textSize="24sp"
-                    app:cornerRadius="5dp"/>
+                    app:cornerRadius="5dp"
+                    style="@style/EstiloBoton"/>
 
                 <Button
                     android:id="@+id/btnIncidencia"
@@ -48,11 +48,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="60dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#781E4B"
                     android:onClick="clickBotonIncidencia"
                     android:text="Incidencia"
                     android:textSize="24sp"
-                    app:cornerRadius="5dp"/>
+                    app:cornerRadius="5dp"
+                    style="@style/EstiloBoton"/>
 
                 <Button
                     android:id="@+id/btnHorario"
@@ -60,11 +60,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="60dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#781E4B"
                     android:onClick="clickBotonHorario"
                     android:text="Horario"
                     android:textSize="24sp"
-                    app:cornerRadius="5dp"/>
+                    app:cornerRadius="5dp"
+                    style="@style/EstiloBoton"/>
 
             </LinearLayout>
 

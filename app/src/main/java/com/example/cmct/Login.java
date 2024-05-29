@@ -56,7 +56,8 @@ public class Login extends AppCompatActivity {
 
         // COMPROBAR SI LOS CAMPOS DE TEXTO ESTAN VACIOS
         if(correo.getText().toString().isEmpty() || contrasenia.getText().toString().isEmpty()) {
-
+            // CERRAR EL DIALOGO DE ESPERA
+            Utilidades.cerrarEspera();
             // MOSTRAR UN TOAST PERSONALIZADO MOSTRANDO UN MENSAJE
             // DE QUE TIENEN QUE ESTAR TODOS LOS CAMPOS RELLENADOS
             Utilidades.mostrarMensajes(this,1, "Todos los campos deben estar rellenados");

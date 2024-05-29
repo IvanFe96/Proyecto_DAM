@@ -63,7 +63,6 @@ public class ListaTrabajadoresAsignarTrabajo extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Utilidades.mostrarMensajes(ListaTrabajadoresAsignarTrabajo.this, 1, "Error al cargar incidencias");
                     return;
                 }
 

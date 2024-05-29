@@ -3,6 +3,7 @@
     <style name="Base.Theme.CMCT" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="buttonStyle">@style/EstiloBoton</item>
     </style>
 
     <style name="Theme.CMCT" parent="Base.Theme.CMCT" />

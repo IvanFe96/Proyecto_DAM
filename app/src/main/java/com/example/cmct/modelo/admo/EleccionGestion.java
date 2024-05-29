@@ -1,5 +1,6 @@
 package com.example.cmct.modelo.admo;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,21 +43,21 @@ public class EleccionGestion extends AppCompatActivity {
     }
 
     // METODO PARA CUANDO EL USUARIO VAYA HACIA ATRAS SE CIERRE LA SESION DEL MISMO Y VAYA A LA PANTALLA DEL LOGIN
+
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         Utilidades.mostrarMensajes(EleccionGestion.this,2,"Cerrando sesión...");
 
         // RETRASAR LA EJECUCION PARA CERRAR DE MANERA CORRECTA LA SESION DEL USUARIO
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 // CERRAR SESION CON EL USUARIO REGISTRADO
                 FirebaseAuth.getInstance().signOut();
                 // REDIRIGIR AL USUARIO A LA PANTALLA DE LOGIN
                 finish(); // CERRAR LA PANTALLA ACTUAL PARA EVITAR QUE EL USUARIO REGRESE
             }
-        }, 1500); // RETRASO
+        }, 2000); // RETRASO
     }
 }

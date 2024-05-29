@@ -27,7 +27,7 @@
             android:textSize="18sp"
             android:text="Fecha de hoy"
             android:gravity="center"
-            style="@style/EstiloTextView"/>
+            style="@style/MinimalistaTextView"/>
 
         <ImageView
             android:id="@+id/ivCalendario"

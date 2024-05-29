@@ -35,11 +35,11 @@
                 android:layout_gravity="center"
                 android:paddingStart="80dp"
                 android:paddingEnd="80dp"
-                android:backgroundTint="#781E4B"
                 android:onClick="clickBotonVerTrabajadores"
                 android:text="Ver Trabajadores"
                 android:textSize="24sp"
-                app:cornerRadius="5dp"/>
+                app:cornerRadius="5dp"
+                style="@style/EstiloBoton"/>
 
             <Button
                 android:id="@+id/btnAsignarTrabajo"
@@ -51,11 +51,11 @@
                 android:layout_gravity="center"
                 android:paddingStart="80dp"
                 android:paddingEnd="80dp"
-                android:backgroundTint="#781E4B"
                 android:onClick="clickBotonAsignarTrabajo"
                 android:text="Asignar Trabajo"
                 android:textSize="24sp"
-                app:cornerRadius="5dp"/>
+                app:cornerRadius="5dp"
+                style="@style/EstiloBoton"/>
 
             <Button
                 android:id="@+id/btnValoraciones"
@@ -67,11 +67,12 @@
                 android:layout_gravity="center"
                 android:paddingStart="80dp"
                 android:paddingEnd="80dp"
-                android:backgroundTint="#781E4B"
                 android:onClick="clickBotonValoraciones"
                 android:text="Valoraciones"
                 android:textSize="24sp"
-                app:cornerRadius="5dp"/>
+                app:cornerRadius="5dp"
+                style="@style/EstiloBoton"/>
+
             <Button
                 android:id="@+id/btnIncidencias"
                 android:layout_width="347dp"
@@ -82,11 +83,11 @@
                 android:layout_gravity="center"
                 android:paddingStart="80dp"
                 android:paddingEnd="80dp"
-                android:backgroundTint="#781E4B"
                 android:onClick="clickBotonIncidencias"
                 android:text="Incidencias"
                 android:textSize="24sp"
-                app:cornerRadius="5dp"/>
+                app:cornerRadius="5dp"
+                style="@style/EstiloBoton"/>
 
             <Button
                 android:id="@+id/btnVerFichaje"
@@ -98,11 +99,11 @@
                 android:layout_gravity="center"
                 android:paddingStart="80dp"
                 android:paddingEnd="80dp"
-                android:backgroundTint="#781E4B"
                 android:onClick="clickBotonVerFichaje"
                 android:text="Ver Fichaje"
                 android:textSize="24sp"
-                app:cornerRadius="5dp"/>
+                app:cornerRadius="5dp"
+                style="@style/EstiloBoton"/>
 
         </LinearLayout>
 

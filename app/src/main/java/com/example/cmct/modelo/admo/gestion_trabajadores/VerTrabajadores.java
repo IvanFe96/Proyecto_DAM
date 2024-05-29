@@ -180,7 +180,9 @@ public class VerTrabajadores extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (adaptadorVerTrabajadores != null) {
-            adaptadorVerTrabajadores.notifyDataSetChanged();
+            adaptadorVerTrabajadores.stopListening();
+            actualizarSentencia("");
+            adaptadorVerTrabajadores.startListening();
         }
     }
 

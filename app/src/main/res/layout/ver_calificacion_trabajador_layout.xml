@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:paddingEnd="5dp"
             android:gravity="center"
-            style="@style/EstiloTextView"
+            style="@style/MinimalistaTextView"
             android:text="Nombre y Apellidos"
             android:textSize="24dp"
             android:textStyle="bold"/>

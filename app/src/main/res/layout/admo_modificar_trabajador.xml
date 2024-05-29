@@ -20,7 +20,6 @@
         app:srcCompat="@drawable/logotipo_horizontal" />
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                style="@style/EstiloTextView"
+                style="@style/MinimalistaTextView"
                 android:text="Imagen"
                 android:textSize="20sp"/>
 
@@ -53,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                style="@style/EstiloTextView"
+                style="@style/MinimalistaTextView"
                 android:text="Nombre"
                 android:textSize="20sp"/>
 
@@ -75,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                style="@style/EstiloTextView"
+                style="@style/MinimalistaTextView"
                 android:text="Primer Apellido"
                 android:textSize="20sp"/>
 
@@ -97,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                style="@style/EstiloTextView"
+                style="@style/MinimalistaTextView"
                 android:text="Segundo Apellido"
                 android:textSize="20sp"/>
 
@@ -119,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                style="@style/EstiloTextView"
+                style="@style/MinimalistaTextView"
                 android:text="Correo"
                 android:textSize="20sp"/>
 
@@ -142,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                style="@style/EstiloTextView"
+                style="@style/MinimalistaTextView"
                 android:text="Teléfono"
                 android:textSize="20sp"/>
 
@@ -164,11 +163,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="#781E4B"
                 android:onClick="clickBotonGuardar"
                 android:text="Guardar"
                 android:textSize="24sp"
-                app:cornerRadius="5dp"/>
+                app:cornerRadius="5dp"
+                style="@style/EstiloBoton"/>
 
         </LinearLayout>
     </ScrollView>
